@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 25.01.2025
+  Features:
+    - Allow for entire belt line to be upgraded with a single key, CTRL + SHIFT + U by default.

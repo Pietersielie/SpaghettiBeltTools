@@ -1,0 +1,6 @@
+BeltUpgrader notes:
+	- Consider using splitter's related_underground_belt field to add to the upgrade list.
+		- Default behaviour:
+			- Splitter terminates, not inclusive.
+			- Alternate behaviour (as per user setting, maybe), splitter terminates, inclusive.
+			- Second key force upgrades entire line, splitters not terminating -- check if possible?
