@@ -162,4 +162,4 @@ local function UpgradeBeltLine(event)
 	return
 end
 
-script.on_event('BeltUpgradeHoldAll', UpgradeBeltLine)
+script.on_event('BeltUpgrader_BeltUpgradeHoldAll', UpgradeBeltLine)
