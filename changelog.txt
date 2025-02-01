@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 01.02.2025
+  Features:
+    - Splitters now included by default, still bound the segments that get upgraded.
+    - User setting to set if splitters are included or not.
+    - Add locale description for controls and settings.
+    - Force upgrade all connected belts added as option (Ctrl + Shift + Alt + U).
+---------------------------------------------------------------------------------------------------
 Version: 0.1.0
 Date: 25.01.2025
   Features:
