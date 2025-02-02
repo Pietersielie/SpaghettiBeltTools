@@ -277,6 +277,9 @@ local function UpgradeSameTierConnectedBelts(event)
 				log(serpent.block(val))
 			end
 		end
+		if (table_size(transportBeltEntitiesToUpgrade) > 2000) then
+			game.print("Gammro says: \"Have you considered using trains?\"")
+		end
 		for beltKey, belt in pairs(transportBeltEntitiesToUpgrade) do
 			if (VERBOSE > 2) then
 				log({"", "Upgrading the following entity:"})

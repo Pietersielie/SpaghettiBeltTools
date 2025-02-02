@@ -1,7 +1,7 @@
 data:extend({
     {
         type = "custom-input",
-        name = "BeltUpgrader_BeltUpgradeHoldAll",
+        name = "belt-upgrader-give-belt-upgrade-tool",
 		key_sequence = "CONTROL + SHIFT + U"
     }
 })
