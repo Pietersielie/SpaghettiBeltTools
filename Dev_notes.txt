@@ -9,7 +9,6 @@ BeltUpgrader notes:
 	- Kyk na toolbar button, etc., soos upgrade of blueprint planner
 		- Left click is default behaviour, shift+leftclick is downstream, ctrl+shift+leftclick is upstream, ctrl=shift+alt+leftclick is force upgrade die hele lyn.
 		- Right click is default behaviour maar vir downgrades, shift+rightclick is downstream, ctrl+shift+rightclick is upstream, ctrl=shift+alt+rightclick is force downgrade die hele lyn.
-	- Kyk na sequential upgrades (i.e., geel na blou, b.v.?)
 	- Is daar 'n "direction" per belt entity? 
 		- As ja, indien output meer as 1 input het, volg net as die input dieselfde rigting as die output is.
 		- As initial meer as 1 input het, volg net die input wat dieselfde rigting het as die initial.

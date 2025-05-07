@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.3.0
+Date: 07.05.2025
+  Features:
+    - Add downgrade and force downgrade options, behaving the same as upgrades.
+    - Default controls are Ctrl + Shift + K for downgrading connected belts of the same tier, and Ctrl + Shift + Alt + K to force.
+  Bugfixes:
+    - Fix issue with building related belts when building belt tiers.
+---------------------------------------------------------------------------------------------------
 Version: 0.2.0
 Date: 01.02.2025
   Features:
