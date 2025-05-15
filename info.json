@@ -1,12 +1,12 @@
 {
   "name": "BeltUpgrades",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "factorio_version": "2.0",
   "title": "Belt Upgrades",
   "author": "PietersieliePC",
   "contact": "",
   "homepage": "",
-  "description": "Upgrade an entire line of belts similar to Dyson Sphere Program's upgrade.",
+  "description": "Upgrade an entire line of belts with one click, vital for spaghetti bases.",
   "dependencies": ["base >= 1.0"],
   "license": "GNU GPLv3"
 }

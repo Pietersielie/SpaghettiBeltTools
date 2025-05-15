@@ -372,8 +372,16 @@ local function UpgradeSameTierConnectedBelts(event)
     local thisPlayer = game.players[event.player_index]
 	local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
 	local transportBeltEntitiesToUpgrade = {}
-    if thisPlayer.connected and thisPlayer.selected and thisPlayer.controller_type ~= defines.controllers.ghost then
-        local initialBelt = thisPlayer.selected
+	if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
+        local initialBelt = event.entities[1]
+		if (VERBOSE > 2) then
+			game.print({"", "Selection has the following items:"})
+			log({"", "Selection has the following items:"})
+			for key, value in pairs(event.entities) do
+				game.print({"", key, " : ", value})
+				log({"", key, " : ", value})
+			end
+		end
 		if (initialBelt.type ~= "transport-belt" and initialBelt.type ~= "underground-belt" and initialBelt.type ~= "splitter") then
 			if (VERBOSE > 2) then
 				game.print({"", "Selected item has prototype ", initialBelt.name})
@@ -435,8 +443,16 @@ local function UpgradeAllConnectedBelts(event)
     local thisPlayer = game.players[event.player_index]
 	local truthTable = buildBoolTable(thisPlayer.mod_settings, true)
 	local transportBeltEntitiesToUpgrade = {}
-    if thisPlayer.connected and thisPlayer.selected and thisPlayer.controller_type ~= defines.controllers.ghost then
-        local initialBelt = thisPlayer.selected
+    if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
+        local initialBelt = event.entities[1]
+		if (VERBOSE > 2) then
+			game.print({"", "Selection has the following items:"})
+			log({"", "Selection has the following items:"})
+			for key, value in pairs(event.entities) do
+				game.print({"", key, " : ", value})
+				log({"", key, " : ", value})
+			end
+		end
 		local initType = initialBelt.type
 		
 		-- Must be of a belt type to build network
@@ -466,8 +482,16 @@ local function DowngradeSameTierConnectedBelts(event)
     local thisPlayer = game.players[event.player_index]
 	local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
 	local transportBeltEntitiesToDowngrade = {}
-    if thisPlayer.connected and thisPlayer.selected and thisPlayer.controller_type ~= defines.controllers.ghost then
-        local initialBelt = thisPlayer.selected
+    if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
+        local initialBelt = event.entities[1]
+		if (VERBOSE > 2) then
+			game.print({"", "Selection has the following items:"})
+			log({"", "Selection has the following items:"})
+			for key, value in pairs(event.entities) do
+				game.print({"", key, " : ", value})
+				log({"", key, " : ", value})
+			end
+		end
 		if (initialBelt.type ~= "transport-belt" and initialBelt.type ~= "underground-belt" and initialBelt.type ~= "splitter") then
 			if (VERBOSE > 2) then
 				game.print({"", "Selected item has prototype ", initialBelt.name})
@@ -527,8 +551,16 @@ local function DowngradeAllConnectedBelts(event)
     local thisPlayer = game.players[event.player_index]
 	local truthTable = buildBoolTable(thisPlayer.mod_settings, true)
 	local transportBeltEntitiesToDowngrade = {}
-    if thisPlayer.connected and thisPlayer.selected and thisPlayer.controller_type ~= defines.controllers.ghost then
-        local initialBelt = thisPlayer.selected
+    if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
+        local initialBelt = event.entities[1]
+		if (VERBOSE > 2) then
+			game.print({"", "Selection has the following items:"})
+			log({"", "Selection has the following items:"})
+			for key, value in pairs(event.entities) do
+				game.print({"", key, " : ", value})
+				log({"", key, " : ", value})
+			end
+		end
 		local initType = initialBelt.type
 		
 		-- Must be of a belt type to build network
@@ -567,7 +599,26 @@ local function DowngradeAllConnectedBelts(event)
 	end
 end
 
-script.on_event('BeltUpgrader_BeltUpgradeSameTier', UpgradeSameTierConnectedBelts)
-script.on_event('BeltUpgrader_BeltUpgradeForceAll', UpgradeAllConnectedBelts)
-script.on_event('BeltUpgrader_BeltDowngradeSameTier', DowngradeSameTierConnectedBelts)
-script.on_event('BeltUpgrader_BeltDowngradeForceAll', DowngradeAllConnectedBelts)
+script.on_event({defines.events.on_player_selected_area}, function(event)
+    if event.item == 'beltLineUpgrade-selection-tool' then
+        UpgradeSameTierConnectedBelts(event)
+    end
+end)
+
+script.on_event({defines.events.on_player_alt_selected_area}, function(event)
+    if event.item == 'beltLineUpgrade-selection-tool' then
+        UpgradeAllConnectedBelts(event)
+    end
+end)
+
+script.on_event({defines.events.on_player_reverse_selected_area}, function(event)
+	if event.item == 'beltLineUpgrade-selection-tool' then
+		DowngradeSameTierConnectedBelts(event)
+	end
+end)
+
+script.on_event({defines.events.on_player_alt_reverse_selected_area}, function(event)
+	if event.item == 'beltLineUpgrade-selection-tool' then
+		DowngradeAllConnectedBelts(event)
+	end
+end)

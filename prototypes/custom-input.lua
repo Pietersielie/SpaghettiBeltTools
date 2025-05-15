@@ -1,31 +1,7 @@
 data:extend({
     {
         type = "custom-input",
-        name = "BeltUpgrader_BeltUpgradeSameTier",
+        name = "beltUpgrader-give-belt-upgrade-tool",
 		key_sequence = "CONTROL + SHIFT + U"
-    }
-})
-
-data:extend({
-    {
-        type = "custom-input",
-        name = "BeltUpgrader_BeltUpgradeForceAll",
-		key_sequence = "CONTROL + SHIFT + ALT + U"
-    }
-})
-
-data:extend({
-    {
-        type = "custom-input",
-        name = "BeltUpgrader_BeltDowngradeSameTier",
-		key_sequence = "CONTROL + SHIFT + K"
-    }
-})
-
-data:extend({
-    {
-        type = "custom-input",
-        name = "BeltUpgrader_BeltDowngradeForceAll",
-		key_sequence = "CONTROL + SHIFT + ALT + K"
     }
 })

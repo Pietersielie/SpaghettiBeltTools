@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.4.0
+Date: 15.05.2025
+  Features:
+    - Move functionality to custom tool, available from Ctrl + Shift + U and the shortcut bar.
+    - Select upgrades connected segment of same tier, reverse select downgrades connected segment of same tier.
+    - Alt select upgrades all connected belts, while alt reverse select downgrades all connected belts.
+---------------------------------------------------------------------------------------------------
 Version: 0.3.0
 Date: 07.05.2025
   Features:
