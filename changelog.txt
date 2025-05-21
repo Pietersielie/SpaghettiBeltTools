@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.4.1
+Date: 21.05.2025
+  Graphics:
+    - Add icons and thumbnail, thanks to my brother for making said sprites.
+  Bugfixes:
+    - Fix issues related to localisation for the shortcut and new tool.
+---------------------------------------------------------------------------------------------------
 Version: 0.4.0
 Date: 15.05.2025
   Features:

@@ -1,3 +1,4 @@
 /.vscode/settings.json
 /BeltUpgrades.code-workspace
 *.zip
+*.code-workspace

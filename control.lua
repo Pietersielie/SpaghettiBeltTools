@@ -600,25 +600,25 @@ local function DowngradeAllConnectedBelts(event)
 end
 
 script.on_event({defines.events.on_player_selected_area}, function(event)
-    if event.item == 'beltLineUpgrade-selection-tool' then
+    if event.item == 'beltThreadUpgrader-selection-tool' then
         UpgradeSameTierConnectedBelts(event)
     end
 end)
 
 script.on_event({defines.events.on_player_alt_selected_area}, function(event)
-    if event.item == 'beltLineUpgrade-selection-tool' then
+    if event.item == 'beltThreadUpgrader-selection-tool' then
         UpgradeAllConnectedBelts(event)
     end
 end)
 
 script.on_event({defines.events.on_player_reverse_selected_area}, function(event)
-	if event.item == 'beltLineUpgrade-selection-tool' then
+	if event.item == 'beltThreadUpgrader-selection-tool' then
 		DowngradeSameTierConnectedBelts(event)
 	end
 end)
 
 script.on_event({defines.events.on_player_alt_reverse_selected_area}, function(event)
-	if event.item == 'beltLineUpgrade-selection-tool' then
+	if event.item == 'beltThreadUpgrader-selection-tool' then
 		DowngradeAllConnectedBelts(event)
 	end
 end)
