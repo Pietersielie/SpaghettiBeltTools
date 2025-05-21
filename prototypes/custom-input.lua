@@ -1,7 +1,9 @@
 data:extend({
     {
         type = "custom-input",
-        name = "beltUpgrader-give-belt-upgrade-tool",
-		key_sequence = "CONTROL + SHIFT + U"
+        name = "beltThreadUpgrader-give-belt-upgrade-tool",
+		key_sequence = "CONTROL + SHIFT + U",
+        action = "spawn-item",
+        item_to_spawn = "beltThreadUpgrader-selection-tool"
     }
 })
