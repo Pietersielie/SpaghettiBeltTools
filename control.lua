@@ -12,16 +12,18 @@ BigTableOfBelts["turbo-transport-belt"] = {["transport-belt"] = "turbo-transport
 local findUpstreamNetwork, findDownstreamNetwork
 
 -- Returns a table with truth values
--- ["ForceBuild"] 			Force build 
--- ["IncludeSplitters"] 	Include splitters
--- ["IncludeGhosts"]		Include ghosts of appropriate type
--- ["DoSequentialUpgrades"] Upgrade entities multiple times as per default upgrade planner
+-- ["ForceBuild"] 				Force build 
+-- ["IncludeSplitters"] 		Include splitters
+-- ["IncludeGhosts"]			Include ghosts of appropriate type
+-- ["IncludeSideloadingBelts"]	Include upstream belts sideloading onto the belt thread in question.
+-- ["DoSequentialUpgrades"] 	Upgrade entities multiple times as per default upgrade planner
 local function buildBoolTable(playerSettings, force)
 	returnTable = {}
 
 	returnTable["ForceBuild"] = force or false
 	returnTable["IncludeSplitters"] = playerSettings["PCPBU-bool-splitters-included-setting"].value
 	returnTable["IncludeGhosts"] = playerSettings["PCPBU-bool-ghosts-included-setting"].value
+	returnTable["IncludeSideloadingBelts"] = playerSettings["PCPBU-bool-sideloading-belts-included-setting"].value
 	returnTable["DoSequentialUpgrades"] = playerSettings["PCPBU-bool-sequential-upgrades-allowed-setting"].value
 
 	return returnTable
@@ -44,8 +46,15 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 	
 	local connectedBelts = {}
 	-- Add upstream belt neighbours to list to check
-	for _, val in pairs(belt.belt_neighbours["inputs"]) do
-		connectedBelts[val.unit_number] = val
+	local inputs = belt.belt_neighbours["inputs"]
+	for _, val in pairs(inputs) do
+		if not (truthTable["IncludeSideloadingBelts"] or forceDisregardTier) and table_size(inputs) > 1 then
+			if (belt.direction == val.direction) then
+				connectedBelts[val.unit_number] = val
+			end
+		else
+			connectedBelts[val.unit_number] = val
+		end
 	end
 	
 	-- If underground-belt, add other end if it exists
