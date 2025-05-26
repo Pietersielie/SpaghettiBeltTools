@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.4.4
+Date: 26.05.2025
+  Bugfixes:
+    - Fix error in determining belt tier when initial belt is scheduled for upgrade.
+    - Fix error in determining downgrade target if belt is scheduled for upgrade.
+---------------------------------------------------------------------------------------------------
 Version: 0.4.3
 Date: 23.05.2025
   Features:

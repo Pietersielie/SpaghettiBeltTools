@@ -295,17 +295,32 @@ end
 
 -- Builds a table consisting of the relevant belt tier.
 local function buildBeltTierTable(beltEntity)
+	if beltEntity.to_be_upgraded() then
+		beltEntity = beltEntity.get_upgrade_target()
+	end
 	for _, value in pairs(BigTableOfBelts) do
 		if (beltEntity.type == "splitter") then
 			if (value["splitter"] == beltEntity.name) then
+				if (VERBOSE == 1) then
+					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
+					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
+				end
 				return value
 			end
 		elseif (beltEntity.type == "transport-belt") then
 			if (value["transport-belt"] == beltEntity.name) then
+				if (VERBOSE == 1) then
+					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
+					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
+				end
 				return value
 			end
 		elseif (beltEntity.type == "underground-belt") then
 			if (value["underground-belt"] == beltEntity.name) then
+				if (VERBOSE == 1) then
+					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
+					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
+				end
 				return value
 			end
 		else
@@ -541,11 +556,13 @@ local function DowngradeSameTierConnectedBelts(event)
 			end
 			local nextDowngrade
 			local beltName = belt.name
+			local beltFilter = belt
 			if (belt.to_be_upgraded()) then
 				beltName = belt.get_upgrade_target().name
+				beltFilter = belt.get_upgrade_target()
 			end
 			if (downgradeCache[beltName] == nil) then
-				nextDowngrade = findDownGradeTarget(belt)
+				nextDowngrade = findDownGradeTarget(beltFilter)
 			else
 				nextDowngrade = downgradeCache[beltName]
 			end
@@ -592,11 +609,13 @@ local function DowngradeAllConnectedBelts(event)
 			end
 			local nextDowngrade
 			local beltName = belt.name
+			local beltFilter = belt
 			if (belt.to_be_upgraded()) then
 				beltName = belt.get_upgrade_target().name
+				beltFilter = belt.get_upgrade_target()
 			end
 			if (downgradeCache[beltName] == nil) then
-				nextDowngrade = findDownGradeTarget(belt)
+				nextDowngrade = findDownGradeTarget(beltFilter)
 			else
 				nextDowngrade = downgradeCache[beltName]
 			end
