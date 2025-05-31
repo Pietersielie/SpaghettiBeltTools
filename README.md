@@ -14,6 +14,12 @@ Select a belt entity to upgrade the thread of. It will always be the top left be
   - Reverse select (by default, right mouse) to downgrade belts of the same tier connected to the selected belt.
   - Alternate reverse select (by default, Shift+right mouse) to downgrade all belts connected to the selected belt, regardless of tier.
 
+## User settings
+There are a few user settings available (under the per player tab of mod settings).
+  - You can select whether or not splitters will be included when upgrading connected belts of the same tier. Note that selecting a splitter will upgrade it, and its connected belts, regardless.
+  - You can select whether or not belts that are marked for upgrade are considered to be of the tier they will be upgraded to, or the tier that they are. This only has an effect when selecting belts of the same tier.
+  - You can select whether or not upstream sideloading belts (i.e., where more than one belt enters another belt) are considered connected or not. Note that downstream sideloading belts are always included. I can make this optional if the demand is there.
+
 # Credits
 Some credit has to be given to the good folk of Bagelville for helping test the mod, suggesting functionality, as well as providing the idea in the first place. A full credit log is available on the relevant thread for the mod on the discord server.
 
