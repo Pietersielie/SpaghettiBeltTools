@@ -1,11 +1,11 @@
 {
   "name": "BeltThreadUpgrades",
-  "version": "0.4.4",
+  "version": "1.0.0",
   "factorio_version": "2.0",
   "title": "Belt Thread Upgrades",
   "author": "PietersieliePC",
-  "contact": "",
-  "homepage": "",
+  "contact": "https://github.com/Pietersielie/BeltUpgrader",
+  "homepage": "https://github.com/Pietersielie/BeltUpgrader",
   "description": "Upgrade an entire line of belts with one click, vital for spaghetti bases.",
   "dependencies": ["base >= 1.0"],
   "license": "GNU GPLv3"
