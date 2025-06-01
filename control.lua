@@ -9,6 +9,14 @@ BigTableOfBelts["express-transport-belt"] = {["transport-belt"] = "express-trans
 -- Space Age
 BigTableOfBelts["turbo-transport-belt"] = {["transport-belt"] = "turbo-transport-belt", ["underground-belt"] = "turbo-underground-belt", ["splitter"] = "turbo-splitter"}
 
+-- Lignumis (https://mods.factorio.com/mod/lignumis)
+BigTableOfBelts["wood-transport-belt"] = {["transport-belt"] = "wood-transport-belt", ["underground-belt"] = "wood-underground-belt", ["splitter"] = "wood-splitter"}
+
+-- Advanced Belts (https://mods.factorio.com/mod/AdvancedBeltsSA/)
+BigTableOfBelts["advanced-transport-belt"] = {["transport-belt"] = "extreme-belt", ["underground-belt"] = "extreme-underground", ["splitter"] = "extreme-splitter"} -- cyan
+BigTableOfBelts["elite-transport-belt"] = {["transport-belt"] = "ultimate-belt", ["underground-belt"] = "ultimate-underground", ["splitter"] = "ultimate-splitter"} -- orange
+BigTableOfBelts["hyper-transport-belt"] = {["transport-belt"] = "high-speed-belt", ["underground-belt"] = "high-speed-underground", ["splitter"] = "high-speed-splitter"} -- purple
+
 local findUpstreamNetwork, findDownstreamNetwork
 
 -- Returns a table with truth values

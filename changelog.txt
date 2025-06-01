@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 01.06.2025
+  Mod compatibility:
+    - Added support for Lignumis's wooden belts. (https://github.com/Pietersielie/BeltUpgrader/issues/15)
+    - Added support for Advanced Belts' three belt tiers (advanced, elite, hyper). (https://github.com/Pietersielie/BeltUpgrader/issues/15)
+---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 31.05.2025
   Changes:
