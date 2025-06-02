@@ -603,20 +603,15 @@ local function DowngradeAllConnectedBelts(event)
 			end
 		end
 		local initType = initialBelt.type
-		
+
 		-- Must be of a belt type to build network
 		if (initType ~= "transport-belt" and initType ~= "underground-belt" and initType ~= "splitter") then
 			return
 		end
-				
+
 		transportBeltEntitiesToDowngrade = findAllConnectedBelts(initialBelt, {}, truthTable)
 
-		for beltKey, belt in pairs(transportBeltEntitiesToDowngrade) do
-			if (VERBOSE > 2) then
-				log({"", "Upgrading the following entity:"})
-				log(serpent.block(belt))
-			end
-			local downgradeCache = {}
+		local downgradeCache = {}
 		for _, belt in pairs(transportBeltEntitiesToDowngrade) do
 			if (VERBOSE > 2) then
 				log({"", "Downgrading the following entity:"})
@@ -637,7 +632,6 @@ local function DowngradeAllConnectedBelts(event)
 			if (nextDowngrade ~= nil) then
 				belt.order_upgrade({target=nextDowngrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
 			end
-		end
 		end
 	end
 end
