@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.4
+Date: 02.06.2025
+  Control:
+    - Add safety code to prevent crashes when a belt tier is not supported. (https://github.com/Pietersielie/BeltUpgrader/issues/25)
+---------------------------------------------------------------------------------------------------
 Version: 1.0.3
 Date: 02.06.2025
   Bugfixes:

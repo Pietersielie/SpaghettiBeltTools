@@ -342,6 +342,9 @@ local function buildBeltTierTable(beltEntity)
 			game.print("Something has gone wrong with building the beltTierTable, please inform the mod author.")
 		end
 	end
+	game.print({"", "Belts of type \"", beltEntity.name, "\" are not yet supported for tier-based upgrades. Please contact the Belt Thread Upgrades mod author."})
+	log({"", "Belt of type ", beltEntity.name, " not supported."})
+	return nil
 end
 
 -- Recursively finds the set of transport belts and underground belts connected to belt.
@@ -357,6 +360,9 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 
 	-- Determine the tier of the belt to search on.
 	local relBeltTier = buildBeltTierTable(belt)
+	if relBeltTier == nil then
+		return {}
+	end
 	if (VERBOSE > 2) then
 		log({"", "Belt tier table:"})
 		for key, val in pairs(relBeltTier) do
