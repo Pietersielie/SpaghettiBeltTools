@@ -19,6 +19,15 @@ data:extend({
 data:extend({
     {
         type = "bool-setting",
+        name = "PCPBU-bool-upgrade-all-selected-threads-setting",
+        setting_type = "runtime-per-user",
+        default_value = true
+    }
+})
+
+data:extend({
+    {
+        type = "bool-setting",
         name = "PCPBU-bool-ghosts-included-setting",
         setting_type = "runtime-per-user",
         default_value = true,

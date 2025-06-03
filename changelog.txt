@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.5
+Date: 03.06.2025
+  Minor Features:
+    - Add option to include all belt networks in a selection to upgrade or downgrade. (https://github.com/Pietersielie/BeltUpgrader/issues/23)
+---------------------------------------------------------------------------------------------------
 Version: 1.0.4
 Date: 02.06.2025
   Control:
