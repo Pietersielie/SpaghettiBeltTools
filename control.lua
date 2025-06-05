@@ -12,7 +12,7 @@ BigTableOfBelts["express-transport-belt"] = {["transport-belt"] = "express-trans
 BigTableOfBelts["turbo-transport-belt"] = {["transport-belt"] = "turbo-transport-belt", ["underground-belt"] = "turbo-underground-belt", ["splitter"] = "turbo-splitter"} -- green
 
 -- Lignumis (https://mods.factorio.com/mod/lignumis)
-BigTableOfBelts["wood-transport-belt"] = {["transport-belt"] = "wood-transport-belt", ["underground-belt"] = "wood-underground-belt", ["splitter"] = "wood-splitter"}
+BigTableOfBelts["wood-transport-belt"] = {["transport-belt"] = "wood-transport-belt", ["underground-belt"] = "wood-underground-belt", ["splitter"] = "wood-splitter"} -- brown
 
 -- Advanced Belts (https://mods.factorio.com/mod/AdvancedBeltsSA/)
 BigTableOfBelts["advanced-transport-belt"] = {["transport-belt"] = "extreme-belt", ["underground-belt"] = "extreme-underground", ["splitter"] = "extreme-splitter"} -- cyan
@@ -25,6 +25,15 @@ BigTableOfBelts["extreme-fast-transport-belt"] = {["transport-belt"] = "extreme-
 BigTableOfBelts["ultra-express-transport-belt"] = {["transport-belt"] = "ultra-express-belt", ["underground-belt"] = "ultra-express-underground-belt", ["splitter"] = "ultra-express-splitter"} -- dark purple
 BigTableOfBelts["extreme-express-transport-belt"] = {["transport-belt"] = "extreme-express-belt", ["underground-belt"] = "extreme-express-underground-belt", ["splitter"] = "extreme-express-splitter"} -- dark blue
 BigTableOfBelts["ultimate-transport-belt"] = {["transport-belt"] = "ultimate-belt", ["underground-belt"] = "original-ultimate-underground-belt", ["splitter"] = "original-ultimate-splitter"} -- dark cyan
+
+-- 5Dim - New Transport (https://mods.factorio.com/mod/5dim_transport)
+BigTableOfBelts["5d-transport-belt-mk4"] = {["transport-belt"] = "5d-transport-belt-04", ["underground-belt"] = "5d-underground-belt-04", ["splitter"] = "5d-splitter-04"} -- pink
+BigTableOfBelts["5d-transport-belt-mk5"] = {["transport-belt"] = "5d-transport-belt-05", ["underground-belt"] = "5d-underground-belt-05", ["splitter"] = "5d-splitter-05"} -- green
+BigTableOfBelts["5d-transport-belt-mk6"] = {["transport-belt"] = "5d-transport-belt-06", ["underground-belt"] = "5d-underground-belt-06", ["splitter"] = "5d-splitter-06"} -- brown
+BigTableOfBelts["5d-transport-belt-mk7"] = {["transport-belt"] = "5d-transport-belt-07", ["underground-belt"] = "5d-underground-belt-07", ["splitter"] = "5d-splitter-07"} -- purple
+BigTableOfBelts["5d-transport-belt-mk8"] = {["transport-belt"] = "5d-transport-belt-08", ["underground-belt"] = "5d-underground-belt-08", ["splitter"] = "5d-splitter-08"} -- white
+BigTableOfBelts["5d-transport-belt-mk9"] = {["transport-belt"] = "5d-transport-belt-09", ["underground-belt"] = "5d-underground-belt-09", ["splitter"] = "5d-splitter-09"} -- orange
+BigTableOfBelts["5d-transport-belt-mk10"] = {["transport-belt"] = "5d-transport-belt-10", ["underground-belt"] = "5d-underground-belt-10", ["splitter"] = "5d-splitter-10"} -- dark blue
 
 -- Returns a table with truth values
 -- ["ForceBuild"] 				Force build 
