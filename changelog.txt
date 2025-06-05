@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: 05.06.2025
+  Major Features:
+    - Ghosts are now supported. (https://github.com/Pietersielie/BeltUpgrader/issues/9)
+  Optimizations:
+    - Major refactor to reduce script size and remove redundant code.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.5
 Date: 03.06.2025
   Minor Features:

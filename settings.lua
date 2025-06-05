@@ -28,16 +28,6 @@ data:extend({
 data:extend({
     {
         type = "bool-setting",
-        name = "PCPBU-bool-ghosts-included-setting",
-        setting_type = "runtime-per-user",
-        default_value = true,
-		hidden = true
-    }
-})
-
-data:extend({
-    {
-        type = "bool-setting",
         name = "PCPBU-bool-sideloading-belts-included-setting",
         setting_type = "runtime-per-user",
         default_value = false

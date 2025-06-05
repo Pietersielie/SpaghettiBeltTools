@@ -1,3 +1,5 @@
+local beltGraph = require("scripts/belt-graph")
+
 local VERBOSE = 0
 
 local BigTableOfBelts = {}
@@ -24,12 +26,9 @@ BigTableOfBelts["ultra-express-transport-belt"] = {["transport-belt"] = "ultra-e
 BigTableOfBelts["extreme-express-transport-belt"] = {["transport-belt"] = "extreme-express-belt", ["underground-belt"] = "extreme-express-underground-belt", ["splitter"] = "extreme-express-splitter"} -- dark blue
 BigTableOfBelts["ultimate-transport-belt"] = {["transport-belt"] = "ultimate-belt", ["underground-belt"] = "original-ultimate-underground-belt", ["splitter"] = "original-ultimate-splitter"} -- dark cyan
 
-local findUpstreamNetwork, findDownstreamNetwork
-
 -- Returns a table with truth values
 -- ["ForceBuild"] 				Force build 
 -- ["IncludeSplitters"] 		Include splitters when upgrading a belt section
--- ["IncludeGhosts"]			Include ghosts of appropriate type
 -- ["IncludeSideloadingBelts"]	Include upstream belts sideloading onto the belt thread in question.
 -- ["DoSequentialUpgrades"] 	Upgrade entities multiple times as per default upgrade planner
 -- ["IncludeAllEntities"]		Include all entities in the selection when starting a belt thread upgrade
@@ -38,7 +37,6 @@ local function buildBoolTable(playerSettings, force)
 
 	returnTable["ForceBuild"] = force or false
 	returnTable["IncludeSplitters"] = playerSettings["PCPBU-bool-splitters-included-setting"].value
-	returnTable["IncludeGhosts"] = playerSettings["PCPBU-bool-ghosts-included-setting"].value
 	returnTable["IncludeSideloadingBelts"] = playerSettings["PCPBU-bool-sideloading-belts-included-setting"].value
 	returnTable["IncludeAllEntities"] = playerSettings["PCPBU-bool-upgrade-all-selected-threads-setting"].value
 	returnTable["DoSequentialUpgrades"] = playerSettings["PCPBU-bool-sequential-upgrades-allowed-setting"].value
@@ -46,295 +44,37 @@ local function buildBoolTable(playerSettings, force)
 	return returnTable
 end
 
--- Recursively finds the set of transport belts and underground belts connected upstream of belt.
--- @param belt The belt from which to start the search.
--- 	    :@type LuaEntity
--- @param beltEntitiesToReturn The table of entities collected and returned at the end.
--- 	    :@type LuaEntity
--- @param relBeltTable The table consisting of the belt tier to add to the graph.
--- 	    :@type LuaTable
--- @param truthTable Table of boolean values as produced by buildBoolTable(), used for configuration of the function.
--- 	    :@type LuaTable
--- @return Table of each transportBeltConnectable in the network of belt, as bound by 
---      :@type {LuaEntity}
-findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTable)
-	-- Default value for forceDisregardTier is false
-	local forceDisregardTier = truthTable["ForceBuild"] or false
-	
-	local connectedBelts = {}
-	-- Add upstream belt neighbours to list to check
-	local inputs = belt.belt_neighbours["inputs"]
-	for _, val in pairs(inputs) do
-		if not (truthTable["IncludeSideloadingBelts"] or forceDisregardTier) and table_size(inputs) > 1 then
-			if (belt.direction == val.direction) then
-				connectedBelts[val.unit_number] = val
-			end
-		else
-			connectedBelts[val.unit_number] = val
-		end
-	end
-	
-	-- If underground-belt, add other end if it exists
-	if (belt.type == "underground-belt") then
-		local UGBeltEnd = belt.neighbours
-		if (UGBeltEnd ~= nil) then			
-			connectedBelts[UGBeltEnd.unit_number] = UGBeltEnd
-		end
-	end
-	
-	-- If we have no upstream neighbours of either belt or undergrounds, i.e., connectedBelts is empty, return.
-	if (table_size(connectedBelts) == 0) then
-		if (VERBOSE > 2) then
-			game.print({"", "Selected item has no neighbours."})
-		end
-		if (VERBOSE > 2) then
-			log({"", "Selected item has no neighbours."})
-			log({"", "Returning itself to final list."})
-			log({"", "These entities are:"})
-			log(serpent.block(beltEntitiesToReturn))
-		end
-		return beltEntitiesToReturn
-	end
-	
-	-- Iterate over connectedBelts
-	for cBUnitNumber, conBelt in pairs(connectedBelts) do
-		-- If conBelt is not in final list already
-		if (beltEntitiesToReturn[cBUnitNumber] == nil) then
-			conBeltName = conBelt.name
-			-- Case: we're force collecting everything in the network
-			if (forceDisregardTier) then
-				beltEntitiesToReturn[cBUnitNumber] = conBelt
-				beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-				
-				-- Splitters can have multiple outputs, so traverse that direction as well -- only one extraneous check
-				if (conBelt.type == "splitter") then
-					beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-				end
-
-			-- Case: Building network on one tier only, specified in relBeltTable
-			else
-				-- Case: conBelt is marked for upgrade
-				if (conBelt.to_be_upgraded() and truthTable["DoSequentialUpgrades"] == true) then
-					local targetName = conBelt.get_upgrade_target().name
-					if (conBelt.type == "splitter") then
-						if (truthTable["IncludeSplitters"] == true and relBeltTable["splitter"] == targetName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-						end
-				
-					-- Case: conBelt is underground-belt, if of the right tier, add, continue recursion
-					elseif (conBelt.type == "underground-belt") then
-						if (relBeltTable["underground-belt"] == targetName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					
-					-- Case: conBelt
-					elseif (conBelt.type == "transport-belt") then
-						if (relBeltTable["transport-belt"] == targetName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					-- Case: not transport belt, underground, or splitter... oops!
-					else
-						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
-					end
-				
-				-- Case: conBelt is not marked for upgrade
-				else
-					if (conBelt.type == "splitter") then
-						if (relBeltTable["splitter"] == conBeltName and truthTable["IncludeSplitters"] == true) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-						end
-				
-					-- Case: conBelt is underground-belt, if of the right tier, add, continue recursion
-					elseif (conBelt.type == "underground-belt") then
-						if (relBeltTable["underground-belt"] == conBeltName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					
-					-- Case: conBelt
-					elseif (conBelt.type == "transport-belt") then
-						if (relBeltTable["transport-belt"] == conBeltName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					-- Case: not transport belt, underground, or splitter... oops!
-					else
-						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
-					end
-				end
-			
-			-- Case: conBelt is not of same tier and not marked to upgrade, ignore.
-			end
-		
-		-- else, conBelt has been traversed before, ignore.
-		end
-	end
-	
-	return beltEntitiesToReturn
-end
-
--- Recursively finds the set of transport belts and underground belts connected upstream of belt.
--- @param belt The belt from which to start the search.
--- 	    :@type LuaEntity
--- @param beltEntitiesToReturn The table of entities collected and returned at the end.
--- 	    :@type LuaEntity
--- @param relBeltTable The table consisting of the belt tier to add to the graph.
--- 	    :@type LuaTable
--- @param truthTable Table of boolean values as produced by buildBoolTable(), used for configuration of the function.
--- 	    :@type LuaTable
--- @return Table of each transportBeltConnectable in the network of belt, as bound by 
---      :@type {LuaEntity}
-findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTable)
-	-- Default value for forceDisregardTier is false
-	local forceDisregardTier = truthTable["ForceBuild"] or false
-	
-	local connectedBelts = {}
-	-- Add downstream belt neighbours to list to check
-	for _, val in pairs(belt.belt_neighbours["outputs"]) do
-		connectedBelts[val.unit_number] = val
-	end
-	
-	-- If underground-belt, add other end if it exists
-	if (belt.type == "underground-belt") then
-		local UGBeltEnd = belt.neighbours
-		if (UGBeltEnd ~= nil) then			
-			connectedBelts[UGBeltEnd.unit_number] = UGBeltEnd
-		end
-	end
-	
-	-- If we have no downstream neighbours of either belt or undergrounds, i.e., connectedBelts is empty, return.
-	if (table_size(connectedBelts) == 0) then
-		if (VERBOSE > 2) then
-			game.print({"", "Selected item has no neighbours."})
-		end
-		if (VERBOSE > 2) then
-			log({"", "Selected item has no neighbours."})
-			log({"", "Returning itself to final list."})
-			log({"", "These entities are:"})
-			log(serpent.block(beltEntitiesToReturn))
-		end
-		return beltEntitiesToReturn
-	end
-	
-	-- Iterate over connectedBelts
-	for cBUnitNumber, conBelt in pairs(connectedBelts) do
-		-- If conBelt is not in final list already
-		if (beltEntitiesToReturn[cBUnitNumber] == nil) then
-			conBeltName = conBelt.name
-			-- Case: we're force collecting everything in the network
-			if (forceDisregardTier) then
-				beltEntitiesToReturn[cBUnitNumber] = conBelt
-				beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-				
-				-- Splitters can have multiple inputs, so traverse that direction as well -- only one extraneous check
-				if (conBelt.type == "splitter") then
-					beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-				end
-
-			-- Case: Building network on one tier only, specified in relBeltTable
-			-- 		 By default, this implies we only go to the next splitter.
-			else
-				-- Case: conBelt is marked for upgrade
-				if (conBelt.to_be_upgraded() and truthTable["DoSequentialUpgrades"] == true) then
-					local targetName = conBelt.get_upgrade_target().name
-					
-					-- Case: conBelt is splitter, if upgrade target of right tier and settings allow, add
-					if (conBelt.type == "splitter") then
-						if (truthTable["IncludeSplitters"] == true and relBeltTable["splitter"] == targetName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-						end
-				
-					-- Case: conBelt is underground-belt, if upgrade target of the right tier, add, continue recursion
-					elseif (conBelt.type == "underground-belt") then
-						if (relBeltTable["underground-belt"] == targetName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					
-					-- Case: conBelt is transport-belt, if upgrade target of the right tier, add, continue recursion
-					elseif (conBelt.type == "transport-belt") then
-						if (relBeltTable["transport-belt"] == targetName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					-- Case: not transport belt, underground, or splitter... oops!
-					else
-						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
-					end
-				
-				-- Case: conBelt is not marked for upgrade
-				else
-					-- Case: conBelt is splitter, if of right tier and settings allow, add
-					if (conBelt.type == "splitter") then
-						if (VERBOSE > 2) then
-							log({"", "Comparing ", relBeltTable["splitter"] , " and ", conBeltName})
-						end
-						if (relBeltTable["splitter"] == conBeltName and truthTable["IncludeSplitters"] == true) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-						end
-				
-					-- Case: conBelt is underground-belt, if of the right tier, add, continue recursion
-					elseif (conBelt.type == "underground-belt") then
-						if (VERBOSE > 2) then
-							log({"", "Comparing ", relBeltTable["underground-belt"], " and ", conBeltName})
-						end
-						if (relBeltTable["underground-belt"] == conBeltName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					
-					-- Case: conBelt is transport-belt, if of the right tier, add, continue recursion
-					elseif (conBelt.type == "transport-belt") then
-						if (VERBOSE > 2) then
-							log({"", "Comparing ", relBeltTable["transport-belt"] , " and ", conBeltName})
-						end
-						if (relBeltTable["transport-belt"] == conBeltName) then
-							beltEntitiesToReturn[cBUnitNumber] = conBelt
-							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
-						end
-					-- Case: not transport belt, underground, or splitter... oops!
-					else
-						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
-					end
-				end
-			
-			-- Case: conBelt is not of same tier and not marked to upgrade, ignore.
-			end
-		
-		-- else, conBelt has been traversed before, ignore.
-		end
-	end
-	
-	return beltEntitiesToReturn
-end
-
 -- Builds a table consisting of the relevant belt tier.
 local function buildBeltTierTable(beltEntity)
 	if beltEntity.to_be_upgraded() then
 		beltEntity = beltEntity.get_upgrade_target()
 	end
+	local beltName = beltEntity.name
+	local beltType = beltEntity.type
+	if (beltGraph.isGhost(beltEntity)) then
+		beltName = beltEntity.ghost_name
+		beltType = beltEntity.ghost_type
+	end
 	for _, value in pairs(BigTableOfBelts) do
-		if (beltEntity.type == "splitter") then
-			if (value["splitter"] == beltEntity.name) then
-				if (VERBOSE == 1) then
+		if (beltType == "splitter") then
+			if (value["splitter"] == beltName) then
+				if (VERBOSE > 1) then
 					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
 					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
 				end
 				return value
 			end
-		elseif (beltEntity.type == "transport-belt") then
-			if (value["transport-belt"] == beltEntity.name) then
-				if (VERBOSE == 1) then
+		elseif (beltType == "transport-belt") then
+			if (value["transport-belt"] == beltName) then
+				if (VERBOSE > 1) then
 					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
 					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
 				end
 				return value
 			end
-		elseif (beltEntity.type == "underground-belt") then
-			if (value["underground-belt"] == beltEntity.name) then
-				if (VERBOSE == 1) then
+		elseif (beltType == "underground-belt") then
+			if (value["underground-belt"] == beltName) then
+				if (VERBOSE > 1) then
 					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
 					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
 				end
@@ -344,8 +84,8 @@ local function buildBeltTierTable(beltEntity)
 			game.print("Something has gone wrong with building the beltTierTable, please inform the mod author.")
 		end
 	end
-	game.print({"", "Belts of type \"", beltEntity.name, "\" are not yet supported for tier-based upgrades. Please contact the Belt Thread Upgrades mod author."})
-	log({"", "Belt of type ", beltEntity.name, " not supported."})
+	game.print({"", "Belts of type \"", beltName, "\" are not yet supported for tier-based upgrades. Please contact the Belt Thread Upgrades mod author."})
+	log({"", "Belt of type ", beltName, " not supported."})
 	return nil
 end
 
@@ -360,6 +100,10 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 	-- Initialise return table if it doesn't exist
 	beltEntitiesToReturn = beltEntitiesToReturn or {}
 
+	if (VERBOSE > 1) then
+		game.print({"", "Starting search for connected belts at ", serpent.block(belt)})
+		log({"", "Starting search for connected belts at ", serpent.block(belt)})
+	end
 	-- Determine the tier of the belt to search on.
 	local relBeltTier = buildBeltTierTable(belt)
 	if relBeltTier == nil then
@@ -371,31 +115,21 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 			log({"", key, ": ", val})
 		end
 	end
-	
-	if (VERBOSE > 1) then
-		game.print({"", "Starting search for at ", serpent.block(belt)})
-		log({"", "Starting search for at ", serpent.block(belt)})
-	end
-	
+
 	beltEntitiesToReturn[belt.unit_number] = belt
 	
-	if (VERBOSE > 1) then
-		local up = 0
-		local down = 0
-	end
-	
 	-- Build upstream network
-	beltEntitiesToReturn = findUpstreamNetwork(belt, beltEntitiesToReturn, relBeltTier, truthTable)
+	beltEntitiesToReturn = beltGraph.findUpstreamNetwork(belt, beltEntitiesToReturn, relBeltTier, truthTable)
 	if (VERBOSE > 2) then
-		up = table_size(beltEntitiesToReturn) - 1
+		local up = table_size(beltEntitiesToReturn) - 1
 		game.print({"", "Found ", up, " upstream belt connections."})
 		log({"", "Found ", up, " upstream belt connections."})
 	end
 	
 	-- Build downstream network
-	beltEntitiesToReturn = findDownstreamNetwork(belt, beltEntitiesToReturn, relBeltTier, truthTable)
+	beltEntitiesToReturn = beltGraph.findDownstreamNetwork(belt, beltEntitiesToReturn, relBeltTier, truthTable)
 	if (VERBOSE > 2) then
-		down = table_size(beltEntitiesToReturn) - up
+		local down = table_size(beltEntitiesToReturn) - up
 		game.print({"", "Found ", down, " downstream belt connections."})
 		log({"", "Found ", down, " downstream belt connections."})
 	end
@@ -403,27 +137,48 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 end
 
 local function findDownGradeTarget(entityPrototype)
-	local options = prototypes.get_entity_filtered{{filter="type", type = entityPrototype.type}}
+	local eType = entityPrototype.type
+	local eName = entityPrototype.name
+	if (beltGraph.isGhost(entityPrototype)) then
+		eType = entityPrototype.ghost_type
+		eName = entityPrototype.ghost_name
+	end
+	local options = prototypes.get_entity_filtered{{filter="type", type = eType}}
 	for _, val in pairs(options) do
 		if (VERBOSE > 2) then
-			log({"", "Checking ", val, " of type ", entityPrototype.type, " for downgrade targets."})
+			log({"", "Checking ", val, " of type ", eType, " for downgrade targets."})
 		end
-		if (val.next_upgrade~= nil and val.next_upgrade.name == entityPrototype.name) then
+		if (val.next_upgrade~= nil and val.next_upgrade.name == eName) then
 			return val
 		end
 	end
 	return nil
 end
 
-local function UpgradeSameTierConnectedBelts(event)
-    local thisPlayer = game.players[event.player_index]
-	local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
+local function UpgradeBeltNetwork(event, truthTable)
+	local thisPlayer = game.players[event.player_index]
 	local transportBeltEntitiesToUpgrade = {}
 	if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
         if (truthTable["IncludeAllEntities"] and table_size(event.entities) > 1) then
+			if (VERBOSE > 0) then
+				game.print({"", "Selection has the following entities:", serpent.block(event.entities)})
+				log({"", "Selection has the following entities:", serpent.block(event.entities)})
+			end
 			for _, entity in pairs(event.entities) do
-				if (entity.prototype.next_upgrade ~= nil) then
+				local beltPrototype = entity.prototype
+				if (beltGraph.isGhost(entity)) then
+					beltPrototype = entity.ghost_prototype
+				end
+				if (beltPrototype.next_upgrade ~= nil or truthTable["ForceBuild"]) then
 					transportBeltEntitiesToUpgrade = findAllConnectedBelts(entity, transportBeltEntitiesToUpgrade, truthTable)
+				end
+			end
+			if (VERBOSE > 1) then
+				game.print({"", table_size(transportBeltEntitiesToUpgrade), " entities to upgrade."})
+				log({"", table_size(transportBeltEntitiesToUpgrade), " entities to upgrade."})
+				log({"", "These entities are:"})
+				for key, val in pairs(transportBeltEntitiesToUpgrade) do
+					log({"", serpent.block(key), ": ", serpent.block(val)})
 				end
 			end
 		else
@@ -436,32 +191,31 @@ local function UpgradeSameTierConnectedBelts(event)
 					log({"", key, " : ", value})
 				end
 			end
-			if (initialBelt.type ~= "transport-belt" and initialBelt.type ~= "underground-belt" and initialBelt.type ~= "splitter") then
-				if (VERBOSE > 2) then
-					game.print({"", "Selected item has prototype ", initialBelt.name})
-					game.print({"", "Selected item is not relevant for this upgrade mode."})
-					log({"", "Selected item has prototype ", initialBelt.name})
-					log({"", "Selected item is not relevant for this upgrade mode."})
-				end
-				return
+			local beltName = initialBelt.name
+			local beltType = initialBelt.type
+			local beltPrototype = initialBelt.prototype
+			if (beltGraph.isGhost(initialBelt)) then
+				beltName = initialBelt.ghost_name
+				beltType = initialBelt.ghost_type
+				beltPrototype = initialBelt.ghost_prototype
 			end
 
-			if (initialBelt.prototype.next_upgrade == nil) then
+			if (beltPrototype.next_upgrade == nil) then
 				if (VERBOSE > 2) then
-					game.print({"", "Selected item has prototype ", initialBelt.name})
+					game.print({"", "Selected item has prototype ", beltName})
 					game.print({"", "Selected item has no specified next upgrade."})
-					log({"", "Selected item has prototype ", initialBelt.name})
+					log({"", "Selected item has prototype ", beltName})
 					log({"", "Selected item has no specified next upgrade."})
 				end
 				return
 			end
 			if (VERBOSE > 2) then
-				game.print({"", "Selected item has prototype name ", initialBelt.name})
-				game.print({"", "Selected item has type name ", initialBelt.type})
-				game.print({"", "Selected item has next upgrade ", initialBelt.prototype.next_upgrade.name})
-				log({"", "Selected item has prototype ", initialBelt.name})
-				log({"", "Selected item has type name ", initialBelt.type})
-				log({"", "Selected item has next upgrade ", initialBelt.prototype.next_upgrade.name})
+				game.print({"", "Selected item has prototype name ", beltName})
+				game.print({"", "Selected item has type name ", beltType})
+				game.print({"", "Selected item has next upgrade ", beltPrototype.next_upgrade.name})
+				log({"", "Selected item has prototype ", beltName})
+				log({"", "Selected item has type name ", beltType})
+				log({"", "Selected item has next upgrade ", beltPrototype.next_upgrade.name})
 			end
 
 			transportBeltEntitiesToUpgrade = findAllConnectedBelts(initialBelt, {}, truthTable)
@@ -470,23 +224,28 @@ local function UpgradeSameTierConnectedBelts(event)
 				game.print({"", table_size(transportBeltEntitiesToUpgrade), " entities to upgrade."})
 				log({"", table_size(transportBeltEntitiesToUpgrade), " entities to upgrade."})
 				log({"", "These entities are:"})
-				for key, val in pairs(transportBeltEntitiesToUpgrade) do
+				for _, val in pairs(transportBeltEntitiesToUpgrade) do
 					log(serpent.block(val))
 				end
 			end
-			if (table_size(transportBeltEntitiesToUpgrade) > 2000) then
+			if (table_size(transportBeltEntitiesToUpgrade) > 2000 and not truthTable["ForceBuild"]) then
 				game.print("Gammro says: \"Have you considered using trains?\"")
 			end
 		end
 
-		for beltKey, belt in pairs(transportBeltEntitiesToUpgrade) do
+		for _, belt in pairs(transportBeltEntitiesToUpgrade) do
 			if (VERBOSE > 2) then
 				log({"", "Upgrading the following entity:"})
 				log(serpent.block(belt))
 			end
-			local nextUpgrade = belt.prototype.next_upgrade
-			if (belt.to_be_upgraded()) then
-				nextUpgrade = belt.get_upgrade_target().next_upgrade
+			local nextUpgrade
+			if (beltGraph.isGhost(belt)) then
+				nextUpgrade = belt.ghost_prototype.next_upgrade
+			else
+				nextUpgrade = belt.prototype.next_upgrade
+				if (belt.to_be_upgraded()) then
+					nextUpgrade = belt.get_upgrade_target().next_upgrade
+				end
 			end
 			if (nextUpgrade ~= nil) then
 				belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
@@ -495,56 +254,8 @@ local function UpgradeSameTierConnectedBelts(event)
 	end
 end
 
-local function UpgradeAllConnectedBelts(event)
-    local thisPlayer = game.players[event.player_index]
-	local truthTable = buildBoolTable(thisPlayer.mod_settings, true)
-	local transportBeltEntitiesToUpgrade = {}
-    if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
-        if (truthTable["IncludeAllEntities"] and table_size(event.entities) > 1) then
-			for _, entity in pairs(event.entities) do
-				if (entity.prototype.next_upgrade ~= nil) then
-					transportBeltEntitiesToUpgrade = findAllConnectedBelts(entity, transportBeltEntitiesToUpgrade, truthTable)
-				end
-			end
-		else
-			local initialBelt = event.entities[1]
-			if (VERBOSE > 2) then
-				game.print({"", "Selection has the following items:"})
-				log({"", "Selection has the following items:"})
-				for key, value in pairs(event.entities) do
-					game.print({"", key, " : ", value})
-					log({"", key, " : ", value})
-				end
-			end
-			local initType = initialBelt.type
-			
-			-- Must be of a belt type to build network
-			if (initType ~= "transport-belt" and initType ~= "underground-belt" and initType ~= "splitter") then
-				return
-			end
-					
-			transportBeltEntitiesToUpgrade = findAllConnectedBelts(initialBelt, {}, truthTable)
-		end
-
-		for beltKey, belt in pairs(transportBeltEntitiesToUpgrade) do
-			if (VERBOSE > 2) then
-				log({"", "Upgrading the following entity:"})
-				log(serpent.block(belt))
-			end
-			local nextUpgrade = belt.prototype.next_upgrade
-			if (belt.to_be_upgraded()) then
-				nextUpgrade = belt.get_upgrade_target().next_upgrade
-			end
-			if (nextUpgrade ~= nil) then
-				belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
-			end
-		end
-	end
-end
-
-local function DowngradeSameTierConnectedBelts(event)
-    local thisPlayer = game.players[event.player_index]
-	local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
+local function DowngradeBeltNetwork(event, truthTable)
+	local thisPlayer = game.players[event.player_index]
 	local transportBeltEntitiesToDowngrade = {}
     if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
         if (truthTable["IncludeAllEntities"] and table_size(event.entities) > 1) then
@@ -560,15 +271,6 @@ local function DowngradeSameTierConnectedBelts(event)
 					game.print({"", key, " : ", value})
 					log({"", key, " : ", value})
 				end
-			end
-			if (initialBelt.type ~= "transport-belt" and initialBelt.type ~= "underground-belt" and initialBelt.type ~= "splitter") then
-				if (VERBOSE > 2) then
-					game.print({"", "Selected item has prototype ", initialBelt.name})
-					game.print({"", "Selected item is not relevant for this upgrade mode."})
-					log({"", "Selected item has prototype ", initialBelt.name})
-					log({"", "Selected item is not relevant for this upgrade mode."})
-				end
-				return
 			end
 			
 			if (VERBOSE > 2) then
@@ -589,65 +291,11 @@ local function DowngradeSameTierConnectedBelts(event)
 					log(serpent.block(val))
 				end
 			end
-			if (table_size(transportBeltEntitiesToDowngrade) > 2000) then
+			if (table_size(transportBeltEntitiesToDowngrade) > 2000 and not truthTable["ForceBuild"]) then
 				game.print("Gammro says: \"Have you considered using trains?\"")
 			end
 		end
 		
-		local downgradeCache = {}
-		for _, belt in pairs(transportBeltEntitiesToDowngrade) do
-			if (VERBOSE > 2) then
-				log({"", "Downgrading the following entity:"})
-				log(serpent.block(belt))
-			end
-			local nextDowngrade
-			local beltName = belt.name
-			local beltFilter = belt
-			if (belt.to_be_upgraded()) then
-				beltName = belt.get_upgrade_target().name
-				beltFilter = belt.get_upgrade_target()
-			end
-			if (downgradeCache[beltName] == nil) then
-				nextDowngrade = findDownGradeTarget(beltFilter)
-			else
-				nextDowngrade = downgradeCache[beltName]
-			end
-			if (nextDowngrade ~= nil) then
-				belt.order_upgrade({target=nextDowngrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
-			end
-		end
-	end
-end
-
-local function DowngradeAllConnectedBelts(event)
-    local thisPlayer = game.players[event.player_index]
-	local truthTable = buildBoolTable(thisPlayer.mod_settings, true)
-	local transportBeltEntitiesToDowngrade = {}
-    if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
-		if (truthTable["IncludeAllEntities"] and table_size(event.entities) > 1) then
-			for _, entity in pairs(event.entities) do
-				transportBeltEntitiesToDowngrade = findAllConnectedBelts(entity, transportBeltEntitiesToDowngrade, truthTable)
-			end
-		else
-			local initialBelt = event.entities[1]
-			if (VERBOSE > 2) then
-				game.print({"", "Selection has the following items:"})
-				log({"", "Selection has the following items:"})
-				for key, value in pairs(event.entities) do
-					game.print({"", key, " : ", value})
-					log({"", key, " : ", value})
-				end
-			end
-			local initType = initialBelt.type
-
-			-- Must be of a belt type to build network
-			if (initType ~= "transport-belt" and initType ~= "underground-belt" and initType ~= "splitter") then
-				return
-			end
-
-			transportBeltEntitiesToDowngrade = findAllConnectedBelts(initialBelt, {}, truthTable)
-		end
-
 		local downgradeCache = {}
 		for _, belt in pairs(transportBeltEntitiesToDowngrade) do
 			if (VERBOSE > 2) then
@@ -675,24 +323,29 @@ end
 
 script.on_event({defines.events.on_player_selected_area}, function(event)
     if event.item == 'beltThreadUpgrader-selection-tool' then
-        UpgradeSameTierConnectedBelts(event)
+		local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
+        UpgradeBeltNetwork(event, truthTable)
     end
 end)
 
 script.on_event({defines.events.on_player_alt_selected_area}, function(event)
     if event.item == 'beltThreadUpgrader-selection-tool' then
-        UpgradeAllConnectedBelts(event)
+        local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), true)
+        UpgradeBeltNetwork(event, truthTable)
     end
 end)
 
 script.on_event({defines.events.on_player_reverse_selected_area}, function(event)
 	if event.item == 'beltThreadUpgrader-selection-tool' then
-		DowngradeSameTierConnectedBelts(event)
+        local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
+		DowngradeBeltNetwork(event, truthTable)
+		
 	end
 end)
 
 script.on_event({defines.events.on_player_alt_reverse_selected_area}, function(event)
 	if event.item == 'beltThreadUpgrader-selection-tool' then
-		DowngradeAllConnectedBelts(event)
+        local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), true)
+		DowngradeBeltNetwork(event, truthTable)
 	end
 end)
