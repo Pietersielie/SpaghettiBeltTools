@@ -2,7 +2,9 @@ local beltGraph = require("scripts/belt-graph")
 
 local VERBOSE = 0
 
+-- Table containing list of belt tiers, with each tier having its belt, underground belt, splitter. If applicable mods are loaded, a 1x1 loader and 1x2 loader are included as well.
 local BigTableOfBelts = {}
+
 -- Base game
 BigTableOfBelts["transport-belt"] = {["transport-belt"] = "transport-belt", ["underground-belt"] = "underground-belt", ["splitter"] = "splitter"} -- yellow
 BigTableOfBelts["fast-transport-belt"] = {["transport-belt"] = "fast-transport-belt", ["underground-belt"] = "fast-underground-belt", ["splitter"] = "fast-splitter"} -- red
@@ -27,13 +29,52 @@ BigTableOfBelts["extreme-express-transport-belt"] = {["transport-belt"] = "extre
 BigTableOfBelts["ultimate-transport-belt"] = {["transport-belt"] = "ultimate-belt", ["underground-belt"] = "original-ultimate-underground-belt", ["splitter"] = "original-ultimate-splitter"} -- dark cyan
 
 -- 5Dim - New Transport (https://mods.factorio.com/mod/5dim_transport)
-BigTableOfBelts["5d-transport-belt-mk4"] = {["transport-belt"] = "5d-transport-belt-04", ["underground-belt"] = "5d-underground-belt-04", ["splitter"] = "5d-splitter-04"} -- pink
-BigTableOfBelts["5d-transport-belt-mk5"] = {["transport-belt"] = "5d-transport-belt-05", ["underground-belt"] = "5d-underground-belt-05", ["splitter"] = "5d-splitter-05"} -- green
-BigTableOfBelts["5d-transport-belt-mk6"] = {["transport-belt"] = "5d-transport-belt-06", ["underground-belt"] = "5d-underground-belt-06", ["splitter"] = "5d-splitter-06"} -- brown
-BigTableOfBelts["5d-transport-belt-mk7"] = {["transport-belt"] = "5d-transport-belt-07", ["underground-belt"] = "5d-underground-belt-07", ["splitter"] = "5d-splitter-07"} -- purple
-BigTableOfBelts["5d-transport-belt-mk8"] = {["transport-belt"] = "5d-transport-belt-08", ["underground-belt"] = "5d-underground-belt-08", ["splitter"] = "5d-splitter-08"} -- white
-BigTableOfBelts["5d-transport-belt-mk9"] = {["transport-belt"] = "5d-transport-belt-09", ["underground-belt"] = "5d-underground-belt-09", ["splitter"] = "5d-splitter-09"} -- orange
-BigTableOfBelts["5d-transport-belt-mk10"] = {["transport-belt"] = "5d-transport-belt-10", ["underground-belt"] = "5d-underground-belt-10", ["splitter"] = "5d-splitter-10"} -- dark blue
+BigTableOfBelts["5d-transport-belt-mk4"] = {["transport-belt"] = "5d-transport-belt-04", ["underground-belt"] = "5d-underground-belt-04", ["splitter"] = "5d-splitter-04", ["loader1x1"] = "5d-loader-1x1-04", ["loader1x2"] = "5d-loader-04"} -- pink
+BigTableOfBelts["5d-transport-belt-mk5"] = {["transport-belt"] = "5d-transport-belt-05", ["underground-belt"] = "5d-underground-belt-05", ["splitter"] = "5d-splitter-05", ["loader1x1"] = "5d-loader-1x1-05", ["loader1x2"] = "5d-loader-05"} -- green
+BigTableOfBelts["5d-transport-belt-mk6"] = {["transport-belt"] = "5d-transport-belt-06", ["underground-belt"] = "5d-underground-belt-06", ["splitter"] = "5d-splitter-06", ["loader1x1"] = "5d-loader-1x1-06", ["loader1x2"] = "5d-loader-06"} -- brown
+BigTableOfBelts["5d-transport-belt-mk7"] = {["transport-belt"] = "5d-transport-belt-07", ["underground-belt"] = "5d-underground-belt-07", ["splitter"] = "5d-splitter-07", ["loader1x1"] = "5d-loader-1x1-07", ["loader1x2"] = "5d-loader-07"} -- purple
+BigTableOfBelts["5d-transport-belt-mk8"] = {["transport-belt"] = "5d-transport-belt-08", ["underground-belt"] = "5d-underground-belt-08", ["splitter"] = "5d-splitter-08", ["loader1x1"] = "5d-loader-1x1-08", ["loader1x2"] = "5d-loader-08"} -- white
+BigTableOfBelts["5d-transport-belt-mk9"] = {["transport-belt"] = "5d-transport-belt-09", ["underground-belt"] = "5d-underground-belt-09", ["splitter"] = "5d-splitter-09", ["loader1x1"] = "5d-loader-1x1-09", ["loader1x2"] = "5d-loader-09"} -- orange
+BigTableOfBelts["5d-transport-belt-mk10"] = {["transport-belt"] = "5d-transport-belt-10", ["underground-belt"] = "5d-underground-belt-10", ["splitter"] = "5d-splitter-10", ["loader1x1"] = "5d-loader-1x1-10", ["loader1x2"] = "5d-loader-10"} -- dark blue
+
+-- Krastorio2 (https://mods.factorio.com/mod/Krastorio2)
+BigTableOfBelts["advanced-transport-belt"] = {["transport-belt"] = "kr-advanced-transport-belt", ["underground-belt"] = "kr-advanced-underground-belt", ["splitter"] = "kr-advanced-splitter", ["loader1x1"] = "kr-advanced-loader"} -- green
+BigTableOfBelts["superior-transport-belt"] = {["transport-belt"] = "kr-superior-transport-belt", ["underground-belt"] = "kr-superior-underground-belt", ["splitter"] = "kr-superior-splitter", ["loader1x1"] = "kr-superior-loader"} -- purple
+
+if (script.active_mods['aai-loaders']) then
+	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
+	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "aai-fast-loader"
+	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "aai-express-loader"
+	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
+end
+
+if (script.active_mods['Krastorio2'] or script.active_mods['Krastorio2-spaced-out']) then
+	BigTableOfBelts["transport-belt"]["loader1x1"] = "kr-loader"
+	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "kr-fast-loader"
+	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "kr-express-loader"
+end
+
+if (script.active_mods['5dim_transport']) then
+	BigTableOfBelts["transport-belt"]["loader1x1"] = "5d-loader-1x1-01"
+	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "5d-loader-1x1-02"
+	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "5d-loader-1x1-03"
+	BigTableOfBelts["transport-belt"]["loader1x2"] = "loader"
+	BigTableOfBelts["fast-transport-belt"]["loader1x2"] = "fast-loader"
+	BigTableOfBelts["express-transport-belt"]["loader1x2"] = "express-loader"
+end
+
+if (script.active_mods['loaders-modernized']) then
+	BigTableOfBelts["transport-belt"]["loader1x1"] = "mdrn-loader"
+	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "fast-mdrn-loader"
+	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "express-mdrn-loader"
+	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "turbo-mdrn-loader"
+
+	BigTableOfBelts["ultra-fast-transport-belt"]["loader1x1"] = "ultra-fast-mdrn-loader"
+	BigTableOfBelts["extreme-fast-transport-belt"]["loader1x1"] = "extreme-fast-mdrn-loader"
+	BigTableOfBelts["ultra-express-transport-belt"]["loader1x1"] = "ultra-express-mdrn-loader"
+	BigTableOfBelts["extreme-express-transport-belt"]["loader1x1"] = "extreme-express-mdrn-loader"
+	BigTableOfBelts["ultimate-transport-belt"]["loader1x1"] = "original-ultimate-mdrn-loader"
+end
 
 -- Returns a table with truth values
 -- ["ForceBuild"] 				Force build 
@@ -59,38 +100,18 @@ local function buildBeltTierTable(beltEntity)
 		beltEntity = beltEntity.get_upgrade_target()
 	end
 	local beltName = beltEntity.name
-	local beltType = beltEntity.type
 	if (beltGraph.isGhost(beltEntity)) then
 		beltName = beltEntity.ghost_name
-		beltType = beltEntity.ghost_type
 	end
 	for _, value in pairs(BigTableOfBelts) do
-		if (beltType == "splitter") then
-			if (value["splitter"] == beltName) then
+		for _, val in pairs(value) do
+			if (val == beltName) then
 				if (VERBOSE > 1) then
-					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
-					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
+					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], ", ", value["loader1x1"],", ", value["loader1x2"], "]"})
+					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], ", ", value["loader1x1"],", ", value["loader1x2"], "]"})
 				end
 				return value
 			end
-		elseif (beltType == "transport-belt") then
-			if (value["transport-belt"] == beltName) then
-				if (VERBOSE > 1) then
-					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
-					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
-				end
-				return value
-			end
-		elseif (beltType == "underground-belt") then
-			if (value["underground-belt"] == beltName) then
-				if (VERBOSE > 1) then
-					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
-					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], "]"})
-				end
-				return value
-			end
-		else
-			game.print("Something has gone wrong with building the beltTierTable, please inform the mod author.")
 		end
 	end
 	game.print({"", "Belts of type \"", beltName, "\" are not yet supported for tier-based upgrades. Please contact the Belt Thread Upgrades mod author."})
@@ -129,8 +150,9 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 	
 	-- Build upstream network
 	beltEntitiesToReturn = beltGraph.findUpstreamNetwork(belt, beltEntitiesToReturn, relBeltTier, truthTable)
+	local up = 0
 	if (VERBOSE > 2) then
-		local up = table_size(beltEntitiesToReturn) - 1
+		up = table_size(beltEntitiesToReturn) - 1
 		game.print({"", "Found ", up, " upstream belt connections."})
 		log({"", "Found ", up, " upstream belt connections."})
 	end
@@ -145,6 +167,11 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 	return beltEntitiesToReturn;
 end
 
+-- Find the downgrade target for an entity, if one exists.
+-- @param entityPrototype The entity in question
+--		:type LuaEntity
+-- @return Nil or the prototype that upgrades to entityPrototype
+--		:type LuaEntityPrototype
 local function findDownGradeTarget(entityPrototype)
 	local eType = entityPrototype.type
 	local eName = entityPrototype.name
@@ -164,6 +191,11 @@ local function findDownGradeTarget(entityPrototype)
 	return nil
 end
 
+-- Builds a belt network and upgrades the entities in the network
+-- @param event The game event that raised this function, used for player values.
+--		:type defines.events
+-- @param truthTable A table containing various boolean settings, used to control building the belt network
+--		:type LuaTable
 local function UpgradeBeltNetwork(event, truthTable)
 	local thisPlayer = game.players[event.player_index]
 	local transportBeltEntitiesToUpgrade = {}
@@ -263,6 +295,11 @@ local function UpgradeBeltNetwork(event, truthTable)
 	end
 end
 
+-- Builds a belt network and downgrades the entities in the network
+-- @param event The game event that raised this function, used for player values.
+--		:type defines.events
+-- @param truthTable A table containing various boolean settings, used to control building the belt network
+--		:type LuaTable
 local function DowngradeBeltNetwork(event, truthTable)
 	local thisPlayer = game.players[event.player_index]
 	local transportBeltEntitiesToDowngrade = {}
@@ -285,10 +322,14 @@ local function DowngradeBeltNetwork(event, truthTable)
 			if (VERBOSE > 2) then
 				game.print({"", "Selected item has prototype name ", initialBelt.name})
 				game.print({"", "Selected item has type name ", initialBelt.type})
-				game.print({"", "Selected item has next upgrade ", initialBelt.prototype.next_upgrade.name})
+				if (initialBelt.prototype.next_upgrade ~= nil) then
+					game.print({"", "Selected item has next upgrade ", initialBelt.prototype.next_upgrade.name})
+				end
 				log({"", "Selected item has prototype ", initialBelt.name})
 				log({"", "Selected item has type name ", initialBelt.type})
-				log({"", "Selected item has next upgrade ", initialBelt.prototype.next_upgrade.name})
+				if (initialBelt.prototype.next_upgrade ~= nil) then
+					log({"", "Selected item has next upgrade ", initialBelt.prototype.next_upgrade.name})
+				end
 			end
 			
 			transportBeltEntitiesToDowngrade = findAllConnectedBelts(initialBelt, {}, truthTable)
