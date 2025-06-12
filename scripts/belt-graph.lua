@@ -21,6 +21,10 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 	-- Default value for forceDisregardTier is false
 	local forceDisregardTier = truthTable["ForceBuild"] or false
 
+	local beltType = belt.type
+    if (isGhost(belt)) then
+        beltType = belt.ghost_type
+    end
 	local connectedBelts = {}
 	-- Add upstream belt neighbours to list to check
 	local inputs = belt.belt_neighbours["inputs"]
@@ -33,10 +37,13 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 			connectedBelts[val.unit_number] = val
 		end
 	end
-    local beltType = belt.type
-    if (isGhost(belt)) then
-        beltType = belt.ghost_type
-    end
+    if (forceDisregardTier) then
+		local outputs = belt.belt_neighbours["outputs"]
+		for _, val in pairs(outputs) do
+			connectedBelts[val.unit_number] = val
+		end
+	end
+
 	-- If underground-belt, add other end if it exists
 	if (beltType == "underground-belt") then
 		local UGBeltEnd = belt.neighbours
@@ -96,12 +103,19 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 
-					-- Case: conBelt
+					-- Case: conBelt is transport-belt, if of the right tier, add, continue recursion
 					elseif (conBeltType == "transport-belt") then
 						if (relBeltTable["transport-belt"] == targetName) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
+
+					-- Case: conBelt is a loader, if of the right tier, add
+					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
+						if (relBeltTable["loader1x1"] == targetName or relBeltTable["loader1x2"] == targetName) then
+							beltEntitiesToReturn[cBUnitNumber] = conBelt
+						end
+
 					-- Case: not transport belt, underground, or splitter... oops!
 					else
 						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
@@ -127,7 +141,12 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
-					-- Case: not transport belt, underground, or splitter... oops!
+					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
+						if (relBeltTable["loader1x1"] == conBeltName or relBeltTable["loader1x2"] == conBeltName) then
+							beltEntitiesToReturn[cBUnitNumber] = conBelt
+						end
+
+					-- Case: not transport belt, underground, splitter, or one of the loaders... oops!
 					else
 						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
 					end
@@ -158,15 +177,23 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 	-- Default value for forceDisregardTier is false
 	local forceDisregardTier = truthTable["ForceBuild"] or false
 
+	local beltType = belt.type
+	if (isGhost(belt)) then
+		beltType = belt.ghost_type
+	end
+
 	local connectedBelts = {}
 	-- Add downstream belt neighbours to list to check
 	for _, val in pairs(belt.belt_neighbours["outputs"]) do
 		connectedBelts[val.unit_number] = val
     end
-    local beltType = belt.type
-    if (isGhost(belt)) then
-        beltType = belt.ghost_type
-    end
+	
+    if (forceDisregardTier) then
+		local inputs = belt.belt_neighbours["inputs"]
+		for _, val in pairs(inputs) do
+			connectedBelts[val.unit_number] = val
+		end
+	end
     -- If underground-belt, add other end if it exists
     if (beltType == "underground-belt") then
         local UGBeltEnd = belt.neighbours
@@ -250,6 +277,13 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
+
+					-- Case: conBelt is a loader, if of the right tier, add
+					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
+						if (relBeltTable["loader1x1"] == targetName or relBeltTable["loader1x2"] == targetName) then
+							beltEntitiesToReturn[cBUnitNumber] = conBelt
+						end
+
 					-- Case: not transport belt, underground, or splitter... oops!
 					else
 						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
@@ -284,6 +318,10 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 						if (relBeltTable["transport-belt"] == conBeltName) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
+						end
+					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
+						if (relBeltTable["loader1x1"] == conBeltName or relBeltTable["loader1x2"] == conBeltName) then
+							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 					-- Case: not transport belt, underground, or splitter... oops!
 					else

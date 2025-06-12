@@ -1,4 +1,17 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.0
+Date: 12.06.2025
+  Major Features:
+    - Loaders are now supported, though prone to mod compatibility issues. (https://github.com/Pietersielie/BeltUpgrader/issues/19)
+  Bugfixes:
+    - Fix issue with splitters not propagating in both directions when force-upgrading a belt thread.
+  Mod Compatibility:
+    - Add support for Krastorio 2's 2 new belt tiers.
+    - Add support for Krastorio 2's loaders.
+    - Add support for AAI Loaders' loaders.
+    - Add support for 5Dim - New Transport's loaders, both 1x1 and 1x2.
+    - Add support for Loaders Modernized's loaders, including Ultimate Belts' compatibility.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.0
 Date: 05.06.2025
   Major Features:
