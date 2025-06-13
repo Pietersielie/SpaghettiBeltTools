@@ -41,6 +41,9 @@ BigTableOfBelts["5d-transport-belt-mk10"] = {["transport-belt"] = "5d-transport-
 BigTableOfBelts["advanced-transport-belt"] = {["transport-belt"] = "kr-advanced-transport-belt", ["underground-belt"] = "kr-advanced-underground-belt", ["splitter"] = "kr-advanced-splitter", ["loader1x1"] = "kr-advanced-loader"} -- green
 BigTableOfBelts["superior-transport-belt"] = {["transport-belt"] = "kr-superior-transport-belt", ["underground-belt"] = "kr-superior-underground-belt", ["splitter"] = "kr-superior-splitter", ["loader1x1"] = "kr-superior-loader"} -- purple
 
+-- Quantum Belts (https://mods.factorio.com/mod/quantum-belts)
+BigTableOfBelts["quantum-transport-belt"] = {["transport-belt"] = "quantum-belt", ["underground-belt"] = "quantum-underground", ["splitter"] = "quantum-splitter"} -- magenta
+
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "aai-fast-loader"

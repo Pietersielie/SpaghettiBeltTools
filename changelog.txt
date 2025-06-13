@@ -1,6 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.1
+Date: 2025-06-13
+  Mod Compatibility:
+    - Add support for Quantum Belts. (https://github.com/Pietersielie/BeltUpgrader/issues/32)
+---------------------------------------------------------------------------------------------------
 Version: 1.2.0
-Date: 12.06.2025
+Date: 2025-06-12
   Major Features:
     - Loaders are now supported, though prone to mod compatibility issues. (https://github.com/Pietersielie/BeltUpgrader/issues/19)
   Bugfixes:
@@ -13,81 +18,81 @@ Date: 12.06.2025
     - Add support for Loaders Modernized's loaders, including Ultimate Belts' compatibility.
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.0
-Date: 05.06.2025
+Date: 2025-06-05
   Major Features:
     - Ghosts are now supported. (https://github.com/Pietersielie/BeltUpgrader/issues/9)
   Optimizations:
     - Major refactor to reduce script size and remove redundant code.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.6
-Date: 05.06.2025
+Date: 2025-06-05
   Mod Compatibility:
     - Add support for 5Dim - New Transports' 7 new belt tiers, but not the long undergrounds. (https://github.com/Pietersielie/BeltUpgrader/issues/28)
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.5
-Date: 03.06.2025
+Date: 2025-06-03
   Minor Features:
     - Add option to include all belt networks in a selection to upgrade or downgrade. (https://github.com/Pietersielie/BeltUpgrader/issues/23)
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.4
-Date: 02.06.2025
+Date: 2025-06-02
   Control:
     - Add safety code to prevent crashes when a belt tier is not supported. (https://github.com/Pietersielie/BeltUpgrader/issues/25)
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.3
-Date: 02.06.2025
+Date: 2025-06-02
   Bugfixes:
     - Fix issue with force downgrading not stepping one tier down. (https://github.com/Pietersielie/BeltUpgrader/issues/22)
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.2
-Date: 02.06.2025
+Date: 2025-06-02
   Mod Compatibility:
     - Added support for Ultimate Belts' five belt tiers. (https://github.com/Pietersielie/BeltUpgrader/issues/17)
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
-Date: 01.06.2025
+Date: 2025-06-01
   Mod Compatibility:
     - Added support for Lignumis's wooden belts. (https://github.com/Pietersielie/BeltUpgrader/issues/15)
     - Added support for Advanced Belts' three belt tiers (advanced, elite, hyper). (https://github.com/Pietersielie/BeltUpgrader/issues/15)
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
-Date: 31.05.2025
+Date: 2025-05-31
   Changes:
     - Add readme file to repo.
     - Upload to mod portal, first public release.
 ---------------------------------------------------------------------------------------------------
 Version: 0.4.4
-Date: 26.05.2025
+Date: 2025-05-26
   Bugfixes:
     - Fix error in determining belt tier when initial belt is scheduled for upgrade.
     - Fix error in determining downgrade target if belt is scheduled for upgrade.
 ---------------------------------------------------------------------------------------------------
 Version: 0.4.3
-Date: 23.05.2025
+Date: 2025-05-23
   Features:
     - Add option to include sideloading belts when upgrading upstream on a tier.
 ---------------------------------------------------------------------------------------------------
 Version: 0.4.2
-Date: 22.05.2025
+Date: 2025-05-22
   Bugfixes:
     - Fix issue with description not showing when hovering over shortcut.
 ---------------------------------------------------------------------------------------------------
 Version: 0.4.1
-Date: 21.05.2025
+Date: 2025-05-21
   Graphics:
     - Add icons and thumbnail, thanks to my brother for making said sprites.
   Bugfixes:
     - Fix issues related to localisation for the shortcut and new tool.
 ---------------------------------------------------------------------------------------------------
 Version: 0.4.0
-Date: 15.05.2025
+Date: 2025-05-15
   Features:
     - Move functionality to custom tool, available from Ctrl + Shift + U and the shortcut bar.
     - Select upgrades connected segment of same tier, reverse select downgrades connected segment of same tier.
     - Alt select upgrades all connected belts, while alt reverse select downgrades all connected belts.
 ---------------------------------------------------------------------------------------------------
 Version: 0.3.0
-Date: 07.05.2025
+Date: 2025-05-07
   Features:
     - Add downgrade and force downgrade options, behaving the same as upgrades.
     - Default controls are Ctrl + Shift + K for downgrading connected belts of the same tier, and Ctrl + Shift + Alt + K to force.
@@ -95,7 +100,7 @@ Date: 07.05.2025
     - Fix issue with building related belts when building belt tiers.
 ---------------------------------------------------------------------------------------------------
 Version: 0.2.0
-Date: 01.02.2025
+Date: 2025-02-01
   Features:
     - Splitters now included by default, still bound the segments that get upgraded.
     - User setting to set if splitters are included or not.
@@ -103,6 +108,6 @@ Date: 01.02.2025
     - Force upgrade all connected belts added as option (Ctrl + Shift + Alt + U).
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.0
-Date: 25.01.2025
+Date: 2025-01-25
   Features:
     - Allow for entire belt line to be upgraded with a single key, CTRL + SHIFT + U by default.
