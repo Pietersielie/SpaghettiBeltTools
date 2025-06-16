@@ -44,6 +44,10 @@ BigTableOfBelts["superior-transport-belt"] = {["transport-belt"] = "kr-superior-
 -- Quantum Belts (https://mods.factorio.com/mod/quantum-belts)
 BigTableOfBelts["quantum-transport-belt"] = {["transport-belt"] = "quantum-belt", ["underground-belt"] = "quantum-underground", ["splitter"] = "quantum-splitter"} -- magenta
 
+-- Factorio+ (https://mods.factorio.com/mod/factorioplus)
+BigTableOfBelts["basic-transport-belt"] = {["transport-belt"] = "basic-transport-belt", ["underground-belt"] = "basic-underground-belt", ["splitter"] = "basic-splitter", ["loader1x2"] = "basic-loader"} -- white/grey
+BigTableOfBelts["supersonic-transport-belt"] = {["transport-belt"] = "supersonic-transport-belt", ["underground-belt"] = "supersonic-underground-belt", ["splitter"] = "supersonic-splitter", ["loader1x2"] = "supersonic-loader"} -- pink
+
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "aai-fast-loader"
@@ -77,6 +81,13 @@ if (script.active_mods['loaders-modernized']) then
 	BigTableOfBelts["ultra-express-transport-belt"]["loader1x1"] = "ultra-express-mdrn-loader"
 	BigTableOfBelts["extreme-express-transport-belt"]["loader1x1"] = "extreme-express-mdrn-loader"
 	BigTableOfBelts["ultimate-transport-belt"]["loader1x1"] = "original-ultimate-mdrn-loader"
+end
+
+if (script.active_mods['factorioplus']) then
+	BigTableOfBelts["transport-belt"]["loader1x2"] = "loader"
+	BigTableOfBelts["fast-transport-belt"]["loader1x2"] = "fast-loader"
+	BigTableOfBelts["express-transport-belt"]["loader1x2"] = "express-loader"
+	BigTableOfBelts["turbo-transport-belt"]["loader1x2"] = "turbo-loader"
 end
 
 -- Returns a table with truth values

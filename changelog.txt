@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.2
+Date: 2025-06-16
+  Mod Compatibility:
+    - Add support for Factorio+. (https://github.com/Pietersielie/BeltUpgrader/issues/34)
+---------------------------------------------------------------------------------------------------
 Version: 1.2.1
 Date: 2025-06-13
   Mod Compatibility:
