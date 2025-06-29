@@ -1,9 +1,30 @@
 local VERBOSE = 0
 
-local findUpstreamNetwork, findDownstreamNetwork, isGhost
+local findUpstreamNetwork, findDownstreamNetwork, isGhost, isRelBelt
 
+-- Checks if an entity is a ghost, simple shorthand function.
+-- @param entity The entity to check.
+-- 		:@type LuaEntity
+-- @return A simple boolean value.
+--		:@type Boolean
 isGhost = function (entity)
 	return entity.name == "entity-ghost"
+end
+
+-- Checks if a prototype name is in the specified table. Intended for use with the related Belt tier table.
+-- @param prototypeName The name of the prototype to check if it is included.
+-- 		:@type String
+-- @param relBeltTable The table to go through to check for the prototype name.
+-- 		:@type LuaTable
+-- @return A simple boolean value.
+--		:@type Boolean
+isRelBelt = function (prototypeName, relBeltTable)
+	for _, value in pairs(relBeltTable) do
+		if (value == prototypeName) then
+			return true
+		end
+	end
+	return false
 end
 
 -- Recursively finds the set of transport belts and underground belts connected upstream of belt.
@@ -91,58 +112,59 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 				-- Case: conBelt is marked for upgrade
 				if (conBelt.to_be_upgraded() and truthTable["DoSequentialUpgrades"] == true) then
 					local targetName = conBelt.get_upgrade_target().name
-					if (conBeltType == "splitter") then
-						if (truthTable["IncludeSplitters"] == true and relBeltTable["splitter"] == targetName) then
+					if (conBeltType == "splitter"  or conBeltType == "lane-splitter") then
+						if (truthTable["IncludeSplitters"] == true and isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 
 					-- Case: conBelt is underground-belt, if of the right tier, add, continue recursion
 					elseif (conBeltType == "underground-belt") then
-						if (relBeltTable["underground-belt"] == targetName) then
+						if (isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 
 					-- Case: conBelt is transport-belt, if of the right tier, add, continue recursion
 					elseif (conBeltType == "transport-belt") then
-						if (relBeltTable["transport-belt"] == targetName) then
+						if (isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 
 					-- Case: conBelt is a loader, if of the right tier, add
 					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
-						if (relBeltTable["loader1x1"] == targetName or relBeltTable["loader1x2"] == targetName) then
+						if (isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 
 					-- Case: not transport belt, underground, or splitter... oops!
 					else
 						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
+						game.print("Troublesome entity is of type " .. conBeltType .. " with name " .. targetName .. ".")
 					end
 
 				-- Case: conBelt is not marked for upgrade
 				else
-					if (conBeltType == "splitter") then
-						if (relBeltTable["splitter"] == conBeltName and truthTable["IncludeSplitters"] == true) then
+					if (conBeltType == "splitter" or conBeltType == "lane-splitter") then
+						if (isRelBelt(conBeltName, relBeltTable) == true and truthTable["IncludeSplitters"] == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 
 					-- Case: conBelt is underground-belt, if of the right tier, add, continue recursion
 					elseif (conBeltType == "underground-belt") then
-						if (relBeltTable["underground-belt"] == conBeltName) then
+						if (isRelBelt(conBeltName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 
 					-- Case: conBelt
 					elseif (conBeltType == "transport-belt") then
-						if (relBeltTable["transport-belt"] == conBeltName) then
+						if (isRelBelt(conBeltName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
-						if (relBeltTable["loader1x1"] == conBeltName or relBeltTable["loader1x2"] == conBeltName) then
+						if (isRelBelt(conBeltName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 
@@ -259,44 +281,45 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 					local targetName = conBelt.get_upgrade_target().name
 					
 					-- Case: conBelt is splitter, if upgrade target of right tier and settings allow, add and end recursion
-					if (conBeltType == "splitter") then
-						if (truthTable["IncludeSplitters"] == true and relBeltTable["splitter"] == targetName) then
+					if (conBeltType == "splitter" or conBeltType == "lane-splitter") then
+						if (truthTable["IncludeSplitters"] == true and isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 
 					-- Case: conBelt is underground-belt, if upgrade target of the right tier, add, continue recursion
 					elseif (conBeltType == "underground-belt") then
-						if (relBeltTable["underground-belt"] == targetName) then
+						if (isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 
 					-- Case: conBelt is transport-belt, if upgrade target of the right tier, add, continue recursion
 					elseif (conBeltType == "transport-belt") then
-						if (relBeltTable["transport-belt"] == targetName) then
+						if (isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 
 					-- Case: conBelt is a loader, if of the right tier, add
 					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
-						if (relBeltTable["loader1x1"] == targetName or relBeltTable["loader1x2"] == targetName) then
+						if (isRelBelt(targetName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 
 					-- Case: not transport belt, underground, or splitter... oops!
 					else
 						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
+						game.print("Troublesome entity is of type " .. conBeltType .. " with name " .. targetName .. ".")
 					end
 
 				-- Case: conBelt is not marked for upgrade
 				else
 					-- Case: conBelt is splitter, if of right tier and settings allow, add
-					if (conBeltType == "splitter") then
+					if (conBeltType == "splitter" or conBeltType == "lane-splitter") then
 						if (VERBOSE > 2) then
 							log({"", "Comparing ", relBeltTable["splitter"] , " and ", conBeltName})
 						end
-						if (relBeltTable["splitter"] == conBeltName and truthTable["IncludeSplitters"] == true) then
+						if (isRelBelt(conBeltName, relBeltTable) == true and truthTable["IncludeSplitters"] == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 
@@ -305,7 +328,7 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 						if (VERBOSE > 2) then
 							log({"", "Comparing ", relBeltTable["underground-belt"], " and ", conBeltName})
 						end
-						if (relBeltTable["underground-belt"] == conBeltName) then
+						if (isRelBelt(conBeltName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
@@ -315,17 +338,18 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 						if (VERBOSE > 2) then
 							log({"", "Comparing ", relBeltTable["transport-belt"] , " and ", conBeltName})
 						end
-						if (relBeltTable["transport-belt"] == conBeltName) then
+						if (isRelBelt(conBeltName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 							beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
 						end
 					elseif (conBeltType == "loader-1x1" or conBeltType == "loader") then
-						if (relBeltTable["loader1x1"] == conBeltName or relBeltTable["loader1x2"] == conBeltName) then
+						if (isRelBelt(conBeltName, relBeltTable) == true) then
 							beltEntitiesToReturn[cBUnitNumber] = conBelt
 						end
 					-- Case: not transport belt, underground, or splitter... oops!
 					else
 						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
+						game.print("Troublesome entity is of type " .. conBeltType .. " with name " .. conBeltName .. ".")
 					end
 				end
 

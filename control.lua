@@ -90,6 +90,13 @@ if (script.active_mods['factorioplus']) then
 	BigTableOfBelts["turbo-transport-belt"]["loader1x2"] = "turbo-loader"
 end
 
+if (script.active_mods['lane-balancers'] or script.active_mods['lane-splitters']) then
+	BigTableOfBelts["transport-belt"]["laneSplit"] = "lane-splitter"
+	BigTableOfBelts["fast-transport-belt"]["laneSplit"] = "fast-lane-splitter"
+	BigTableOfBelts["express-transport-belt"]["laneSplit"] = "express-lane-splitter"
+	BigTableOfBelts["turbo-transport-belt"]["laneSplit"] = "turbo-lane-splitter"
+end
+
 -- Returns a table with truth values
 -- ["ForceBuild"] 				Force build 
 -- ["IncludeSplitters"] 		Include splitters when upgrading a belt section
@@ -121,8 +128,13 @@ local function buildBeltTierTable(beltEntity)
 		for _, val in pairs(value) do
 			if (val == beltName) then
 				if (VERBOSE > 1) then
-					game.print({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], ", ", value["loader1x1"],", ", value["loader1x2"], "]"})
-					log({"", "Working with tier: [", value["transport-belt"], ", ", value["underground-belt"], ", ", value["splitter"], ", ", value["loader1x1"],", ", value["loader1x2"], "]"})
+					local tier = "Working with tier: ["
+					for key, name in pairs(value) do
+						tier = tier .. ", " .. name
+					end
+					tier = tier .. "]"
+					game.print({"", tier})
+					log({"", tier})
 				end
 				return value
 			end
