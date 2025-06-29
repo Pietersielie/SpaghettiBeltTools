@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.3
+Date: 2025-06-29
+  Mod Compatibility:
+    - Add support for lane balancers and lane splitters. Treated as splitters. (https://github.com/Pietersielie/BeltUpgrader/issues/18
+---------------------------------------------------------------------------------------------------
 Version: 1.2.2
 Date: 2025-06-16
   Mod Compatibility:
