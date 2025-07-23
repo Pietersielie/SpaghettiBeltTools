@@ -128,7 +128,7 @@ end
 
 ---Builds a table consisting of the relevant belt tier.
 ---@param beltEntity LuaEntity The belt entity to determine the tier of.
----@return table<string, table<string, string>>? tier The table containing all transport belt entity names of that tier, or nil if not supported.
+---@return table<string, string>? tier The table containing all transport belt entity names of that tier, or nil if not supported.
 local function buildBeltTierTable(beltEntity)
 	local LuaEntityPrototype prototype = beltEntity.prototype
 	if beltEntity.to_be_upgraded() then
@@ -452,7 +452,7 @@ local function RemoveBeltNetwork(event, ForceBuild)
 				end
 
 				-- Check in the upstream direction
-				for _, conBelt in pairs(entity.belt_neighbours["outputs"]) do
+				for _, conBelt in pairs(entity.belt_neighbours["inputs"]) do
 					transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(conBelt, transportBeltEntitiesToRemove, relBeltTier, false)
 				end
 
