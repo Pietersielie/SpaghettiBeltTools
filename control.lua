@@ -48,6 +48,7 @@ BigTableOfBelts["quantum-transport-belt"] = {["transport-belt"] = "quantum-belt"
 BigTableOfBelts["basic-transport-belt"] = {["transport-belt"] = "basic-transport-belt", ["underground-belt"] = "basic-underground-belt", ["splitter"] = "basic-splitter", ["loader1x2"] = "basic-loader"} -- white/grey
 BigTableOfBelts["supersonic-transport-belt"] = {["transport-belt"] = "supersonic-transport-belt", ["underground-belt"] = "supersonic-underground-belt", ["splitter"] = "supersonic-splitter", ["loader1x2"] = "supersonic-loader"} -- pink
 
+-- AAI Loaders ()
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "aai-fast-loader"
@@ -55,12 +56,14 @@ if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
 end
 
+-- Krastorio2 loaders (https://mods.factorio.com/mod/Krastorio2)
 if (script.active_mods['Krastorio2'] or script.active_mods['Krastorio2-spaced-out']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "kr-loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "kr-fast-loader"
 	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "kr-express-loader"
 end
 
+-- 5Dim - New Transport loaders (https://mods.factorio.com/mod/5dim_transport)
 if (script.active_mods['5dim_transport']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "5d-loader-1x1-01"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "5d-loader-1x1-02"
@@ -70,6 +73,7 @@ if (script.active_mods['5dim_transport']) then
 	BigTableOfBelts["express-transport-belt"]["loader1x2"] = "express-loader"
 end
 
+-- Loaders Modernized (https://mods.factorio.com/mod/loaders-modernized)
 if (script.active_mods['loaders-modernized']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "mdrn-loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "fast-mdrn-loader"
@@ -83,6 +87,7 @@ if (script.active_mods['loaders-modernized']) then
 	BigTableOfBelts["ultimate-transport-belt"]["loader1x1"] = "original-ultimate-mdrn-loader"
 end
 
+-- Factorio+ loaders (https://mods.factorio.com/mod/factorioplus)
 if (script.active_mods['factorioplus']) then
 	BigTableOfBelts["transport-belt"]["loader1x2"] = "loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x2"] = "fast-loader"
@@ -90,6 +95,7 @@ if (script.active_mods['factorioplus']) then
 	BigTableOfBelts["turbo-transport-belt"]["loader1x2"] = "turbo-loader"
 end
 
+-- Lane balancers and splitters (https://mods.factorio.com/mod/lane-balancers, https://mods.factorio.com/mods/lane-splitters)
 if (script.active_mods['lane-balancers'] or script.active_mods['lane-splitters']) then
 	BigTableOfBelts["transport-belt"]["laneSplit"] = "lane-splitter"
 	BigTableOfBelts["fast-transport-belt"]["laneSplit"] = "fast-lane-splitter"
@@ -97,12 +103,15 @@ if (script.active_mods['lane-balancers'] or script.active_mods['lane-splitters']
 	BigTableOfBelts["turbo-transport-belt"]["laneSplit"] = "turbo-lane-splitter"
 end
 
--- Returns a table with truth values
--- ["ForceBuild"] 				Force build 
--- ["IncludeSplitters"] 		Include splitters when upgrading a belt section
--- ["IncludeSideloadingBelts"]	Include upstream belts sideloading onto the belt thread in question.
--- ["DoSequentialUpgrades"] 	Upgrade entities multiple times as per default upgrade planner
--- ["IncludeAllEntities"]		Include all entities in the selection when starting a belt thread upgrade
+---Returns a table with truth values, with the following keys:
+--- - ["ForceBuild"] 				Force build.
+--- - ["IncludeSplitters"] 		Include splitters when upgrading a belt section.
+--- - ["IncludeSideloadingBelts"]	Include upstream belts sideloading onto the belt thread in question.
+--- - ["DoSequentialUpgrades"] 	Upgrade entities multiple times as per default upgrade planner.
+--- - ["IncludeAllEntities"]		Include all entities in the selection when starting a belt thread upgrade.
+---@param playerSettings LuaCustomTable<string, ModSetting>
+---@param force boolean True if user wants to include all connected belts regardless of tier, i.e., alternate selection occurred.
+---@return table<string, boolean> returnTable The table built from user settings.
 local function buildBoolTable(playerSettings, force)
 	returnTable = {}
 
@@ -116,27 +125,32 @@ local function buildBoolTable(playerSettings, force)
 end
 
 -- Builds a table consisting of the relevant belt tier.
+
+---Builds a table consisting of the relevant belt tier.
+---@param beltEntity LuaEntity The belt entity to determine the tier of.
+---@return table<string, string>? tier The table containing all transport belt entity names of that tier, or nil if not supported.
 local function buildBeltTierTable(beltEntity)
+	local LuaEntityPrototype prototype = beltEntity.prototype
 	if beltEntity.to_be_upgraded() then
-		beltEntity = beltEntity.get_upgrade_target()
+		prototype = beltEntity.get_upgrade_target()
 	end
-	local beltName = beltEntity.name
+	local beltName = prototype.name
 	if (beltGraph.isGhost(beltEntity)) then
 		beltName = beltEntity.ghost_name
 	end
-	for _, value in pairs(BigTableOfBelts) do
-		for _, val in pairs(value) do
+	for _, tier in pairs(BigTableOfBelts) do
+		for _, val in pairs(tier) do
 			if (val == beltName) then
 				if (VERBOSE > 1) then
-					local tier = "Working with tier: ["
-					for key, name in pairs(value) do
-						tier = tier .. ", " .. name
+					local outString = "Working with tier: ["
+					for key, name in pairs(tier) do
+						outString = outString .. ", " .. name
 					end
-					tier = tier .. "]"
-					game.print({"", tier})
-					log({"", tier})
+					outString = outString .. "]"
+					game.print({"", outString})
+					log({"", outString})
 				end
-				return value
+				return tier
 			end
 		end
 	end
@@ -145,13 +159,11 @@ local function buildBeltTierTable(beltEntity)
 	return nil
 end
 
--- Recursively finds the set of transport belts and underground belts connected to belt.
--- @param belt The belt from which to start the search.
--- 	    :@type LuaEntity
--- @param truthTable Table of boolean values as produced by buildBoolTable(), used for configuration of the function.
--- 	    :@type LuaTable
--- @return Table of each transportBeltConnectable in the network of belt, as bound by 
---      :@type {LuaEntity}
+---Recursively finds the set of transport belt connectables connected to `belt`.
+---@param belt LuaEntity The TransportBeltConnectablePrototype from which to start the search.
+---@param beltEntitiesToReturn table<int, LuaEntity> Usually initialised to {}, but can be used to append `belt`'s network onto another set of TransportBeltConnectablePrototypes.
+---@param truthTable table<string, boolean> Table of boolean values as produced by `buildBoolTable()`, used for configuration of the function.
+---@return table<int, LuaEntity> beltEntitiesToReturn Table of each entity of typ TransportBeltConnectablePrototype in the network of `belt`, as bound by user settings.
 local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 	-- Initialise return table if it doesn't exist
 	beltEntitiesToReturn = beltEntitiesToReturn or {}
@@ -193,11 +205,9 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 	return beltEntitiesToReturn;
 end
 
--- Find the downgrade target for an entity, if one exists.
--- @param entityPrototype The entity in question
---		:type LuaEntity
--- @return Nil or the prototype that upgrades to entityPrototype
---		:type LuaEntityPrototype
+---Find the downgrade target for an entity, if one exists.
+---@param entityPrototype LuaEntity The entity in question.
+---@return LuaEntityPrototype? val Nil or the prototype that upgrades to `entityPrototype`.
 local function findDownGradeTarget(entityPrototype)
 	local eType = entityPrototype.type
 	local eName = entityPrototype.name
@@ -217,11 +227,9 @@ local function findDownGradeTarget(entityPrototype)
 	return nil
 end
 
--- Builds a belt network and upgrades the entities in the network
--- @param event The game event that raised this function, used for player values.
---		:type defines.events
--- @param truthTable A table containing various boolean settings, used to control building the belt network
---		:type LuaTable
+---Builds a belt network and upgrades the entities in the network.
+---@param event LuaEventType The game event that raised this function, used for player values.
+---@param truthTable table<string, boolean> A table containing various boolean settings, used to control building the belt network.
 local function UpgradeBeltNetwork(event, truthTable)
 	local thisPlayer = game.players[event.player_index]
 	local transportBeltEntitiesToUpgrade = {}
@@ -321,11 +329,9 @@ local function UpgradeBeltNetwork(event, truthTable)
 	end
 end
 
--- Builds a belt network and downgrades the entities in the network
--- @param event The game event that raised this function, used for player values.
---		:type defines.events
--- @param truthTable A table containing various boolean settings, used to control building the belt network
---		:type LuaTable
+---Builds a belt network and downgrades the entities in the network.
+---@param event LuaEventType The game event that raised this function, used for player values.
+---@param truthTable table<string, boolean>ble A table containing various boolean settings, used to control building the belt network.
 local function DowngradeBeltNetwork(event, truthTable)
 	local thisPlayer = game.players[event.player_index]
 	local transportBeltEntitiesToDowngrade = {}
@@ -397,30 +403,126 @@ local function DowngradeBeltNetwork(event, truthTable)
 	end
 end
 
+---Builds a network of belts to remove.
+---@param event LuaEventType The game event that raised this function, used for player values.
+---@param ForceBuild boolean True if belts connected to the selection is to be removed, or if only belts made redundant by the removal of the selection is to be removed.
+local function RemoveBeltNetwork(event, ForceBuild)
+	local thisPlayer = game.players[event.player_index]
+	local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), ForceBuild)
+	local transportBeltEntitiesToRemove = {}
+
+    if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
+        
+		-- Case: collecting the entire network
+		if (ForceBuild) then
+			if (truthTable["IncludeAllEntities"]) then
+				for _, entity in pairs(event.entities) do
+					transportBeltEntitiesToRemove = findAllConnectedBelts(entity, transportBeltEntitiesToRemove, truthTable)
+				end
+			else
+				local initialBelt = event.entities[1]
+				transportBeltEntitiesToRemove = findAllConnectedBelts(initialBelt, {}, truthTable)
+			end
+
+		-- Case: collecting only redundant belts if initial belt is 
+		else
+			local belts = {}
+			if (truthTable["IncludeAllEntities"]) then
+				belts = event.entities
+				
+			else
+				belts = {event.entities[1]}
+			end
+
+			for _, entity in pairs(belts) do
+				local relBeltTier = buildBeltTierTable(entity)
+				if relBeltTier == nil then
+					return
+				end
+
+				local beltType = entity.type
+				if (beltGraph.isGhost(entity)) then
+					beltType = entity.ghost_type
+				end
+
+				transportBeltEntitiesToRemove[entity.unit_number] = entity
+				-- Check in the downstream direction
+				for _, conBelt in pairs(entity.belt_neighbours["outputs"]) do
+					transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(conBelt, transportBeltEntitiesToRemove, relBeltTier, true)
+				end
+
+				-- Check in the upstream direction
+				for _, conBelt in pairs(entity.belt_neighbours["inputs"]) do
+					transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(conBelt, transportBeltEntitiesToRemove, relBeltTier, false)
+				end
+
+				if beltType == "underground_belt" then
+					-- Determine direction of neighbour:
+					if entity.neighbours ~= nil then
+						local outLocal = table_size(entity.belt_neighbours["outputs"])
+						local outNeighbour = table_size(entity.neighbours.belt_neighbours["outputs"])
+
+						-- Case: Flow is from local to neighbour
+						if (outNeighbour > 0 and not outLocal > 0) then
+							-- Search downstream from neighbour
+							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbour, transportBeltEntitiesToRemove, relBeltTier, true)
+
+						-- Case: Flow is from neighbour to local
+						elseif (outLocal > 0 and not outNeighbour > 0) then
+							-- Search upstream from neighbour
+							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbour, transportBeltEntitiesToRemove, relBeltTier, false)
+						-- Case: No flow between neighbours.
+						-- else
+							-- do nothing
+						end
+					end
+				end
+			end
+		end
+		
+		if (VERBOSE > 2) then
+			game.print({"", "Player with force_index ", thisPlayer.force_index, " removing " , table_size(transportBeltEntitiesToRemove), " belts."})
+			log({"", "Player with force_index ", thisPlayer.force_index, " removing " , table_size(transportBeltEntitiesToRemove), " belts."})
+		end	
+
+		-- For each belt in graph, order deconstruction
+		for _, belt in pairs(transportBeltEntitiesToRemove) do
+			if (VERBOSE > 2) then
+				log({"", "Removing the following entity:"})
+				log(serpent.block(belt))
+			end
+			belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
+		end
+	end
+end
+
 script.on_event({defines.events.on_player_selected_area}, function(event)
-    if event.item == 'beltThreadUpgrader-selection-tool' then
+    if event.item == 'beltThreadUpgrader-upgrade-tool' then
 		local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
         UpgradeBeltNetwork(event, truthTable)
-    end
+	elseif event.item == 'beltThreadUpgrader-remove-tool' then
+		RemoveBeltNetwork(event, false)
+	end
 end)
 
 script.on_event({defines.events.on_player_alt_selected_area}, function(event)
-    if event.item == 'beltThreadUpgrader-selection-tool' then
+    if event.item == 'beltThreadUpgrader-upgrade-tool' then
         local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), true)
         UpgradeBeltNetwork(event, truthTable)
-    end
+	elseif event.item == 'beltThreadUpgrader-remove-tool' then
+		RemoveBeltNetwork(event, true)
+	end
 end)
 
 script.on_event({defines.events.on_player_reverse_selected_area}, function(event)
-	if event.item == 'beltThreadUpgrader-selection-tool' then
+	if event.item == 'beltThreadUpgrader-upgrade-tool' then
         local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
 		DowngradeBeltNetwork(event, truthTable)
-		
 	end
 end)
 
 script.on_event({defines.events.on_player_alt_reverse_selected_area}, function(event)
-	if event.item == 'beltThreadUpgrader-selection-tool' then
+	if event.item == 'beltThreadUpgrader-upgrade-tool' then
         local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), true)
 		DowngradeBeltNetwork(event, truthTable)
 	end

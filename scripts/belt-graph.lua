@@ -1,23 +1,22 @@
 local VERBOSE = 0
 
-local findUpstreamNetwork, findDownstreamNetwork, isGhost, isRelBelt
+local findUpstreamNetwork
+local findDownstreamNetwork
+local isGhost
+local isRelBelt
+local findRedundantNetwork
 
--- Checks if an entity is a ghost, simple shorthand function.
--- @param entity The entity to check.
--- 		:@type LuaEntity
--- @return A simple boolean value.
---		:@type Boolean
+---Checks if an entity is a ghost, simple shorthand function.
+---@param entity LuaEntity The entity to check.
+---@return boolean val True if `entity` is a ghost, false if not.
 isGhost = function (entity)
 	return entity.name == "entity-ghost"
 end
 
--- Checks if a prototype name is in the specified table. Intended for use with the related Belt tier table.
--- @param prototypeName The name of the prototype to check if it is included.
--- 		:@type String
--- @param relBeltTable The table to go through to check for the prototype name.
--- 		:@type LuaTable
--- @return A simple boolean value.
---		:@type Boolean
+---Checks if a prototype name is in the specified table. Intended for use with the related Belt tier table.
+---@param prototypeName string The name of the prototype to check if it is included.
+---@param relBeltTable table<string, string> The table to go through to check for the prototype name.
+---@return boolean val True if `prototypeName` is in `relBeltTable`, false if not.
 isRelBelt = function (prototypeName, relBeltTable)
 	for _, value in pairs(relBeltTable) do
 		if (value == prototypeName) then
@@ -27,17 +26,12 @@ isRelBelt = function (prototypeName, relBeltTable)
 	return false
 end
 
--- Recursively finds the set of transport belts and underground belts connected upstream of belt.
--- @param belt The belt from which to start the search.
--- 	    :@type LuaEntity
--- @param beltEntitiesToReturn The table of entities collected and returned at the end.
--- 	    :@type LuaEntity
--- @param relBeltTable The table consisting of the belt tier to add to the graph.
--- 	    :@type LuaTable
--- @param truthTable Table of boolean values as produced by buildBoolTable(), used for configuration of the function.
--- 	    :@type LuaTable
--- @return Table of each transportBeltConnectable in the network of belt, as bound by 
---      :@type {LuaEntity}
+---Recursively finds the set of transport belts and underground belts connected upstream of `belt`.
+---@param belt LuaEntity The belt from which to start the search.
+---@param beltEntitiesToReturn table<int, LuaEntity> The table of entities collected and returned at the end.
+---@param relBeltTable table<string, string> A table with the names of the items that make up a belt tier.
+---@param truthTable table<string, boolean> A table of boolean values as produced by `buildBoolTable()`, used for configuration of the function.
+---@return table<int, LuaEntity> beltEntitiesToReturn The table of each TransportConnectable entity in the network of `belt`, as bound by the user settings.
 findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTable)
 	-- Default value for forceDisregardTier is false
 	local forceDisregardTier = truthTable["ForceBuild"] or false
@@ -184,17 +178,12 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 	return beltEntitiesToReturn
 end
 
--- Recursively finds the set of transport belts and underground belts connected upstream of belt.
--- @param belt The belt from which to start the search.
--- 	    :@type LuaEntity
--- @param beltEntitiesToReturn The table of entities collected and returned at the end.
--- 	    :@type LuaEntity
--- @param relBeltTable The table consisting of the belt tier to add to the graph.
--- 	    :@type LuaTable
--- @param truthTable Table of boolean values as produced by buildBoolTable(), used for configuration of the function.
--- 	    :@type LuaTable
--- @return Table of each transportBeltConnectable in the network of belt, as bound by 
---      :@type {LuaEntity}
+---Recursively finds the set of transport belts and underground belts connected downstream of `belt`.
+---@param belt LuaEntity The belt from which to start the search.
+---@param beltEntitiesToReturn table<int, LuaEntity> The table of entities collected and returned at the end, indexed by the entity unit numbers.
+---@param relBeltTable table<string, string> A table with the names of the items that make up a belt tier.
+---@param truthTable table<string, boolean> A table of boolean values as produced by `buildBoolTable()`, used for configuration of the function.
+---@return table<int, LuaEntity> beltEntitiesToReturn The table of each TransportConnectable entity in the network of `belt`, as bound by the user settings.
 findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTable)
 	-- Default value for forceDisregardTier is false
 	local forceDisregardTier = truthTable["ForceBuild"] or false
@@ -363,8 +352,207 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 	return beltEntitiesToReturn
 end
 
+-- Recursively finds the set of transport belt entities rendered redundant by removal of a given belt.
+-- @param belt The belt from which to start the search.
+-- 	    :@type LuaEntity
+-- @param beltEntitiesToReturn The table of entities collected and returned at the end.
+-- 	    :@type LuaEntity
+-- @param relBeltTable The table consisting of the belt tier to add to the graph.
+-- 	    :@type LuaTable
+-- @param UpDown A boolean that dictates if belt is in the downstream or upstream direction of the thread. Upstream is false, downstream is true
+--		:@type Boolean
+-- @return Table of each transportBeltConnectable in the network of belt, as bound by 
+--      :@type {LuaEntity}
+
+---Recursively finds the set of transport belt entities rendered redundant by removal of `belt`.
+---@param belt LuaEntity The belt from which to start the search.
+---@param beltEntitiesToReturn table<int, LuaEntity> The table of entities collected and returned at the end, indexed by the entity unit numbers.
+---@param relBeltTable table<string, string> A table with the names of the items that make up a belt tier.
+---@param UpDown boolean True if the search is downstream, false if the search is upstream.
+---@return table<int, LuaEntity> beltEntitiesToReturn The table of redundant transport belt entities when `belt` is removed, indexed by the entity unit numbers.
+findRedundantNetwork = function (belt, beltEntitiesToReturn, relBeltTable, UpDown)
+	-- If we have visited this node before, return.
+	if beltEntitiesToReturn[belt.unit_number] ~= nil then
+		return beltEntitiesToReturn
+	end
+
+	-- Default value for forceDisregardTier is false
+	
+	local beltType = belt.type
+	if (isGhost(belt)) then
+		beltType = belt.ghost_type
+	end
+
+	-- case: Belt is transport belt
+	if beltType == "transport-belt" then
+		-- case: downstream
+		if UpDown then
+			local inputs = belt.belt_neighbours["inputs"] 
+			-- 	case: >1 input
+			if table_size(inputs) > 1 then
+				for _, value in pairs(inputs) do
+					-- case: not all inputs are in graph already
+					if beltEntitiesToReturn[value.unit_number] == nil then
+						-- ignore and return graph
+						return beltEntitiesToReturn
+					end
+				end
+				-- case: all inputs are in graph already
+				-- add to graph
+				-- continue recursion
+				beltEntitiesToReturn[belt.unit_number] = belt
+
+			-- case: 1 input
+			else
+				-- add to graph
+				-- continue recursion
+				beltEntitiesToReturn[belt.unit_number] = belt
+			end
+
+		-- case: upstream
+		else
+			-- 	add to graph
+			-- 	continue recursion
+			beltEntitiesToReturn[belt.unit_number] = belt
+		end
+
+	-- case: Belt is underground belt
+	elseif beltType == "underground-belt" then
+		-- case: downstream
+		if UpDown then
+			local inputs = belt.belt_neighbours["inputs"]
+			-- 	case: 0 inputs (i.e., comes from neighour)
+			if table_size(inputs) == 0 then
+				-- 		add
+				-- 		continue recursion
+				beltEntitiesToReturn[belt.unit_number] = belt
+
+			-- 	case: 1 input
+			elseif table_size(inputs) == 1 then
+				-- 		case: input and belt direction are the same, or neighbours == nil, or output == {}
+				if (inputs[1].direction == belt.direction) or (belt.neighbours == nil) or (belt.belt_neighbours["outputs"] == {}) then
+					-- add
+					-- continue recursion
+					beltEntitiesToReturn[belt.unit_number] = belt
+				-- case: else
+				else
+					-- ignore and return graph
+					return beltEntitiesToReturn
+				end
+
+			-- 	case: >1 input
+			else
+				-- ignore and return graph
+				return beltEntitiesToReturn				
+			end
+
+		-- case: upstream
+		else
+			-- add to graph
+			-- continue recursion
+			beltEntitiesToReturn[belt.unit_number] = belt
+		end
+
+	-- case: Belt is splitter/lane-splitter
+	elseif beltType == "splitter" or beltType == "lane-splitter" then
+		-- case: downstream
+		if UpDown then
+			local inputs = belt.belt_neighbours["inputs"]
+			-- 	case: >1 input
+			if table_size(inputs) > 1 then
+				for _, value in pairs(inputs) do
+					-- case: not all inputs are in graph already
+					if beltEntitiesToReturn[value.unit_number] == nil then
+						-- ignore and return graph
+						return beltEntitiesToReturn
+					end
+				end
+				-- case: all inputs are in graph already
+				-- add to graph
+				-- continue recursion
+				beltEntitiesToReturn[belt.unit_number] = belt
+				
+				-- case: 1 input
+			else
+				-- add to graph
+				-- continue recursion
+				beltEntitiesToReturn[belt.unit_number] = belt
+			end
+
+		-- case: upstream
+		else
+			local outputs = belt.belt_neighbours["outputs"]
+			-- 	case: >1 output
+			if table_size(outputs) > 1 then
+				for _, value in pairs(outputs) do
+					-- case: not all outputs are in graph already
+					if beltEntitiesToReturn[value.unit_number] == nil then
+						-- ignore and return graph
+						return beltEntitiesToReturn
+					end
+				end
+				-- case: all outputs are in graph already
+				-- add to graph
+				-- continue recursion
+				beltEntitiesToReturn[belt.unit_number] = belt
+
+			-- case: 1 output
+			else
+				-- add to graph
+				-- continue recursion
+				beltEntitiesToReturn[belt.unit_number] = belt
+			end
+		end
+
+	-- case: Belt is loader
+	elseif beltType == "loader-1x1" or beltType == "loader" then
+		beltEntitiesToReturn[belt.unit_number] = belt
+		return beltEntitiesToReturn
+	end
+
+	local connectedBelts = {}
+	-- Add downstream belt neighbours to list to check
+	for _, val in pairs(belt.belt_neighbours["outputs"]) do
+		connectedBelts[val.unit_number] = val
+    end
+
+    local inputs = belt.belt_neighbours["inputs"]
+	for _, val in pairs(inputs) do
+		connectedBelts[val.unit_number] = val
+	end
+
+    -- If underground-belt, add other end if it exists
+    if (beltType == "underground-belt") then
+        local UGBeltEnd = belt.neighbours
+        if (UGBeltEnd ~= nil) then
+            connectedBelts[UGBeltEnd.unit_number] = UGBeltEnd
+        end
+    end
+
+	-- If we have no neighbours of either belt or undergrounds, i.e., connectedBelts is empty, return.
+	if (table_size(connectedBelts) == 0) then
+		if (VERBOSE > 2) then
+			game.print({"", "Selected item has no neighbours."})
+			log({"", "Selected item has no neighbours."})
+			log({"", "Returning itself to final list."})
+			log({"", "These entities are:"})
+			log(serpent.block(beltEntitiesToReturn))
+		end
+		return beltEntitiesToReturn
+	end
+
+	-- For each belt connected to this one, continue the recursion in the same direction (UpDown).
+	for _, conBelt in pairs(connectedBelts) do
+		beltEntitiesToReturn = findRedundantNetwork(conBelt, beltEntitiesToReturn, relBeltTable, UpDown)
+	end
+
+	return beltEntitiesToReturn
+end
+
 local beltGraph = {}
 beltGraph["isGhost"] = isGhost
 beltGraph["findUpstreamNetwork"] = findUpstreamNetwork
 beltGraph["findDownstreamNetwork"] = findDownstreamNetwork
+beltGraph["isRelBelt"] = isRelBelt
+beltGraph["findRedundantNetwork"] = findRedundantNetwork
 return beltGraph
