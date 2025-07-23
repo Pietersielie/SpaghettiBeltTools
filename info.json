@@ -1,12 +1,12 @@
 {
   "name": "BeltThreadUpgrades",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "factorio_version": "2.0",
-  "title": "Belt Thread Upgrades",
+  "title": "Spaghetti Belt Tools",
   "author": "PietersieliePC",
   "contact": "https://github.com/Pietersielie/BeltUpgrader",
   "homepage": "https://github.com/Pietersielie/BeltUpgrader",
-  "description": "Upgrade an entire line of belts with one click, vital for spaghetti bases.",
+  "description": "Tools to deal with an entire line of belts with one click, vital for spaghetti bases. Includes upgrade and removal configurations. Extensive mod compatibility.",
   "dependencies": ["base >= 1.0"],
   "license": "GNU GPLv3"
 }
