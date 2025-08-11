@@ -38,8 +38,8 @@ BigTableOfBelts["5d-transport-belt-mk9"] = {["transport-belt"] = "5d-transport-b
 BigTableOfBelts["5d-transport-belt-mk10"] = {["transport-belt"] = "5d-transport-belt-10", ["underground-belt"] = "5d-underground-belt-10", ["splitter"] = "5d-splitter-10", ["loader1x1"] = "5d-loader-1x1-10", ["loader1x2"] = "5d-loader-10"} -- dark blue
 
 -- Krastorio2 (https://mods.factorio.com/mod/Krastorio2)
-BigTableOfBelts["advanced-transport-belt"] = {["transport-belt"] = "kr-advanced-transport-belt", ["underground-belt"] = "kr-advanced-underground-belt", ["splitter"] = "kr-advanced-splitter", ["loader1x1"] = "kr-advanced-loader"} -- green
-BigTableOfBelts["superior-transport-belt"] = {["transport-belt"] = "kr-superior-transport-belt", ["underground-belt"] = "kr-superior-underground-belt", ["splitter"] = "kr-superior-splitter", ["loader1x1"] = "kr-superior-loader"} -- purple
+BigTableOfBelts["kr-advanced-transport-belt"] = {["transport-belt"] = "kr-advanced-transport-belt", ["underground-belt"] = "kr-advanced-underground-belt", ["splitter"] = "kr-advanced-splitter", ["loader1x1"] = "kr-advanced-loader"} -- green
+BigTableOfBelts["kr-superior-transport-belt"] = {["transport-belt"] = "kr-superior-transport-belt", ["underground-belt"] = "kr-superior-underground-belt", ["splitter"] = "kr-superior-splitter", ["loader1x1"] = "kr-superior-loader"} -- purple
 
 -- Quantum Belts (https://mods.factorio.com/mod/quantum-belts)
 BigTableOfBelts["quantum-transport-belt"] = {["transport-belt"] = "quantum-belt", ["underground-belt"] = "quantum-underground", ["splitter"] = "quantum-splitter"} -- magenta
@@ -47,6 +47,9 @@ BigTableOfBelts["quantum-transport-belt"] = {["transport-belt"] = "quantum-belt"
 -- Factorio+ (https://mods.factorio.com/mod/factorioplus)
 BigTableOfBelts["basic-transport-belt"] = {["transport-belt"] = "basic-transport-belt", ["underground-belt"] = "basic-underground-belt", ["splitter"] = "basic-splitter", ["loader1x2"] = "basic-loader"} -- white/grey
 BigTableOfBelts["supersonic-transport-belt"] = {["transport-belt"] = "supersonic-transport-belt", ["underground-belt"] = "supersonic-underground-belt", ["splitter"] = "supersonic-splitter", ["loader1x2"] = "supersonic-loader"} -- pink
+
+-- Planetaris Unbounded: Arig (https://mods.factorio.com/mod/planetaris-unbounded)
+BigTableOfBelts["planetaris-hyper-belt"] = {["transport-belt"] = "planetaris-hyper-transport-belt", ["underground-belt"] = "planetaris-hyper-underground-belt", ["splitter"] = "planetaris-hyper-splitter"} -- white
 
 -- AAI Loaders ()
 if (script.active_mods['aai-loaders']) then
