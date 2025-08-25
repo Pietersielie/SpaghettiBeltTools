@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest a new feature for Belt Thread Upgrader
+about: Suggest a new feature for Spaghetti Belt Tools
 title: '[FR] "New Feature Request"'
 labels: enhancement
 assignees: ''
