@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug with Belt Thread Upgrader
+about: Report a bug with Spaghetti Belt Tools
 title: '[BR] "Bug description"'
 labels: 'bug'
 assignees: ''

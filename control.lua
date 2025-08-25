@@ -200,6 +200,9 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 	
 	-- Build downstream network
 	beltEntitiesToReturn = beltGraph.findDownstreamNetwork(belt, beltEntitiesToReturn, relBeltTier, truthTable)
+	if beltGraph.getType(belt) == "underground-belt" and belt.neighbours ~= nil then
+		beltEntitiesToReturn = beltGraph.findDownstreamNetwork(belt.neighbours, beltEntitiesToReturn, relBeltTier, truthTable)
+	end
 	if (VERBOSE > 2) then
 		local down = table_size(beltEntitiesToReturn) - up
 		game.print({"", "Found ", down, " downstream belt connections."})

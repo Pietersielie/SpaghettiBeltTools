@@ -5,12 +5,24 @@ local findDownstreamNetwork
 local isGhost
 local isRelBelt
 local findRedundantNetwork
+local getType
 
 ---Checks if an entity is a ghost, simple shorthand function.
 ---@param entity LuaEntity The entity to check.
 ---@return boolean val True if `entity` is a ghost, false if not.
 isGhost = function (entity)
 	return entity.name == "entity-ghost"
+end
+
+---Simple shorthand function to determine the type of an entity
+---@param entity LuaEntity An entity whose type is to be determined.
+---@return string type The type (string name) of the entity.
+getType = function (entity)
+	if isGhost(entity) then
+		return entity.ghost_type
+	else
+		return entity.type
+	end
 end
 
 ---Checks if a prototype name is in the specified table. Intended for use with the related Belt tier table.
@@ -555,4 +567,5 @@ beltGraph["findUpstreamNetwork"] = findUpstreamNetwork
 beltGraph["findDownstreamNetwork"] = findDownstreamNetwork
 beltGraph["isRelBelt"] = isRelBelt
 beltGraph["findRedundantNetwork"] = findRedundantNetwork
+beltGraph["getType"] = getType
 return beltGraph
