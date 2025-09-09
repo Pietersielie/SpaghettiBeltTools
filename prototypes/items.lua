@@ -21,11 +21,12 @@ beltThreadUpgradeTool.select.entity_type_filters = selectionTypeFilter
 beltThreadUpgradeTool.select.border_color = {0, 0.8, 0}
 
 -- Alternate selection (Upgrade all belts connected to starting entity)
-beltThreadUpgradeTool.alt_select.cursor_box_type = "entity"
-beltThreadUpgradeTool.alt_select.mode = "upgrade"
-beltThreadUpgradeTool.alt_select.entity_filter_mode = "whitelist"
-beltThreadUpgradeTool.select.entity_type_filters = selectionTypeFilter
+beltThreadUpgradeTool.alt_select = table.deepcopy(beltThreadUpgradeTool.select)
 beltThreadUpgradeTool.alt_select.border_color = {0, 0.8, 0.8}
+
+-- Super forced selection (Upgrade all belts connected to starting entity, if of the same tier)
+beltThreadUpgradeTool.super_forced_select = table.deepcopy(beltThreadUpgradeTool.select)
+beltThreadUpgradeTool.super_forced_select.border_color = {0.8, 0.8, 0}
 
 -- Reverse selection (Downgrade connected belts of the same tier)
 beltThreadUpgradeTool.reverse_select = table.deepcopy(beltThreadUpgradeTool.select)

@@ -108,17 +108,20 @@ end
 
 ---Returns a table with truth values, with the following keys:
 --- - ["ForceBuild"] 				Force build.
---- - ["IncludeSplitters"] 		Include splitters when upgrading a belt section.
+--- - ["IncludeSplitters"] 			Include splitters when upgrading a belt section.
 --- - ["IncludeSideloadingBelts"]	Include upstream belts sideloading onto the belt thread in question.
---- - ["DoSequentialUpgrades"] 	Upgrade entities multiple times as per default upgrade planner.
+--- - ["DoSequentialUpgrades"] 		Upgrade entities multiple times as per default upgrade planner.
 --- - ["IncludeAllEntities"]		Include all entities in the selection when starting a belt thread upgrade.
+--- - ["AllBeltsOfTier"]			Include only entities of the same belt tier in a force upgrade selection.
 ---@param playerSettings LuaCustomTable<string, ModSetting>
 ---@param force boolean True if user wants to include all connected belts regardless of tier, i.e., alternate selection occurred.
+---@param superForceSelect boolean True if the user used the SelectionToolPrototype.super_forced_select mode. 
 ---@return table<string, boolean> returnTable The table built from user settings.
-local function buildBoolTable(playerSettings, force)
+local function buildBoolTable(playerSettings, force, superForceSelect)
 	returnTable = {}
 
 	returnTable["ForceBuild"] = force or false
+	returnTable["AllBeltsOfTier"] = superForceSelect or false
 	returnTable["IncludeSplitters"] = playerSettings["PCPBU-bool-splitters-included-setting"].value
 	returnTable["IncludeSideloadingBelts"] = playerSettings["PCPBU-bool-sideloading-belts-included-setting"].value
 	returnTable["IncludeAllEntities"] = playerSettings["PCPBU-bool-upgrade-all-selected-threads-setting"].value
@@ -315,21 +318,24 @@ local function UpgradeBeltNetwork(event, truthTable)
 		end
 
 		for _, belt in pairs(transportBeltEntitiesToUpgrade) do
-			if (VERBOSE > 2) then
-				log({"", "Upgrading the following entity:"})
-				log(serpent.block(belt))
-			end
-			local nextUpgrade
-			if (beltGraph.isGhost(belt)) then
-				nextUpgrade = belt.ghost_prototype.next_upgrade
-			else
-				nextUpgrade = belt.prototype.next_upgrade
-				if (belt.to_be_upgraded()) then
-					nextUpgrade = belt.get_upgrade_target().next_upgrade
+			-- belt will be -1 if not in relBelt, and will only occur if super_forced_select is used.
+			if (belt ~= nil and belt ~= -1) then
+				if (VERBOSE > 2) then
+					log({"", "Upgrading the following entity:"})
+					log(serpent.block(belt))
 				end
-			end
-			if (nextUpgrade ~= nil) then
-				belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				local nextUpgrade
+				if (beltGraph.isGhost(belt)) then
+					nextUpgrade = belt.ghost_prototype.next_upgrade
+				else
+					nextUpgrade = belt.prototype.next_upgrade
+					if (belt.to_be_upgraded()) then
+						nextUpgrade = belt.get_upgrade_target().next_upgrade
+					end
+				end
+				if (nextUpgrade ~= nil) then
+					belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				end
 			end
 		end
 	end
@@ -517,6 +523,13 @@ script.on_event({defines.events.on_player_alt_selected_area}, function(event)
         UpgradeBeltNetwork(event, truthTable)
 	elseif event.item == 'beltThreadUpgrader-remove-tool' then
 		RemoveBeltNetwork(event, true)
+	end
+end)
+
+script.on_event({defines.events.on_player_super_forced_selected_area}, function(event)
+	if event.item == 'beltThreadUpgrader-upgrade-tool' then
+		local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), true, true)
+		UpgradeBeltNetwork(event, truthTable)
 	end
 end)
 

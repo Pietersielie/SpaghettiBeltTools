@@ -102,7 +102,9 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
             if (isGhost(conBelt)) then
                 conBeltName = conBelt.ghost_name
                 conBeltType = conBelt.ghost_type
-            end
+			elseif (conBelt.to_be_upgraded() and truthTable["DoSequentialUpgrades"] == true) then
+				conBeltName = conBelt.get_upgrade_target().name
+			end
 			-- Case: we're force collecting everything in the network
 			if (forceDisregardTier) then
 				beltEntitiesToReturn[cBUnitNumber] = conBelt
@@ -111,6 +113,12 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 				-- Splitters can have multiple outputs, so traverse that direction as well -- only one extraneous check
 				if (conBeltType == "splitter") then
 					beltEntitiesToReturn = findDownstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
+				end
+
+				if truthTable["AllBeltsOfTier"] then
+					if not isRelBelt(conBeltName, relBeltTable) then
+						beltEntitiesToReturn[cBUnitNumber] = nil
+					end
 				end
 
 			-- Case: Building network on one tier only, specified in relBeltTable
@@ -177,6 +185,7 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 					-- Case: not transport belt, underground, splitter, or one of the loaders... oops!
 					else
 						game.print("Something has gone wrong with building the belt graph, please contact the mod author.")
+						game.print("Troublesome entity is of type " .. conBeltType .. " with name " .. targetName .. ".")
 					end
 				end
 
@@ -263,6 +272,8 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
             if (isGhost(conBelt)) then
                 conBeltName = conBelt.ghost_name
                 conBeltType = conBelt.ghost_type
+			elseif (conBelt.to_be_upgraded() and truthTable["DoSequentialUpgrades"] == true) then
+				conBeltName = conBelt.get_upgrade_target().name
             end
             -- Case: we're force collecting everything in the network
 			if (forceDisregardTier) then
@@ -273,6 +284,12 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 				if (conBeltType == "splitter") then
 					beltEntitiesToReturn = findUpstreamNetwork(conBelt, beltEntitiesToReturn, relBeltTable, truthTable)
                 end
+
+				if truthTable["AllBeltsOfTier"] then
+					if not isRelBelt(conBeltName, relBeltTable) then
+						beltEntitiesToReturn[cBUnitNumber] = nil
+					end
+				end
 
 			-- Case: Building network on one tier only, specified in relBeltTable
 			-- 		 By default, this implies we only go to the next splitter.
@@ -363,18 +380,6 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 
 	return beltEntitiesToReturn
 end
-
--- Recursively finds the set of transport belt entities rendered redundant by removal of a given belt.
--- @param belt The belt from which to start the search.
--- 	    :@type LuaEntity
--- @param beltEntitiesToReturn The table of entities collected and returned at the end.
--- 	    :@type LuaEntity
--- @param relBeltTable The table consisting of the belt tier to add to the graph.
--- 	    :@type LuaTable
--- @param UpDown A boolean that dictates if belt is in the downstream or upstream direction of the thread. Upstream is false, downstream is true
---		:@type Boolean
--- @return Table of each transportBeltConnectable in the network of belt, as bound by 
---      :@type {LuaEntity}
 
 ---Recursively finds the set of transport belt entities rendered redundant by removal of `belt`.
 ---@param belt LuaEntity The belt from which to start the search.
