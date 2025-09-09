@@ -51,6 +51,13 @@ BigTableOfBelts["supersonic-transport-belt"] = {["transport-belt"] = "supersonic
 -- Planetaris Unbounded: Arig (https://mods.factorio.com/mod/planetaris-unbounded)
 BigTableOfBelts["planetaris-hyper-belt"] = {["transport-belt"] = "planetaris-hyper-transport-belt", ["underground-belt"] = "planetaris-hyper-underground-belt", ["splitter"] = "planetaris-hyper-splitter"} -- white
 
+-- More Belts (https://mods.factorio.com/mod/more-belts)
+BigTableOfBelts["more-belts-mk4"] = {["transport-belt"] = "ddi-transport-belt-mk4", ["underground-belt"] = "ddi-underground-belt-mk4", ["splitter"] = "ddi-splitter-mk4", ["laneSplit"] = "mk4-lane-splitter"} -- green
+BigTableOfBelts["more-belts-mk5"] = {["transport-belt"] = "ddi-transport-belt-mk5", ["underground-belt"] = "ddi-underground-belt-mk5", ["splitter"] = "ddi-splitter-mk5", ["laneSplit"] = "mk5-lane-splitter"} -- dark blue
+BigTableOfBelts["more-belts-mk6"] = {["transport-belt"] = "ddi-transport-belt-mk6", ["underground-belt"] = "ddi-underground-belt-mk6", ["splitter"] = "ddi-splitter-mk6", ["laneSplit"] = "mk6-lane-splitter"} -- red
+BigTableOfBelts["more-belts-mk7"] = {["transport-belt"] = "ddi-transport-belt-mk7", ["underground-belt"] = "ddi-underground-belt-mk7", ["splitter"] = "ddi-splitter-mk7", ["laneSplit"] = "mk7-lane-splitter"} -- purple
+BigTableOfBelts["more-belts-mk8"] = {["transport-belt"] = "ddi-transport-belt-mk8", ["underground-belt"] = "ddi-underground-belt-mk8", ["splitter"] = "ddi-splitter-mk8", ["laneSplit"] = "mk8-lane-splitter"} -- magenta
+
 -- AAI Loaders ()
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
@@ -99,7 +106,7 @@ if (script.active_mods['factorioplus']) then
 end
 
 -- Lane balancers and splitters (https://mods.factorio.com/mod/lane-balancers, https://mods.factorio.com/mods/lane-splitters)
-if (script.active_mods['lane-balancers'] or script.active_mods['lane-splitters']) then
+if (script.active_mods['lane-balancers'] or script.active_mods['lane-splitters'] or script.active_mods['more-belts']) then
 	BigTableOfBelts["transport-belt"]["laneSplit"] = "lane-splitter"
 	BigTableOfBelts["fast-transport-belt"]["laneSplit"] = "fast-lane-splitter"
 	BigTableOfBelts["express-transport-belt"]["laneSplit"] = "express-lane-splitter"
