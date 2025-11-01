@@ -58,12 +58,33 @@ BigTableOfBelts["more-belts-mk6"] = {["transport-belt"] = "ddi-transport-belt-mk
 BigTableOfBelts["more-belts-mk7"] = {["transport-belt"] = "ddi-transport-belt-mk7", ["underground-belt"] = "ddi-underground-belt-mk7", ["splitter"] = "ddi-splitter-mk7", ["laneSplit"] = "mk7-lane-splitter"} -- purple
 BigTableOfBelts["more-belts-mk8"] = {["transport-belt"] = "ddi-transport-belt-mk8", ["underground-belt"] = "ddi-underground-belt-mk8", ["splitter"] = "ddi-splitter-mk8", ["laneSplit"] = "mk8-lane-splitter"} -- magenta
 
+-- Space Exploration (https://mods.factorio.com/mod/space-exploration)
+BigTableOfBelts["se-space-transport-belt"] = {["transport-belt"] = "se-space-transport-belt", ["underground-belt"] = "se-space-underground-belt", ["splitter"] = "se-space-splitter"} -- white
+BigTableOfBelts["se-deep-space-transport-belt-black"] = {["transport-belt"] = "se-deep-space-transport-belt-black", ["underground-belt"] = "se-deep-space-underground-belt-black", ["splitter"] = "se-deep-space-splitter-black"} -- black
+BigTableOfBelts["se-deep-space-transport-belt-blue"] = {["transport-belt"] = "se-deep-space-transport-belt-blue", ["underground-belt"] = "se-deep-space-underground-belt-blue", ["splitter"] = "se-deep-space-splitter-blue"} -- blue
+BigTableOfBelts["se-deep-space-transport-belt-cyan"] = {["transport-belt"] = "se-deep-space-transport-belt-cyan", ["underground-belt"] = "se-deep-space-underground-belt-cyan", ["splitter"] = "se-deep-space-splitter-cyan"} -- cyan
+BigTableOfBelts["se-deep-space-transport-belt-green"] = {["transport-belt"] = "se-deep-space-transport-belt-green", ["underground-belt"] = "se-deep-space-underground-belt-green", ["splitter"] = "se-deep-space-splitter-green"} -- green
+BigTableOfBelts["se-deep-space-transport-belt-magenta"] = {["transport-belt"] = "se-deep-space-transport-belt-magenta", ["underground-belt"] = "se-deep-space-underground-belt-magenta", ["splitter"] = "se-deep-space-splitter-magenta"} -- magenta
+BigTableOfBelts["se-deep-space-transport-belt-red"] = {["transport-belt"] = "se-deep-space-transport-belt-red", ["underground-belt"] = "se-deep-space-underground-belt-red", ["splitter"] = "se-deep-space-splitter-red"} -- red
+BigTableOfBelts["se-deep-space-transport-belt-white"] = {["transport-belt"] = "se-deep-space-transport-belt-white", ["underground-belt"] = "se-deep-space-underground-belt-white", ["splitter"] = "se-deep-space-splitter-white"} -- white
+BigTableOfBelts["se-deep-space-transport-belt-yellow"] = {["transport-belt"] = "se-deep-space-transport-belt-yellow", ["underground-belt"] = "se-deep-space-underground-belt-yellow", ["splitter"] = "se-deep-space-splitter-yellow"} -- yellow
+
 -- AAI Loaders ()
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "aai-fast-loader"
 	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "aai-express-loader"
 	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
+
+	BigTableOfBelts["se-space-transport-belt"]["loader1x1"] = "aai-se-space-loader";
+	BigTableOfBelts["se-deep-space-transport-belt-black"]["loader1x1"] = "aai-se-deep-space-black-	loader";
+	BigTableOfBelts["se-deep-space-transport-belt-blue"]["loader1x1"] = "aai-se-deep-space-blue-loader";
+	BigTableOfBelts["se-deep-space-transport-belt-cyan"]["loader1x1"] = "aai-se-deep-space-cyan-loader";
+	BigTableOfBelts["se-deep-space-transport-belt-green"]["loader1x1"] = "aai-se-deep-space-green-loader";
+	BigTableOfBelts["se-deep-space-transport-belt-magenta"]["loader1x1"] = "aai-se-deep-space-magenta-loader";
+	BigTableOfBelts["se-deep-space-transport-belt-red"]["loader1x1"] = "aai-se-deep-space-red-loader";
+	BigTableOfBelts["se-deep-space-transport-belt-white"]["loader1x1"] = "aai-se-deep-space-white-loader";
+	BigTableOfBelts["se-deep-space-transport-belt-yellow"]["loader1x1"] = "aai-se-deep-space-yellow-loader";
 end
 
 -- Krastorio2 loaders (https://mods.factorio.com/mod/Krastorio2)
