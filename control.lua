@@ -134,6 +134,20 @@ if (script.active_mods['lane-balancers'] or script.active_mods['lane-splitters']
 	BigTableOfBelts["turbo-transport-belt"]["laneSplit"] = "turbo-lane-splitter"
 end
 
+-- Comfortable Loader (https://mods.factorio.com/mod/comfortable-loader, https://mods.factorio.com/mod/ComfortableLoader-MoreBelts)
+if (script.active_mods['comfortable-loader'] or script.active_mods['ComfortableLoader-MoreBelts']) then
+	BigTableOfBelts["transport-belt"]["loader1x1"] = "comfortable-loader"
+	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "fast-comfortable-loader"
+	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "express-comfortable-loader"
+	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "turbo-comfortable-loader"
+	
+	BigTableOfBelts["more-belts-mk4"]['loader1x1'] = 'comfortable-loader-mk4'
+	BigTableOfBelts["more-belts-mk5"]['loader1x1'] = 'comfortable-loader-mk5'
+	BigTableOfBelts["more-belts-mk6"]['loader1x1'] = 'comfortable-loader-mk6'
+	BigTableOfBelts["more-belts-mk7"]['loader1x1'] = 'comfortable-loader-mk7'
+	BigTableOfBelts["more-belts-mk8"]['loader1x1'] = 'comfortable-loader-mk8'
+end
+
 ---Returns a table with truth values, with the following keys:
 --- - ["ForceBuild"] 				Force build.
 --- - ["IncludeSplitters"] 		Include splitters when upgrading a belt section.
