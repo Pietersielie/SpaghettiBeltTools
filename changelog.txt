@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.0
+Date: 2025-12-19
+  Major Features:
+    - Add feature to removal tool to remove pipelines. (https://github.com/Pietersielie/BeltUpgrader/issues/57)
+    - This is on reverse selection, and can only select pipelike entities (pipes, pumps, storage tanks, etc.).
+  Bugfixes:
+    - Fix issue related to removing belts not propagating upstream when initial selection is an output underground belt.
+---------------------------------------------------------------------------------------------------
 Version: 1.3.6
 Date: 2025-12-03
   Locale:
