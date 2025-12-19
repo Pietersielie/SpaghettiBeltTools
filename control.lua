@@ -2,6 +2,14 @@ local beltGraph = require("scripts/belt-graph")
 
 local VERBOSE = 0
 
+-- Table containing list of pipelike items to remove when removing pipes.
+local pipeSelectionTypeFilter = {}
+pipeSelectionTypeFilter["pipe"] = true
+pipeSelectionTypeFilter["pipe-to-ground"] = true
+pipeSelectionTypeFilter["pump"] = true
+pipeSelectionTypeFilter["offshore-pump"] = true
+pipeSelectionTypeFilter["storage-tank"] = true
+
 -- Table containing list of belt tiers, with each tier having its belt, underground belt, splitter. If applicable mods are loaded, a 1x1 loader and 1x2 loader are included as well.
 local BigTableOfBelts = {}
 
@@ -504,21 +512,21 @@ local function RemoveBeltNetwork(event, ForceBuild)
 					transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(conBelt, transportBeltEntitiesToRemove, relBeltTier, false)
 				end
 
-				if beltType == "underground_belt" then
+				if beltType == "underground-belt" then
 					-- Determine direction of neighbour:
 					if entity.neighbours ~= nil then
 						local outLocal = table_size(entity.belt_neighbours["outputs"])
 						local outNeighbour = table_size(entity.neighbours.belt_neighbours["outputs"])
 
 						-- Case: Flow is from local to neighbour
-						if (outNeighbour > 0 and not outLocal > 0) then
+						if (outNeighbour > 0 and not (outLocal > 0)) then
 							-- Search downstream from neighbour
-							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbour, transportBeltEntitiesToRemove, relBeltTier, true)
+							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbours, transportBeltEntitiesToRemove, relBeltTier, true)
 
 						-- Case: Flow is from neighbour to local
-						elseif (outLocal > 0 and not outNeighbour > 0) then
+						elseif (outLocal > 0 and not (outNeighbour > 0)) then
 							-- Search upstream from neighbour
-							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbour, transportBeltEntitiesToRemove, relBeltTier, false)
+							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbours, transportBeltEntitiesToRemove, relBeltTier, false)
 						-- Case: No flow between neighbours.
 						-- else
 							-- do nothing
@@ -540,6 +548,61 @@ local function RemoveBeltNetwork(event, ForceBuild)
 				log(serpent.block(belt))
 			end
 			belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
+		end
+	end
+end
+
+--- Recursively find all connected pipe-like entities connected to pipeEntity
+---@param pipeEntity LuaEntity The belt from which to start the search.
+---@param pipeEntitiesToReturn table<int, LuaEntity> The table of entities collected and returned at the end.
+local function findAllConnectedPipes(pipeEntity, pipeEntitiesToReturn)
+	-- If the pipe has been visited before, ignore and move on.
+	if pipeEntitiesToReturn[pipeEntity.unit_number] ~= nil then
+		return pipeEntitiesToReturn
+	end
+
+	local connectedPipelikes = {}
+	pipeEntitiesToReturn[pipeEntity.unit_number] = pipeEntity
+	for _, fluidBox in pairs(pipeEntity.fluidbox.get_connections(1)) do
+		local boxOwnerType = fluidBox.owner.type
+		if beltGraph.isGhost(fluidBox.owner) then
+			boxOwnerType = fluidBox.owner.ghost_type
+		end
+		if pipeSelectionTypeFilter[boxOwnerType] then
+			if pipeEntitiesToReturn[fluidBox.owner.unit_number] == nil then
+				pipeEntitiesToReturn = findAllConnectedPipes(fluidBox.owner, pipeEntitiesToReturn)
+			end
+		end
+	end
+
+	return pipeEntitiesToReturn
+
+end
+
+--- Finds all pipelike entities connected to the selected pipes and marks them for deconstruction.
+---@param event LuaEventType The game event that raised this function, used for player values.
+---@param ForceBuild boolean True if all lines connected to the selection is to be removed, or if only lines made redundant by the removal of the selection is to be removed.
+local function RemovePipes(event, ForceBuild)
+	local thisPlayer = game.players[event.player_index]
+	local pipeEntitiesToRemove = {}
+	if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
+		local pipeEntities = event.entities
+		for _, entity in pairs(pipeEntities) do
+			pipeEntitiesToRemove = findAllConnectedPipes(entity, pipeEntitiesToRemove)
+		end
+
+		if VERBOSE > 1 then
+			log({"", "Found ", table_size(pipeEntitiesToRemove), " pipe-like entities to remove."})
+			game.print({"", "Found ", table_size(pipeEntitiesToRemove), " pipe-like entities to remove."})
+		end
+
+		-- For each pipe in graph, order deconstruction
+		for _, pipeEntity in pairs(pipeEntitiesToRemove) do
+			if (VERBOSE > 2) then
+				log({"", "Removing the following entity:"})
+				log(serpent.block(pipeEntity))
+			end
+			pipeEntity.order_deconstruction(thisPlayer.force_index, thisPlayer)
 		end
 	end
 end
@@ -566,6 +629,8 @@ script.on_event({defines.events.on_player_reverse_selected_area}, function(event
 	if event.item == 'beltThreadUpgrader-upgrade-tool' then
         local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), false)
 		DowngradeBeltNetwork(event, truthTable)
+	elseif event.item == 'beltThreadUpgrader-remove-tool' then
+		RemovePipes(event, false)
 	end
 end)
 

@@ -33,7 +33,11 @@ There are a few user settings available (under the per player tab of mod setting
 ## Belt Thread Remover
 The functionality is accessed through a tool, which you can access through a keyboard shortcut (Ctrl+Shift+D by default) or by clicking on the Belt Thread Remover button on the shortcut bar.
 
-Select a belt entity (or multiple) to remove the thread of.
+Select a belt entity (or multiple) to remove the thread of. Or use reverse select to select a pipe entity (or multiple) to remove all connected pipelike entities (pumps, storage tanks, etc.).
+**When in cursor:**
+  - Select (by default, left mouse) to remove belts of the same tier connected to the selected belt.
+  - Alternate select (by default, Shift+left mouse) to remove all belts connected to the selected belt, regardless of tier.
+  - Reverse select (by default, right mouse) to remove all pipe-like entities connected to the selected pipes. Does not remove crafting buildings.
 
 # Credits
 Some credit has to be given to the good folk of [Bagelville](https://www.youtube.com/laurenceplays) for helping test the mod, suggesting functionality, as well as providing the idea in the first place. A full credit log is available on the relevant thread for the mod on the discord server.
