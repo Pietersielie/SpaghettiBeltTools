@@ -50,19 +50,23 @@ beltThreadRemoveTool.select.cursor_box_type = "entity"
 beltThreadRemoveTool.select.mode = {"deconstruct"}
 beltThreadRemoveTool.select.entity_filter_mode = "whitelist"
 beltThreadRemoveTool.select.entity_type_filters = beltSelectionTypeFilter
-beltThreadRemoveTool.select.border_color = {0, 0.8, 0}
+beltThreadRemoveTool.select.border_color = {1, 0, 0}
 
 -- Alternate selection (Remove all belts connected to starting entity)
 beltThreadRemoveTool.alt_select.cursor_box_type = "entity"
 beltThreadRemoveTool.alt_select.mode = "deconstruct"
 beltThreadRemoveTool.alt_select.entity_filter_mode = "whitelist"
 beltThreadRemoveTool.alt_select.entity_type_filters = beltSelectionTypeFilter
-beltThreadRemoveTool.alt_select.border_color = {0, 0.8, 0.8}
+beltThreadRemoveTool.alt_select.border_color = {0.8, 0, 0.8}
 
--- Alternate selection (Remove all belts connected to starting entity)
+-- Reverse selection (Removes pipes connected to starting entity, split to pipes with to three or more connections)
 beltThreadRemoveTool.reverse_select = table.deepcopy(beltThreadRemoveTool.select)
 beltThreadRemoveTool.reverse_select.entity_type_filters = pipeSelectionTypeFilter
-beltThreadRemoveTool.reverse_select.border_color = {1, 0, 0}
+beltThreadRemoveTool.reverse_select.border_color = {0, 0, 1}
+
+-- Alternate reverse selection (Removes pipes connected to starting entity, split to pipes with to three or more connections)
+beltThreadRemoveTool.alt_reverse_select = table.deepcopy(beltThreadRemoveTool.reverse_select)
+beltThreadRemoveTool.alt_reverse_select.border_color = {0, 0.8, 0.8}
 
 -- Add to game
 data:extend{beltThreadUpgradeTool, data.raw["shortcut"]["beltThreadUpgrader-give-belt-upgrade-tool-shortcut"]}

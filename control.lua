@@ -555,22 +555,27 @@ end
 --- Recursively find all connected pipe-like entities connected to pipeEntity
 ---@param pipeEntity LuaEntity The belt from which to start the search.
 ---@param pipeEntitiesToReturn table<int, LuaEntity> The table of entities collected and returned at the end.
-local function findAllConnectedPipes(pipeEntity, pipeEntitiesToReturn)
+---@param ForceRemove boolean If true, remove all connected pipes, otherwise end recursion if a pipe has three or more connections.
+local function findAllConnectedPipes(pipeEntity, pipeEntitiesToReturn, ForceRemove)
 	-- If the pipe has been visited before, ignore and move on.
 	if pipeEntitiesToReturn[pipeEntity.unit_number] ~= nil then
 		return pipeEntitiesToReturn
 	end
 
-	local connectedPipelikes = {}
+	local connectedPipelikes = pipeEntity.fluidbox.get_connections(1)
+	if (table_size(connectedPipelikes) > 2 and not ForceRemove) then
+		return pipeEntitiesToReturn
+	end
+
 	pipeEntitiesToReturn[pipeEntity.unit_number] = pipeEntity
-	for _, fluidBox in pairs(pipeEntity.fluidbox.get_connections(1)) do
+	for _, fluidBox in pairs(connectedPipelikes) do
 		local boxOwnerType = fluidBox.owner.type
 		if beltGraph.isGhost(fluidBox.owner) then
 			boxOwnerType = fluidBox.owner.ghost_type
 		end
 		if pipeSelectionTypeFilter[boxOwnerType] then
 			if pipeEntitiesToReturn[fluidBox.owner.unit_number] == nil then
-				pipeEntitiesToReturn = findAllConnectedPipes(fluidBox.owner, pipeEntitiesToReturn)
+				pipeEntitiesToReturn = findAllConnectedPipes(fluidBox.owner, pipeEntitiesToReturn, ForceRemove)
 			end
 		end
 	end
@@ -588,7 +593,7 @@ local function RemovePipes(event, ForceBuild)
 	if thisPlayer.connected and table_size(event.entities) > 0 and thisPlayer.controller_type ~= defines.controllers.ghost then
 		local pipeEntities = event.entities
 		for _, entity in pairs(pipeEntities) do
-			pipeEntitiesToRemove = findAllConnectedPipes(entity, pipeEntitiesToRemove)
+			pipeEntitiesToRemove = findAllConnectedPipes(entity, pipeEntitiesToRemove, ForceBuild)
 		end
 
 		if VERBOSE > 1 then
@@ -638,5 +643,7 @@ script.on_event({defines.events.on_player_alt_reverse_selected_area}, function(e
 	if event.item == 'beltThreadUpgrader-upgrade-tool' then
         local truthTable = buildBoolTable(settings.get_player_settings(event.player_index), true)
 		DowngradeBeltNetwork(event, truthTable)
+	elseif event.item == 'beltThreadUpgrader-remove-tool' then
+		RemovePipes(event, true)
 	end
 end)
