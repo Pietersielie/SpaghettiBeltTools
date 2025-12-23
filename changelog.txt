@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.1
+Date: 2025-12-23
+  Minor Features:
+    - Add more granularity to pipe removal. (https://github.com/Pietersielie/BeltUpgrader/issues/59)
+    - Reverse selection now only marks up to the first junction from the selected pipes
+    - Add force remove as an option to pipe removal, which removes all connected pipes.
+---------------------------------------------------------------------------------------------------
 Version: 1.4.0
 Date: 2025-12-19
   Major Features:
