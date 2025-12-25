@@ -77,6 +77,11 @@ BigTableOfBelts["se-deep-space-transport-belt-red"] = {["transport-belt"] = "se-
 BigTableOfBelts["se-deep-space-transport-belt-white"] = {["transport-belt"] = "se-deep-space-transport-belt-white", ["underground-belt"] = "se-deep-space-underground-belt-white", ["splitter"] = "se-deep-space-splitter-white"} -- white
 BigTableOfBelts["se-deep-space-transport-belt-yellow"] = {["transport-belt"] = "se-deep-space-transport-belt-yellow", ["underground-belt"] = "se-deep-space-underground-belt-yellow", ["splitter"] = "se-deep-space-splitter-yellow"} -- yellow
 
+-- Bob's Logistics (https://mods.factorio.com/mod/boblogistics)
+BigTableOfBelts["bob-basic-transport-belt"] = {["transport-belt"] = "bob-basic-transport-belt", ["underground-belt"] = "bob-basic-underground-belt", ["splitter"] = "bob-basic-splitter"} -- grey
+BigTableOfBelts["bob-turbo-transport-belt"] = {["transport-belt"] = "bob-turbo-transport-belt", ["underground-belt"] = "bob-turbo-underground-belt", ["splitter"] = "bob-turbo-splitter"} -- purple
+BigTableOfBelts["bob-ultimate-transport-belt"] = {["transport-belt"] = "bob-ultimate-transport-belt", ["underground-belt"] = "bob-ultimate-underground-belt", ["splitter"] = "bob-ultimate-splitter"} -- green
+
 -- AAI Loaders ()
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
@@ -84,15 +89,21 @@ if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "aai-express-loader"
 	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
 
-	BigTableOfBelts["se-space-transport-belt"]["loader1x1"] = "aai-se-space-loader";
-	BigTableOfBelts["se-deep-space-transport-belt-black"]["loader1x1"] = "aai-se-deep-space-black-	loader";
-	BigTableOfBelts["se-deep-space-transport-belt-blue"]["loader1x1"] = "aai-se-deep-space-blue-loader";
-	BigTableOfBelts["se-deep-space-transport-belt-cyan"]["loader1x1"] = "aai-se-deep-space-cyan-loader";
-	BigTableOfBelts["se-deep-space-transport-belt-green"]["loader1x1"] = "aai-se-deep-space-green-loader";
-	BigTableOfBelts["se-deep-space-transport-belt-magenta"]["loader1x1"] = "aai-se-deep-space-magenta-loader";
-	BigTableOfBelts["se-deep-space-transport-belt-red"]["loader1x1"] = "aai-se-deep-space-red-loader";
-	BigTableOfBelts["se-deep-space-transport-belt-white"]["loader1x1"] = "aai-se-deep-space-white-loader";
-	BigTableOfBelts["se-deep-space-transport-belt-yellow"]["loader1x1"] = "aai-se-deep-space-yellow-loader";
+	BigTableOfBelts["se-space-transport-belt"]["loader1x1"] = "aai-se-space-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-black"]["loader1x1"] = "aai-se-deep-space-black-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-blue"]["loader1x1"] = "aai-se-deep-space-blue-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-cyan"]["loader1x1"] = "aai-se-deep-space-cyan-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-green"]["loader1x1"] = "aai-se-deep-space-green-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-magenta"]["loader1x1"] = "aai-se-deep-space-magenta-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-red"]["loader1x1"] = "aai-se-deep-space-red-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-white"]["loader1x1"] = "aai-se-deep-space-white-loader"
+	BigTableOfBelts["se-deep-space-transport-belt-yellow"]["loader1x1"] = "aai-se-deep-space-yellow-loader"
+	if (script.active_mods['boblogistics']) then
+		BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = nil
+		BigTableOfBelts["bob-basic-transport-belt"]["loader1x1"] = "aai-basic-loader"
+		BigTableOfBelts["bob-turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
+		BigTableOfBelts["bob-ultimate-transport-belt"]["loader1x1"] = "aai-ultimate-loader"
+	end
 end
 
 -- Krastorio2 loaders (https://mods.factorio.com/mod/Krastorio2)
