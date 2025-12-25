@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.2
+Date: 2025-12-25
+  Info:
+    - Merry Cogmas!
+  Mod Compatibility:
+    - Add support for Bob's Logistics. (https://github.com/Pietersielie/BeltUpgrader/issues/61)
+---------------------------------------------------------------------------------------------------
 Version: 1.4.1
 Date: 2025-12-23
   Minor Features:
