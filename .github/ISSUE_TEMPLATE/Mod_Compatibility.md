@@ -2,7 +2,7 @@
 name: Mod compatibility request
 about: Ask for a mod to be supported by Spaghetti Belt Tools
 title: '[MC] "New mod compatibility request"'
-labels: 'mod compatiblity'
+labels: 'mod%20compatibility'
 assignees: ''
 
 ---
