@@ -167,6 +167,19 @@ if (script.active_mods['comfortable-loader'] or script.active_mods['ComfortableL
 	BigTableOfBelts["more-belts-mk8"]['loader1x1'] = 'comfortable-loader-mk8'
 end
 
+-- More Belts Loaders
+if (script.active_mods['more-belts-loaders']) then
+	BigTableOfBelts["transport-belt"]["loader1x1"] = "ddi-loader"
+	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "ddi-fast-loader"
+	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "ddi-express-loader"
+	
+	BigTableOfBelts["more-belts-mk4"]['loader1x1'] = 'ddi-loader-mk4'
+	BigTableOfBelts["more-belts-mk5"]['loader1x1'] = 'ddi-loader-mk5'
+	BigTableOfBelts["more-belts-mk6"]['loader1x1'] = 'ddi-loader-mk6'
+	BigTableOfBelts["more-belts-mk7"]['loader1x1'] = 'ddi-loader-mk7'
+	BigTableOfBelts["more-belts-mk8"]['loader1x1'] = 'ddi-loader-mk8'
+end
+
 ---Returns a table with truth values, with the following keys:
 --- - ["ForceBuild"] 				Force build.
 --- - ["IncludeSplitters"] 		Include splitters when upgrading a belt section.
