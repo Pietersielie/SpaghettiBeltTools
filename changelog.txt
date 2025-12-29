@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.3
+Date: 2025-12-29
+  Mod Compatibility:
+    - Add support for More Belts Loaders. (https://github.com/Pietersielie/BeltUpgrader/issues/63)
+---------------------------------------------------------------------------------------------------
 Version: 1.4.2
 Date: 2025-12-25
   Info:
