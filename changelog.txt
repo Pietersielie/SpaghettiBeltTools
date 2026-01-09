@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.4
+Date: 2026-01-09
+  Bugfixes:
+    - Fixed a crash that occurred when a selection had a tile ghost included (since that wasn't excluded on filtering). (https://github.com/Pietersielie/BeltUpgrader/issues/65)
+---------------------------------------------------------------------------------------------------
 Version: 1.4.3
 Date: 2025-12-29
   Mod Compatibility:
