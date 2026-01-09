@@ -497,7 +497,7 @@ local function RemoveBeltNetwork(event, ForceBuild)
 		if (ForceBuild) then
 			if (truthTable["IncludeAllEntities"]) then
 				for _, entity in pairs(event.entities) do
-					transportBeltEntitiesToRemove = findAllConnectedBelts(entity, transportBeltEntitiesToRemove, truthTable)
+					transportBeltEntitiesToRemove = findAllConnectedBelts(entity, transportBeltEntitiesToRemove, truthTable)					
 				end
 			else
 				local initialBelt = event.entities[1]
@@ -515,9 +515,10 @@ local function RemoveBeltNetwork(event, ForceBuild)
 			end
 
 			for _, entity in pairs(belts) do
+
 				local relBeltTier = buildBeltTierTable(entity)
 				if relBeltTier == nil then
-					return
+					goto continue
 				end
 
 				local beltType = entity.type
@@ -557,6 +558,7 @@ local function RemoveBeltNetwork(event, ForceBuild)
 						end
 					end
 				end
+				::continue::
 			end
 		end
 		
