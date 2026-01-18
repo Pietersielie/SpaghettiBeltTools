@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.5
+Date: 2026-01-18
+  Mod Compatibility:
+    - Add support for Dredgeworks' floating belts. (https://github.com/Pietersielie/BeltUpgrader/issues/67)
+---------------------------------------------------------------------------------------------------
 Version: 1.4.4
 Date: 2026-01-09
   Bugfixes:
