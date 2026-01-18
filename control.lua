@@ -82,6 +82,12 @@ BigTableOfBelts["bob-basic-transport-belt"] = {["transport-belt"] = "bob-basic-t
 BigTableOfBelts["bob-turbo-transport-belt"] = {["transport-belt"] = "bob-turbo-transport-belt", ["underground-belt"] = "bob-turbo-underground-belt", ["splitter"] = "bob-turbo-splitter"} -- purple
 BigTableOfBelts["bob-ultimate-transport-belt"] = {["transport-belt"] = "bob-ultimate-transport-belt", ["underground-belt"] = "bob-ultimate-underground-belt", ["splitter"] = "bob-ultimate-splitter"} -- green
 
+-- Dredgeworks (https://mods.factorio.com/mod/dredgeworks)
+BigTableOfBelts["dredgeworks-floating-transport-belt"] = {["transport-belt"] = "floating-transport-belt", ["underground-belt"] = "underground-belt", ["splitter"] = "splitter"} -- pale yellow
+BigTableOfBelts["dredgeworks-floating-fast-transport-belt"] = {["transport-belt"] = "floating-fast-transport-belt", ["underground-belt"] = "fast-underground-belt", ["splitter"] = "fast-splitter"} -- red
+BigTableOfBelts["dredgeworks-floating-express-transport-belt"] = {["transport-belt"] = "floating-express-transport-belt", ["underground-belt"] = "express-underground-belt", ["splitter"] = "express-splitter"} -- blue
+BigTableOfBelts["dredgeworks-floating-turbo-transport-belt"] = {["transport-belt"] = "floating-turbo-transport-belt", ["underground-belt"] = "turbo-underground-belt", ["splitter"] = "turbo-splitter"} -- green
+
 -- AAI Loaders ()
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
