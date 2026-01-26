@@ -88,13 +88,18 @@ BigTableOfBelts["dredgeworks-floating-fast-transport-belt"] = {["transport-belt"
 BigTableOfBelts["dredgeworks-floating-express-transport-belt"] = {["transport-belt"] = "floating-express-transport-belt", ["underground-belt"] = "express-underground-belt", ["splitter"] = "express-splitter"} -- blue
 BigTableOfBelts["dredgeworks-floating-turbo-transport-belt"] = {["transport-belt"] = "floating-turbo-transport-belt", ["underground-belt"] = "turbo-underground-belt", ["splitter"] = "turbo-splitter"} -- green
 
--- AAI Loaders ()
+-- Periodic Madness (https://mods.factorio.com/mod/periodic-madness)
+BigTableOfBelts["periodic-madness-advanced-transport-belt"] = {["transport-belt"] = "pm-advanced-transport-belt", ["underground-belt"] = "pm-advanced-underground-belt", ["splitter"] = "pm-advanced-splitter"} -- red
+BigTableOfBelts["periodic-madness-high-density-transport-belt"] = {["transport-belt"] = "pm-high-density-transport-belt", ["underground-belt"] = "pm-high-density-underground-belt", ["splitter"] = "pm-high-density-splitter"} -- red
+
+-- AAI Loaders (https://mods.factorio.com/mod/aai-loaders)
 if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
 	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "aai-fast-loader"
 	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "aai-express-loader"
 	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
 
+	-- Space Exploration
 	BigTableOfBelts["se-space-transport-belt"]["loader1x1"] = "aai-se-space-loader"
 	BigTableOfBelts["se-deep-space-transport-belt-black"]["loader1x1"] = "aai-se-deep-space-black-loader"
 	BigTableOfBelts["se-deep-space-transport-belt-blue"]["loader1x1"] = "aai-se-deep-space-blue-loader"
@@ -104,6 +109,10 @@ if (script.active_mods['aai-loaders']) then
 	BigTableOfBelts["se-deep-space-transport-belt-red"]["loader1x1"] = "aai-se-deep-space-red-loader"
 	BigTableOfBelts["se-deep-space-transport-belt-white"]["loader1x1"] = "aai-se-deep-space-white-loader"
 	BigTableOfBelts["se-deep-space-transport-belt-yellow"]["loader1x1"] = "aai-se-deep-space-yellow-loader"
+	
+	-- Lignumis
+	BigTableOfBelts["wood-transport-belt"]["loader1x1"] = "aai-wood-loader"
+	
 	if (script.active_mods['boblogistics']) then
 		BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = nil
 		BigTableOfBelts["bob-basic-transport-belt"]["loader1x1"] = "aai-basic-loader"
