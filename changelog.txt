@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.6
+Date: 2026-01-26
+  Mod Compatibility:
+    - Add support for Periodic Madness' two belts. (https://github.com/Pietersielie/BeltUpgrader/issues/69)
+  Bugfixes:
+    - Fix issue with Lignumis' Wood loader and AAI Loaders compatibility.
+---------------------------------------------------------------------------------------------------
 Version: 1.4.5
 Date: 2026-01-18
   Mod Compatibility:
