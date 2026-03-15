@@ -194,6 +194,23 @@ if (script.active_mods['more-belts-loaders']) then
 	table.insert(BigTableOfBelts["more-belts-mk8"]["loader1x1"], "ddi-loader-mk8")
 end
 
+if (script.active_mods['loader-utils']) then
+	local baseLoaders = prototypes.mod_data['loader-utils'].data.base_loaders
+	if (VERBOSE > 1) then
+		log({"", "Base Loaders = ", serpent.block(baseLoaders)})
+	end
+	for _, val in pairs(BigTableOfBelts) do
+		local group = val['loader1x1']
+		for _, value in pairs(group) do
+			for prot, base in pairs(baseLoaders) do		
+				if (value == base) and not (base == prot) then
+					table.insert(group, prot)
+				end
+			end
+		end
+	end
+end
+
 ---Returns a table with truth values, with the following keys:
 --- - ["ForceBuild"] 				Force build.
 --- - ["IncludeSplitters"] 		Include splitters when upgrading a belt section.
@@ -419,7 +436,11 @@ local function UpgradeBeltNetwork(event, truthTable)
 				end
 			end
 			if (nextUpgrade ~= nil) then
-				belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				local res = belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				if not res then
+					game.print({"", "Failed to upgrade ", belt.name, " to ", nextUpgrade.name, "! Please check on the mod page if this is a known issue."})
+					log({"", "Failed to upgrade ", belt.name, " to ", nextUpgrade.name, "! Please check on the mod page if this is a known issue."})
+				end
 			end
 		end
 	end
@@ -493,7 +514,11 @@ local function DowngradeBeltNetwork(event, truthTable)
 				nextDowngrade = downgradeCache[beltName]
 			end
 			if (nextDowngrade ~= nil) then
-				belt.order_upgrade({target=nextDowngrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				local res = belt.order_upgrade({target=nextDowngrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				if not res then
+					game.print({"", "Failed to downgrade ", belt.name, " to ", nextDowngrade.name, "! Please check on the mod page if this is a known issue."})
+					log({"", "Failed to downgrade ", belt.name, " to ", nextDowngrade.name, "! Please check on the mod page if this is a known issue."})
+				end
 			end
 		end
 	end
@@ -589,7 +614,11 @@ local function RemoveBeltNetwork(event, ForceBuild)
 				log({"", "Removing the following entity:"})
 				log(serpent.block(belt))
 			end
-			belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			local res = belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			if not res then
+				game.print({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
+				log({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
+			end
 		end
 	end
 end
@@ -649,7 +678,11 @@ local function RemovePipes(event, ForceBuild)
 				log({"", "Removing the following entity:"})
 				log(serpent.block(pipeEntity))
 			end
-			pipeEntity.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			local res = pipeEntity.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			if not res then
+				game.print({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
+				log({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
+			end
 		end
 	end
 end
