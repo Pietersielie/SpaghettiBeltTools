@@ -27,12 +27,14 @@ end
 
 ---Checks if a prototype name is in the specified table. Intended for use with the related Belt tier table.
 ---@param prototypeName string The name of the prototype to check if it is included.
----@param relBeltTable table<string, string> The table to go through to check for the prototype name.
+---@param relBeltTable table<string, table<int, string>> The table to go through to check for the prototype name.
 ---@return boolean val True if `prototypeName` is in `relBeltTable`, false if not.
 isRelBelt = function (prototypeName, relBeltTable)
-	for _, value in pairs(relBeltTable) do
-		if (value == prototypeName) then
-			return true
+	for _, val in pairs(relBeltTable) do
+		for _, value in pairs(val) do
+			if (value == prototypeName) then
+				return true
+			end
 		end
 	end
 	return false

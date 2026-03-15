@@ -14,185 +14,227 @@ pipeSelectionTypeFilter["storage-tank"] = true
 local BigTableOfBelts = {}
 
 -- Base game
-BigTableOfBelts["transport-belt"] = {["transport-belt"] = "transport-belt", ["underground-belt"] = "underground-belt", ["splitter"] = "splitter"} -- yellow
-BigTableOfBelts["fast-transport-belt"] = {["transport-belt"] = "fast-transport-belt", ["underground-belt"] = "fast-underground-belt", ["splitter"] = "fast-splitter"} -- red
-BigTableOfBelts["express-transport-belt"] = {["transport-belt"] = "express-transport-belt", ["underground-belt"] = "express-underground-belt", ["splitter"] = "express-splitter"} -- blue
+BigTableOfBelts["transport-belt"] = {["transport-belt"] = {"transport-belt"}, ["underground-belt"] = {"underground-belt"}, ["splitter"] = {"splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- yellow
+BigTableOfBelts["fast-transport-belt"] = {["transport-belt"] = {"fast-transport-belt"}, ["underground-belt"] = {"fast-underground-belt"}, ["splitter"] = {"fast-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- red
+BigTableOfBelts["express-transport-belt"] = {["transport-belt"] = {"express-transport-belt"}, ["underground-belt"] = {"express-underground-belt"}, ["splitter"] = {"express-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- blue
 
 -- Space Age
-BigTableOfBelts["turbo-transport-belt"] = {["transport-belt"] = "turbo-transport-belt", ["underground-belt"] = "turbo-underground-belt", ["splitter"] = "turbo-splitter"} -- green
+BigTableOfBelts["turbo-transport-belt"] = {["transport-belt"] = {"turbo-transport-belt"}, ["underground-belt"] = {"turbo-underground-belt"}, ["splitter"] = {"turbo-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- green
 
 -- Lignumis (https://mods.factorio.com/mod/lignumis)
-BigTableOfBelts["wood-transport-belt"] = {["transport-belt"] = "wood-transport-belt", ["underground-belt"] = "wood-underground-belt", ["splitter"] = "wood-splitter"} -- brown
+BigTableOfBelts["wood-transport-belt"] = {["transport-belt"] = {"wood-transport-belt"}, ["underground-belt"] = {"wood-underground-belt"}, ["splitter"] = {"wood-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- brown
 
 -- Advanced Belts (https://mods.factorio.com/mod/AdvancedBeltsSA/)
-BigTableOfBelts["advanced-transport-belt"] = {["transport-belt"] = "extreme-belt", ["underground-belt"] = "extreme-underground", ["splitter"] = "extreme-splitter"} -- cyan
-BigTableOfBelts["elite-transport-belt"] = {["transport-belt"] = "ultimate-belt", ["underground-belt"] = "ultimate-underground", ["splitter"] = "ultimate-splitter"} -- orange
-BigTableOfBelts["hyper-transport-belt"] = {["transport-belt"] = "high-speed-belt", ["underground-belt"] = "high-speed-underground", ["splitter"] = "high-speed-splitter"} -- purple
+BigTableOfBelts["advanced-transport-belt"] = {["transport-belt"] = {"extreme-belt"}, ["underground-belt"] = {"extreme-underground"}, ["splitter"] = {"extreme-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- cyan
+BigTableOfBelts["elite-transport-belt"] = {["transport-belt"] = {"ultimate-belt"}, ["underground-belt"] = {"ultimate-underground"}, ["splitter"] = {"ultimate-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- orange
+BigTableOfBelts["hyper-transport-belt"] = {["transport-belt"] = {"high-speed-belt"}, ["underground-belt"] = {"high-speed-underground"}, ["splitter"] = {"high-speed-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- purple
 
 -- Ultimate Belts (https://mods.factorio.com/mod/UltimateBeltsSpaceAge)
-BigTableOfBelts["ultra-fast-transport-belt"] = {["transport-belt"] = "ultra-fast-belt", ["underground-belt"] = "ultra-fast-underground-belt", ["splitter"] = "ultra-fast-splitter"} -- dark green
-BigTableOfBelts["extreme-fast-transport-belt"] = {["transport-belt"] = "extreme-fast-belt", ["underground-belt"] = "extreme-fast-underground-belt", ["splitter"] = "extreme-fast-splitter"} -- dark red
-BigTableOfBelts["ultra-express-transport-belt"] = {["transport-belt"] = "ultra-express-belt", ["underground-belt"] = "ultra-express-underground-belt", ["splitter"] = "ultra-express-splitter"} -- dark purple
-BigTableOfBelts["extreme-express-transport-belt"] = {["transport-belt"] = "extreme-express-belt", ["underground-belt"] = "extreme-express-underground-belt", ["splitter"] = "extreme-express-splitter"} -- dark blue
-BigTableOfBelts["ultimate-transport-belt"] = {["transport-belt"] = "ultimate-belt", ["underground-belt"] = "original-ultimate-underground-belt", ["splitter"] = "original-ultimate-splitter"} -- dark cyan
+BigTableOfBelts["ultra-fast-transport-belt"] = {["transport-belt"] = {"ultra-fast-belt"}, ["underground-belt"] = {"ultra-fast-underground-belt"}, ["splitter"] = {"ultra-fast-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- dark green
+BigTableOfBelts["extreme-fast-transport-belt"] = {["transport-belt"] = {"extreme-fast-belt"}, ["underground-belt"] = {"extreme-fast-underground-belt"}, ["splitter"] = {"extreme-fast-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- dark red
+BigTableOfBelts["ultra-express-transport-belt"] = {["transport-belt"] = {"ultra-express-belt"}, ["underground-belt"] = {"ultra-express-underground-belt"}, ["splitter"] = {"ultra-express-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- dark purple
+BigTableOfBelts["extreme-express-transport-belt"] = {["transport-belt"] = {"extreme-express-belt"}, ["underground-belt"] = {"extreme-express-underground-belt"}, ["splitter"] = {"extreme-express-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- dark blue
+BigTableOfBelts["ultimate-transport-belt"] = {["transport-belt"] = {"ultimate-belt"}, ["underground-belt"] = {"original-ultimate-underground-belt"}, ["splitter"] = {"original-ultimate-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- dark cyan
 
 -- 5Dim - New Transport (https://mods.factorio.com/mod/5dim_transport)
-BigTableOfBelts["5d-transport-belt-mk4"] = {["transport-belt"] = "5d-transport-belt-04", ["underground-belt"] = "5d-underground-belt-04", ["splitter"] = "5d-splitter-04", ["loader1x1"] = "5d-loader-1x1-04", ["loader1x2"] = "5d-loader-04"} -- pink
-BigTableOfBelts["5d-transport-belt-mk5"] = {["transport-belt"] = "5d-transport-belt-05", ["underground-belt"] = "5d-underground-belt-05", ["splitter"] = "5d-splitter-05", ["loader1x1"] = "5d-loader-1x1-05", ["loader1x2"] = "5d-loader-05"} -- green
-BigTableOfBelts["5d-transport-belt-mk6"] = {["transport-belt"] = "5d-transport-belt-06", ["underground-belt"] = "5d-underground-belt-06", ["splitter"] = "5d-splitter-06", ["loader1x1"] = "5d-loader-1x1-06", ["loader1x2"] = "5d-loader-06"} -- brown
-BigTableOfBelts["5d-transport-belt-mk7"] = {["transport-belt"] = "5d-transport-belt-07", ["underground-belt"] = "5d-underground-belt-07", ["splitter"] = "5d-splitter-07", ["loader1x1"] = "5d-loader-1x1-07", ["loader1x2"] = "5d-loader-07"} -- purple
-BigTableOfBelts["5d-transport-belt-mk8"] = {["transport-belt"] = "5d-transport-belt-08", ["underground-belt"] = "5d-underground-belt-08", ["splitter"] = "5d-splitter-08", ["loader1x1"] = "5d-loader-1x1-08", ["loader1x2"] = "5d-loader-08"} -- white
-BigTableOfBelts["5d-transport-belt-mk9"] = {["transport-belt"] = "5d-transport-belt-09", ["underground-belt"] = "5d-underground-belt-09", ["splitter"] = "5d-splitter-09", ["loader1x1"] = "5d-loader-1x1-09", ["loader1x2"] = "5d-loader-09"} -- orange
-BigTableOfBelts["5d-transport-belt-mk10"] = {["transport-belt"] = "5d-transport-belt-10", ["underground-belt"] = "5d-underground-belt-10", ["splitter"] = "5d-splitter-10", ["loader1x1"] = "5d-loader-1x1-10", ["loader1x2"] = "5d-loader-10"} -- dark blue
+BigTableOfBelts["5d-transport-belt-mk4"] = {["transport-belt"] = {"5d-transport-belt-04"}, ["underground-belt"] = {"5d-underground-belt-04"}, ["splitter"] = {"5d-splitter-04"}, ["loader1x1"] = {"5d-loader-1x1-04"}, ["loader1x2"] = {"5d-loader-04"}} -- pink
+BigTableOfBelts["5d-transport-belt-mk5"] = {["transport-belt"] = {"5d-transport-belt-05"}, ["underground-belt"] = {"5d-underground-belt-05"}, ["splitter"] = {"5d-splitter-05"}, ["loader1x1"] = {"5d-loader-1x1-05"}, ["loader1x2"] = {"5d-loader-05"}} -- green
+BigTableOfBelts["5d-transport-belt-mk6"] = {["transport-belt"] = {"5d-transport-belt-06"}, ["underground-belt"] = {"5d-underground-belt-06"}, ["splitter"] = {"5d-splitter-06"}, ["loader1x1"] = {"5d-loader-1x1-06"}, ["loader1x2"] = {"5d-loader-06"}} -- brown
+BigTableOfBelts["5d-transport-belt-mk7"] = {["transport-belt"] = {"5d-transport-belt-07"}, ["underground-belt"] = {"5d-underground-belt-07"}, ["splitter"] = {"5d-splitter-07"}, ["loader1x1"] = {"5d-loader-1x1-07"}, ["loader1x2"] = {"5d-loader-07"}} -- purple
+BigTableOfBelts["5d-transport-belt-mk8"] = {["transport-belt"] = {"5d-transport-belt-08"}, ["underground-belt"] = {"5d-underground-belt-08"}, ["splitter"] = {"5d-splitter-08"}, ["loader1x1"] = {"5d-loader-1x1-08"}, ["loader1x2"] = {"5d-loader-08"}} -- white
+BigTableOfBelts["5d-transport-belt-mk9"] = {["transport-belt"] = {"5d-transport-belt-09"}, ["underground-belt"] = {"5d-underground-belt-09"}, ["splitter"] = {"5d-splitter-09"}, ["loader1x1"] = {"5d-loader-1x1-09"}, ["loader1x2"] = {"5d-loader-09"}} -- orange
+BigTableOfBelts["5d-transport-belt-mk10"] = {["transport-belt"] = {"5d-transport-belt-10"}, ["underground-belt"] = {"5d-underground-belt-10"}, ["splitter"] = {"5d-splitter-10"}, ["loader1x1"] = {"5d-loader-1x1-10"}, ["loader1x2"] = {"5d-loader-10"}} -- dark blue
 
 -- Krastorio2 (https://mods.factorio.com/mod/Krastorio2)
-BigTableOfBelts["kr-advanced-transport-belt"] = {["transport-belt"] = "kr-advanced-transport-belt", ["underground-belt"] = "kr-advanced-underground-belt", ["splitter"] = "kr-advanced-splitter", ["loader1x1"] = "kr-advanced-loader"} -- green
-BigTableOfBelts["kr-superior-transport-belt"] = {["transport-belt"] = "kr-superior-transport-belt", ["underground-belt"] = "kr-superior-underground-belt", ["splitter"] = "kr-superior-splitter", ["loader1x1"] = "kr-superior-loader"} -- purple
+BigTableOfBelts["kr-advanced-transport-belt"] = {["transport-belt"] = {"kr-advanced-transport-belt"}, ["underground-belt"] = {"kr-advanced-underground-belt"}, ["splitter"] = {"kr-advanced-splitter"}, ["loader1x1"] = {"kr-advanced-loader"}, ["laneSplit"] = {}, ["loader1x2"] = {}} -- green
+BigTableOfBelts["kr-superior-transport-belt"] = {["transport-belt"] = {"kr-superior-transport-belt"}, ["underground-belt"] = {"kr-superior-underground-belt"}, ["splitter"] = {"kr-superior-splitter"}, ["loader1x1"] = {"kr-superior-loader"}, ["laneSplit"] = {}, ["loader1x2"] = {}} -- purple
 
 -- Quantum Belts (https://mods.factorio.com/mod/quantum-belts)
-BigTableOfBelts["quantum-transport-belt"] = {["transport-belt"] = "quantum-belt", ["underground-belt"] = "quantum-underground", ["splitter"] = "quantum-splitter"} -- magenta
+BigTableOfBelts["quantum-transport-belt"] = {["transport-belt"] = {"quantum-belt"}, ["underground-belt"] = {"quantum-underground"}, ["splitter"] = {"quantum-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- magenta
 
 -- Factorio+ (https://mods.factorio.com/mod/factorioplus)
-BigTableOfBelts["basic-transport-belt"] = {["transport-belt"] = "basic-transport-belt", ["underground-belt"] = "basic-underground-belt", ["splitter"] = "basic-splitter", ["loader1x2"] = "basic-loader"} -- white/grey
-BigTableOfBelts["supersonic-transport-belt"] = {["transport-belt"] = "supersonic-transport-belt", ["underground-belt"] = "supersonic-underground-belt", ["splitter"] = "supersonic-splitter", ["loader1x2"] = "supersonic-loader"} -- pink
+BigTableOfBelts["basic-transport-belt"] = {["transport-belt"] = {"basic-transport-belt"}, ["underground-belt"] = {"basic-underground-belt"}, ["splitter"] = {"basic-splitter"}, ["loader1x2"] = {"basic-loader"}, ["laneSplit"] = {}, ["loader1x1"] = {}} -- white/grey
+BigTableOfBelts["supersonic-transport-belt"] = {["transport-belt"] = {"supersonic-transport-belt"}, ["underground-belt"] = {"supersonic-underground-belt"}, ["splitter"] = {"supersonic-splitter"}, ["loader1x2"] = {"supersonic-loader"}, ["laneSplit"] = {}, ["loader1x1"] = {}} -- pink
 
 -- Planetaris Unbounded: Arig (https://mods.factorio.com/mod/planetaris-unbounded)
-BigTableOfBelts["planetaris-hyper-belt"] = {["transport-belt"] = "planetaris-hyper-transport-belt", ["underground-belt"] = "planetaris-hyper-underground-belt", ["splitter"] = "planetaris-hyper-splitter"} -- white
+BigTableOfBelts["planetaris-hyper-belt"] = {["transport-belt"] = {"planetaris-hyper-transport-belt"}, ["underground-belt"] = {"planetaris-hyper-underground-belt"}, ["splitter"] = {"planetaris-hyper-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- white
 
 -- More Belts (https://mods.factorio.com/mod/more-belts)
-BigTableOfBelts["more-belts-mk4"] = {["transport-belt"] = "ddi-transport-belt-mk4", ["underground-belt"] = "ddi-underground-belt-mk4", ["splitter"] = "ddi-splitter-mk4", ["laneSplit"] = "mk4-lane-splitter"} -- green
-BigTableOfBelts["more-belts-mk5"] = {["transport-belt"] = "ddi-transport-belt-mk5", ["underground-belt"] = "ddi-underground-belt-mk5", ["splitter"] = "ddi-splitter-mk5", ["laneSplit"] = "mk5-lane-splitter"} -- dark blue
-BigTableOfBelts["more-belts-mk6"] = {["transport-belt"] = "ddi-transport-belt-mk6", ["underground-belt"] = "ddi-underground-belt-mk6", ["splitter"] = "ddi-splitter-mk6", ["laneSplit"] = "mk6-lane-splitter"} -- red
-BigTableOfBelts["more-belts-mk7"] = {["transport-belt"] = "ddi-transport-belt-mk7", ["underground-belt"] = "ddi-underground-belt-mk7", ["splitter"] = "ddi-splitter-mk7", ["laneSplit"] = "mk7-lane-splitter"} -- purple
-BigTableOfBelts["more-belts-mk8"] = {["transport-belt"] = "ddi-transport-belt-mk8", ["underground-belt"] = "ddi-underground-belt-mk8", ["splitter"] = "ddi-splitter-mk8", ["laneSplit"] = "mk8-lane-splitter"} -- magenta
+BigTableOfBelts["more-belts-mk4"] = {["transport-belt"] = {"ddi-transport-belt-mk4"}, ["underground-belt"] = {"ddi-underground-belt-mk4"}, ["splitter"] = {"ddi-splitter-mk4"}, ["laneSplit"] = {"mk4-lane-splitter"}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- green
+BigTableOfBelts["more-belts-mk5"] = {["transport-belt"] = {"ddi-transport-belt-mk5"}, ["underground-belt"] = {"ddi-underground-belt-mk5"}, ["splitter"] = {"ddi-splitter-mk5"}, ["laneSplit"] = {"mk5-lane-splitter"}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- dark blue
+BigTableOfBelts["more-belts-mk6"] = {["transport-belt"] = {"ddi-transport-belt-mk6"}, ["underground-belt"] = {"ddi-underground-belt-mk6"}, ["splitter"] = {"ddi-splitter-mk6"}, ["laneSplit"] = {"mk6-lane-splitter"}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- red
+BigTableOfBelts["more-belts-mk7"] = {["transport-belt"] = {"ddi-transport-belt-mk7"}, ["underground-belt"] = {"ddi-underground-belt-mk7"}, ["splitter"] = {"ddi-splitter-mk7"}, ["laneSplit"] = {"mk7-lane-splitter"}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- purple
+BigTableOfBelts["more-belts-mk8"] = {["transport-belt"] = {"ddi-transport-belt-mk8"}, ["underground-belt"] = {"ddi-underground-belt-mk8"}, ["splitter"] = {"ddi-splitter-mk8"}, ["laneSplit"] = {"mk8-lane-splitter"}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- magenta
 
 -- Space Exploration (https://mods.factorio.com/mod/space-exploration)
-BigTableOfBelts["se-space-transport-belt"] = {["transport-belt"] = "se-space-transport-belt", ["underground-belt"] = "se-space-underground-belt", ["splitter"] = "se-space-splitter"} -- white
-BigTableOfBelts["se-deep-space-transport-belt-black"] = {["transport-belt"] = "se-deep-space-transport-belt-black", ["underground-belt"] = "se-deep-space-underground-belt-black", ["splitter"] = "se-deep-space-splitter-black"} -- black
-BigTableOfBelts["se-deep-space-transport-belt-blue"] = {["transport-belt"] = "se-deep-space-transport-belt-blue", ["underground-belt"] = "se-deep-space-underground-belt-blue", ["splitter"] = "se-deep-space-splitter-blue"} -- blue
-BigTableOfBelts["se-deep-space-transport-belt-cyan"] = {["transport-belt"] = "se-deep-space-transport-belt-cyan", ["underground-belt"] = "se-deep-space-underground-belt-cyan", ["splitter"] = "se-deep-space-splitter-cyan"} -- cyan
-BigTableOfBelts["se-deep-space-transport-belt-green"] = {["transport-belt"] = "se-deep-space-transport-belt-green", ["underground-belt"] = "se-deep-space-underground-belt-green", ["splitter"] = "se-deep-space-splitter-green"} -- green
-BigTableOfBelts["se-deep-space-transport-belt-magenta"] = {["transport-belt"] = "se-deep-space-transport-belt-magenta", ["underground-belt"] = "se-deep-space-underground-belt-magenta", ["splitter"] = "se-deep-space-splitter-magenta"} -- magenta
-BigTableOfBelts["se-deep-space-transport-belt-red"] = {["transport-belt"] = "se-deep-space-transport-belt-red", ["underground-belt"] = "se-deep-space-underground-belt-red", ["splitter"] = "se-deep-space-splitter-red"} -- red
-BigTableOfBelts["se-deep-space-transport-belt-white"] = {["transport-belt"] = "se-deep-space-transport-belt-white", ["underground-belt"] = "se-deep-space-underground-belt-white", ["splitter"] = "se-deep-space-splitter-white"} -- white
-BigTableOfBelts["se-deep-space-transport-belt-yellow"] = {["transport-belt"] = "se-deep-space-transport-belt-yellow", ["underground-belt"] = "se-deep-space-underground-belt-yellow", ["splitter"] = "se-deep-space-splitter-yellow"} -- yellow
+BigTableOfBelts["se-space-transport-belt"] = {["transport-belt"] = {"se-space-transport-belt"}, ["underground-belt"] = {"se-space-underground-belt"}, ["splitter"] = {"se-space-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- white
+BigTableOfBelts["se-deep-space-transport-belt-black"] = {["transport-belt"] = {"se-deep-space-transport-belt-black"}, ["underground-belt"] = {"se-deep-space-underground-belt-black"}, ["splitter"] = {"se-deep-space-splitter-black"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- black
+BigTableOfBelts["se-deep-space-transport-belt-blue"] = {["transport-belt"] = {"se-deep-space-transport-belt-blue"}, ["underground-belt"] = {"se-deep-space-underground-belt-blue"}, ["splitter"] = {"se-deep-space-splitter-blue"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- blue
+BigTableOfBelts["se-deep-space-transport-belt-cyan"] = {["transport-belt"] = {"se-deep-space-transport-belt-cyan"}, ["underground-belt"] = {"se-deep-space-underground-belt-cyan"}, ["splitter"] = {"se-deep-space-splitter-cyan"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- cyan
+BigTableOfBelts["se-deep-space-transport-belt-green"] = {["transport-belt"] = {"se-deep-space-transport-belt-green"}, ["underground-belt"] = {"se-deep-space-underground-belt-green"}, ["splitter"] = {"se-deep-space-splitter-green"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- green
+BigTableOfBelts["se-deep-space-transport-belt-magenta"] = {["transport-belt"] = {"se-deep-space-transport-belt-magenta"}, ["underground-belt"] = {"se-deep-space-underground-belt-magenta"}, ["splitter"] = {"se-deep-space-splitter-magenta"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- magenta
+BigTableOfBelts["se-deep-space-transport-belt-red"] = {["transport-belt"] = {"se-deep-space-transport-belt-red"}, ["underground-belt"] = {"se-deep-space-underground-belt-red"}, ["splitter"] = {"se-deep-space-splitter-red"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- red
+BigTableOfBelts["se-deep-space-transport-belt-white"] = {["transport-belt"] = {"se-deep-space-transport-belt-white"}, ["underground-belt"] = {"se-deep-space-underground-belt-white"}, ["splitter"] = {"se-deep-space-splitter-white"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- white
+BigTableOfBelts["se-deep-space-transport-belt-yellow"] = {["transport-belt"] = {"se-deep-space-transport-belt-yellow"}, ["underground-belt"] = {"se-deep-space-underground-belt-yellow"}, ["splitter"] = {"se-deep-space-splitter-yellow"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- yellow
 
 -- Bob's Logistics (https://mods.factorio.com/mod/boblogistics)
-BigTableOfBelts["bob-basic-transport-belt"] = {["transport-belt"] = "bob-basic-transport-belt", ["underground-belt"] = "bob-basic-underground-belt", ["splitter"] = "bob-basic-splitter"} -- grey
-BigTableOfBelts["bob-turbo-transport-belt"] = {["transport-belt"] = "bob-turbo-transport-belt", ["underground-belt"] = "bob-turbo-underground-belt", ["splitter"] = "bob-turbo-splitter"} -- purple
-BigTableOfBelts["bob-ultimate-transport-belt"] = {["transport-belt"] = "bob-ultimate-transport-belt", ["underground-belt"] = "bob-ultimate-underground-belt", ["splitter"] = "bob-ultimate-splitter"} -- green
-
--- Dredgeworks (https://mods.factorio.com/mod/dredgeworks)
-BigTableOfBelts["dredgeworks-floating-transport-belt"] = {["transport-belt"] = "floating-transport-belt", ["underground-belt"] = "underground-belt", ["splitter"] = "splitter"} -- pale yellow
-BigTableOfBelts["dredgeworks-floating-fast-transport-belt"] = {["transport-belt"] = "floating-fast-transport-belt", ["underground-belt"] = "fast-underground-belt", ["splitter"] = "fast-splitter"} -- red
-BigTableOfBelts["dredgeworks-floating-express-transport-belt"] = {["transport-belt"] = "floating-express-transport-belt", ["underground-belt"] = "express-underground-belt", ["splitter"] = "express-splitter"} -- blue
-BigTableOfBelts["dredgeworks-floating-turbo-transport-belt"] = {["transport-belt"] = "floating-turbo-transport-belt", ["underground-belt"] = "turbo-underground-belt", ["splitter"] = "turbo-splitter"} -- green
+BigTableOfBelts["bob-basic-transport-belt"] = {["transport-belt"] = {"bob-basic-transport-belt"}, ["underground-belt"] = {"bob-basic-underground-belt"}, ["splitter"] = {"bob-basic-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- grey
+BigTableOfBelts["bob-turbo-transport-belt"] = {["transport-belt"] = {"bob-turbo-transport-belt"}, ["underground-belt"] = {"bob-turbo-underground-belt"}, ["splitter"] = {"bob-turbo-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- purple
+BigTableOfBelts["bob-ultimate-transport-belt"] = {["transport-belt"] = {"bob-ultimate-transport-belt"}, ["underground-belt"] = {"bob-ultimate-underground-belt"}, ["splitter"] = {"bob-ultimate-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- green
 
 -- Periodic Madness (https://mods.factorio.com/mod/periodic-madness)
-BigTableOfBelts["periodic-madness-advanced-transport-belt"] = {["transport-belt"] = "pm-advanced-transport-belt", ["underground-belt"] = "pm-advanced-underground-belt", ["splitter"] = "pm-advanced-splitter"} -- red
-BigTableOfBelts["periodic-madness-high-density-transport-belt"] = {["transport-belt"] = "pm-high-density-transport-belt", ["underground-belt"] = "pm-high-density-underground-belt", ["splitter"] = "pm-high-density-splitter"} -- red
+BigTableOfBelts["periodic-madness-advanced-transport-belt"] = {["transport-belt"] = {"pm-advanced-transport-belt"}, ["underground-belt"] = {"pm-advanced-underground-belt"}, ["splitter"] = {"pm-advanced-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- red
+BigTableOfBelts["periodic-madness-high-density-transport-belt"] = {["transport-belt"] = {"pm-high-density-transport-belt"}, ["underground-belt"] = {"pm-high-density-underground-belt"}, ["splitter"] = {"pm-high-density-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- red
+
+-- Dredgeworks (https://mods.factorio.com/mod/dredgeworks)
+table.insert(BigTableOfBelts["transport-belt"]["transport-belt"], "floating-transport-belt") -- pale yellow
+table.insert(BigTableOfBelts["fast-transport-belt"]["transport-belt"], "floating-fast-transport-belt") -- pale red
+table.insert(BigTableOfBelts["express-transport-belt"]["transport-belt"], "floating-express-transport-belt") -- pale blue
+table.insert(BigTableOfBelts["turbo-transport-belt"]["transport-belt"], "floating-turbo-transport-belt") -- pale green
+
+-- 5Dim - New Transport
+table.insert(BigTableOfBelts["transport-belt"]["underground-belt"], "5d-underground-belt-30-01")
+table.insert(BigTableOfBelts["fast-transport-belt"]["underground-belt"], "5d-fast-underground-belt-30-02")
+table.insert(BigTableOfBelts["express-transport-belt"]["underground-belt"], "5d-express-underground-belt-30-03")
+table.insert(BigTableOfBelts["5d-transport-belt-mk4"]["underground-belt"], "5d-underground-belt-30-04")
+table.insert(BigTableOfBelts["5d-transport-belt-mk5"]["underground-belt"], "5d-underground-belt-30-05")
+table.insert(BigTableOfBelts["5d-transport-belt-mk6"]["underground-belt"], "5d-underground-belt-30-06")
+table.insert(BigTableOfBelts["5d-transport-belt-mk7"]["underground-belt"], "5d-underground-belt-30-07")
+table.insert(BigTableOfBelts["5d-transport-belt-mk8"]["underground-belt"], "5d-underground-belt-30-08")
+table.insert(BigTableOfBelts["5d-transport-belt-mk9"]["underground-belt"], "5d-underground-belt-30-09")
+table.insert(BigTableOfBelts["5d-transport-belt-mk10"]["underground-belt"], "5d-underground-belt-30-10")
+table.insert(BigTableOfBelts["transport-belt"]["underground-belt"], "5d-underground-belt-50-01")
+table.insert(BigTableOfBelts["fast-transport-belt"]["underground-belt"], "5d-fast-underground-belt-50-02")
+table.insert(BigTableOfBelts["express-transport-belt"]["underground-belt"], "5d-express-underground-belt-50-03")
+table.insert(BigTableOfBelts["5d-transport-belt-mk4"]["underground-belt"], "5d-underground-belt-50-04")
+table.insert(BigTableOfBelts["5d-transport-belt-mk5"]["underground-belt"], "5d-underground-belt-50-05")
+table.insert(BigTableOfBelts["5d-transport-belt-mk6"]["underground-belt"], "5d-underground-belt-50-06")
+table.insert(BigTableOfBelts["5d-transport-belt-mk7"]["underground-belt"], "5d-underground-belt-50-07")
+table.insert(BigTableOfBelts["5d-transport-belt-mk8"]["underground-belt"], "5d-underground-belt-50-08")
+table.insert(BigTableOfBelts["5d-transport-belt-mk9"]["underground-belt"], "5d-underground-belt-50-09")
+table.insert(BigTableOfBelts["5d-transport-belt-mk10"]["underground-belt"], "5d-underground-belt-50-10")
+if (script.active_mods['space-age']) then
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["underground-belt"], "5d-turbo-underground-belt-30-04")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["underground-belt"], "5d-turbo-underground-belt-50-04")
+end
 
 -- AAI Loaders (https://mods.factorio.com/mod/aai-loaders)
 if (script.active_mods['aai-loaders']) then
-	BigTableOfBelts["transport-belt"]["loader1x1"] = "aai-loader"
-	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "aai-fast-loader"
-	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "aai-express-loader"
-	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x1"], "aai-loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "aai-fast-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "aai-express-loader")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["loader1x1"], "aai-turbo-loader")
 
 	-- Space Exploration
-	BigTableOfBelts["se-space-transport-belt"]["loader1x1"] = "aai-se-space-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-black"]["loader1x1"] = "aai-se-deep-space-black-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-blue"]["loader1x1"] = "aai-se-deep-space-blue-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-cyan"]["loader1x1"] = "aai-se-deep-space-cyan-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-green"]["loader1x1"] = "aai-se-deep-space-green-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-magenta"]["loader1x1"] = "aai-se-deep-space-magenta-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-red"]["loader1x1"] = "aai-se-deep-space-red-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-white"]["loader1x1"] = "aai-se-deep-space-white-loader"
-	BigTableOfBelts["se-deep-space-transport-belt-yellow"]["loader1x1"] = "aai-se-deep-space-yellow-loader"
+	table.insert(BigTableOfBelts["se-space-transport-belt"]["loader1x1"], "aai-se-space-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-black"]["loader1x1"], "aai-se-deep-space-black-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-blue"]["loader1x1"], "aai-se-deep-space-blue-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-cyan"]["loader1x1"], "aai-se-deep-space-cyan-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-green"]["loader1x1"], "aai-se-deep-space-green-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-magenta"]["loader1x1"], "aai-se-deep-space-magenta-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-red"]["loader1x1"], "aai-se-deep-space-red-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-white"]["loader1x1"], "aai-se-deep-space-white-loader")
+	table.insert(BigTableOfBelts["se-deep-space-transport-belt-yellow"]["loader1x1"], "aai-se-deep-space-yellow-loader")
 	
 	-- Lignumis
-	BigTableOfBelts["wood-transport-belt"]["loader1x1"] = "aai-wood-loader"
+	table.insert(BigTableOfBelts["wood-transport-belt"]["loader1x1"], "aai-wood-loader")
 	
 	if (script.active_mods['boblogistics']) then
-		BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = nil
-		BigTableOfBelts["bob-basic-transport-belt"]["loader1x1"] = "aai-basic-loader"
-		BigTableOfBelts["bob-turbo-transport-belt"]["loader1x1"] = "aai-turbo-loader"
-		BigTableOfBelts["bob-ultimate-transport-belt"]["loader1x1"] = "aai-ultimate-loader"
+		table.insert(BigTableOfBelts["bob-basic-transport-belt"]["loader1x1"], "aai-basic-loader")
+		table.insert(BigTableOfBelts["bob-turbo-transport-belt"]["loader1x1"], "aai-turbo-loader")
+		table.insert(BigTableOfBelts["bob-ultimate-transport-belt"]["loader1x1"], "aai-ultimate-loader")
 	end
 end
 
 -- Krastorio2 loaders (https://mods.factorio.com/mod/Krastorio2)
 if (script.active_mods['Krastorio2'] or script.active_mods['Krastorio2-spaced-out']) then
-	BigTableOfBelts["transport-belt"]["loader1x1"] = "kr-loader"
-	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "kr-fast-loader"
-	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "kr-express-loader"
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x1"], "kr-loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "kr-fast-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "kr-express-loader")
 end
 
 -- 5Dim - New Transport loaders (https://mods.factorio.com/mod/5dim_transport)
 if (script.active_mods['5dim_transport']) then
-	BigTableOfBelts["transport-belt"]["loader1x1"] = "5d-loader-1x1-01"
-	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "5d-loader-1x1-02"
-	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "5d-loader-1x1-03"
-	BigTableOfBelts["transport-belt"]["loader1x2"] = "loader"
-	BigTableOfBelts["fast-transport-belt"]["loader1x2"] = "fast-loader"
-	BigTableOfBelts["express-transport-belt"]["loader1x2"] = "express-loader"
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x1"], "5d-loader-1x1-01")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "5d-loader-1x1-02")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "5d-loader-1x1-03")
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x2"], "loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x2"], "fast-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x2"], "express-loader")
 end
 
 -- Loaders Modernized (https://mods.factorio.com/mod/loaders-modernized)
 if (script.active_mods['loaders-modernized']) then
-	BigTableOfBelts["transport-belt"]["loader1x1"] = "mdrn-loader"
-	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "fast-mdrn-loader"
-	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "express-mdrn-loader"
-	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "turbo-mdrn-loader"
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x1"], "mdrn-loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "fast-mdrn-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "express-mdrn-loader")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["loader1x1"], "turbo-mdrn-loader")
 
-	BigTableOfBelts["ultra-fast-transport-belt"]["loader1x1"] = "ultra-fast-mdrn-loader"
-	BigTableOfBelts["extreme-fast-transport-belt"]["loader1x1"] = "extreme-fast-mdrn-loader"
-	BigTableOfBelts["ultra-express-transport-belt"]["loader1x1"] = "ultra-express-mdrn-loader"
-	BigTableOfBelts["extreme-express-transport-belt"]["loader1x1"] = "extreme-express-mdrn-loader"
-	BigTableOfBelts["ultimate-transport-belt"]["loader1x1"] = "original-ultimate-mdrn-loader"
+	table.insert(BigTableOfBelts["ultra-fast-transport-belt"]["loader1x1"], "ultra-fast-mdrn-loader")
+	table.insert(BigTableOfBelts["extreme-fast-transport-belt"]["loader1x1"], "extreme-fast-mdrn-loader")
+	table.insert(BigTableOfBelts["ultra-express-transport-belt"]["loader1x1"], "ultra-express-mdrn-loader")
+	table.insert(BigTableOfBelts["extreme-express-transport-belt"]["loader1x1"], "extreme-express-mdrn-loader")
+	table.insert(BigTableOfBelts["ultimate-transport-belt"]["loader1x1"], "original-ultimate-mdrn-loader")
 end
 
 -- Factorio+ loaders (https://mods.factorio.com/mod/factorioplus)
 if (script.active_mods['factorioplus']) then
-	BigTableOfBelts["transport-belt"]["loader1x2"] = "loader"
-	BigTableOfBelts["fast-transport-belt"]["loader1x2"] = "fast-loader"
-	BigTableOfBelts["express-transport-belt"]["loader1x2"] = "express-loader"
-	BigTableOfBelts["turbo-transport-belt"]["loader1x2"] = "turbo-loader"
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x2"], "loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x2"], "fast-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x2"], "express-loader")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["loader1x2"], "turbo-loader")
 end
 
 -- Lane balancers and splitters (https://mods.factorio.com/mod/lane-balancers, https://mods.factorio.com/mods/lane-splitters)
 if (script.active_mods['lane-balancers'] or script.active_mods['lane-splitters'] or script.active_mods['more-belts']) then
-	BigTableOfBelts["transport-belt"]["laneSplit"] = "lane-splitter"
-	BigTableOfBelts["fast-transport-belt"]["laneSplit"] = "fast-lane-splitter"
-	BigTableOfBelts["express-transport-belt"]["laneSplit"] = "express-lane-splitter"
-	BigTableOfBelts["turbo-transport-belt"]["laneSplit"] = "turbo-lane-splitter"
+	table.insert(BigTableOfBelts["transport-belt"]["laneSplit"], "lane-splitter")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["laneSplit"], "fast-lane-splitter")
+	table.insert(BigTableOfBelts["express-transport-belt"]["laneSplit"], "express-lane-splitter")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["laneSplit"], "turbo-lane-splitter")
 end
 
 -- Comfortable Loader (https://mods.factorio.com/mod/comfortable-loader, https://mods.factorio.com/mod/ComfortableLoader-MoreBelts)
 if (script.active_mods['comfortable-loader'] or script.active_mods['ComfortableLoader-MoreBelts']) then
-	BigTableOfBelts["transport-belt"]["loader1x1"] = "comfortable-loader"
-	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "fast-comfortable-loader"
-	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "express-comfortable-loader"
-	BigTableOfBelts["turbo-transport-belt"]["loader1x1"] = "turbo-comfortable-loader"
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x1"], "comfortable-loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "fast-comfortable-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "express-comfortable-loader")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["loader1x1"], "turbo-comfortable-loader")
 	
-	BigTableOfBelts["more-belts-mk4"]['loader1x1'] = 'comfortable-loader-mk4'
-	BigTableOfBelts["more-belts-mk5"]['loader1x1'] = 'comfortable-loader-mk5'
-	BigTableOfBelts["more-belts-mk6"]['loader1x1'] = 'comfortable-loader-mk6'
-	BigTableOfBelts["more-belts-mk7"]['loader1x1'] = 'comfortable-loader-mk7'
-	BigTableOfBelts["more-belts-mk8"]['loader1x1'] = 'comfortable-loader-mk8'
+	table.insert(BigTableOfBelts["more-belts-mk4"]["loader1x1"], "comfortable-loader-mk4")
+	table.insert(BigTableOfBelts["more-belts-mk5"]["loader1x1"], "comfortable-loader-mk5")
+	table.insert(BigTableOfBelts["more-belts-mk6"]["loader1x1"], "comfortable-loader-mk6")
+	table.insert(BigTableOfBelts["more-belts-mk7"]["loader1x1"], "comfortable-loader-mk7")
+	table.insert(BigTableOfBelts["more-belts-mk8"]["loader1x1"], "comfortable-loader-mk8")
 end
 
 -- More Belts Loaders
 if (script.active_mods['more-belts-loaders']) then
-	BigTableOfBelts["transport-belt"]["loader1x1"] = "ddi-loader"
-	BigTableOfBelts["fast-transport-belt"]["loader1x1"] = "ddi-fast-loader"
-	BigTableOfBelts["express-transport-belt"]["loader1x1"] = "ddi-express-loader"
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x1"], "ddi-loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "ddi-fast-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "ddi-express-loader")
 	
-	BigTableOfBelts["more-belts-mk4"]['loader1x1'] = 'ddi-loader-mk4'
-	BigTableOfBelts["more-belts-mk5"]['loader1x1'] = 'ddi-loader-mk5'
-	BigTableOfBelts["more-belts-mk6"]['loader1x1'] = 'ddi-loader-mk6'
-	BigTableOfBelts["more-belts-mk7"]['loader1x1'] = 'ddi-loader-mk7'
-	BigTableOfBelts["more-belts-mk8"]['loader1x1'] = 'ddi-loader-mk8'
+	table.insert(BigTableOfBelts["more-belts-mk4"]["loader1x1"], "ddi-loader-mk4")
+	table.insert(BigTableOfBelts["more-belts-mk5"]["loader1x1"], "ddi-loader-mk5")
+	table.insert(BigTableOfBelts["more-belts-mk6"]["loader1x1"], "ddi-loader-mk6")
+	table.insert(BigTableOfBelts["more-belts-mk7"]["loader1x1"], "ddi-loader-mk7")
+	table.insert(BigTableOfBelts["more-belts-mk8"]["loader1x1"], "ddi-loader-mk8")
+end
+
+if (script.active_mods['loader-utils']) then
+	local baseLoaders = prototypes.mod_data['loader-utils'].data.base_loaders
+	if (VERBOSE > 1) then
+		log({"", "Base Loaders = ", serpent.block(baseLoaders)})
+	end
+	for _, val in pairs(BigTableOfBelts) do
+		local group = val['loader1x1']
+		for _, value in pairs(group) do
+			for prot, base in pairs(baseLoaders) do		
+				if (value == base) and not (base == prot) then
+					table.insert(group, prot)
+				end
+			end
+		end
+	end
 end
 
 ---Returns a table with truth values, with the following keys:
@@ -220,7 +262,7 @@ end
 
 ---Builds a table consisting of the relevant belt tier.
 ---@param beltEntity LuaEntity The belt entity to determine the tier of.
----@return table<string, string>? tier The table containing all transport belt entity names of that tier, or nil if not supported.
+---@return table<string, table<int, string>>? tier The table containing all transport belt entity names of that tier, or nil if not supported.
 local function buildBeltTierTable(beltEntity)
 	local LuaEntityPrototype prototype = beltEntity.prototype
 	if beltEntity.to_be_upgraded() then
@@ -231,18 +273,20 @@ local function buildBeltTierTable(beltEntity)
 		beltName = beltEntity.ghost_name
 	end
 	for _, tier in pairs(BigTableOfBelts) do
-		for _, val in pairs(tier) do
-			if (val == beltName) then
-				if (VERBOSE > 1) then
-					local outString = "Working with tier: ["
-					for key, name in pairs(tier) do
-						outString = outString .. ", " .. name
+		for _, value in pairs(tier) do
+			for _, val in pairs(value) do
+				if (val == beltName) then
+					if (VERBOSE > 1) then
+						local outString = "Working with tier: ["
+						for key, name in pairs(tier) do
+							outString = outString .. ", " .. name
+						end
+						outString = outString .. "]"
+						game.print({"", outString})
+						log({"", outString})
 					end
-					outString = outString .. "]"
-					game.print({"", outString})
-					log({"", outString})
+					return tier
 				end
-				return tier
 			end
 		end
 	end
@@ -418,7 +462,11 @@ local function UpgradeBeltNetwork(event, truthTable)
 				end
 			end
 			if (nextUpgrade ~= nil) then
-				belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				local res = belt.order_upgrade({target=nextUpgrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				if not res then
+					game.print({"", "Failed to upgrade ", belt.name, " to ", nextUpgrade.name, "! Please check on the mod page if this is a known issue."})
+					log({"", "Failed to upgrade ", belt.name, " to ", nextUpgrade.name, "! Please check on the mod page if this is a known issue."})
+				end
 			end
 		end
 	end
@@ -492,7 +540,11 @@ local function DowngradeBeltNetwork(event, truthTable)
 				nextDowngrade = downgradeCache[beltName]
 			end
 			if (nextDowngrade ~= nil) then
-				belt.order_upgrade({target=nextDowngrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				local res = belt.order_upgrade({target=nextDowngrade, force=thisPlayer.force_index, player=thisPlayer, item_index=1})
+				if not res then
+					game.print({"", "Failed to downgrade ", belt.name, " to ", nextDowngrade.name, "! Please check on the mod page if this is a known issue."})
+					log({"", "Failed to downgrade ", belt.name, " to ", nextDowngrade.name, "! Please check on the mod page if this is a known issue."})
+				end
 			end
 		end
 	end
@@ -588,7 +640,11 @@ local function RemoveBeltNetwork(event, ForceBuild)
 				log({"", "Removing the following entity:"})
 				log(serpent.block(belt))
 			end
-			belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			local res = belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			if not res then
+				game.print({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
+				log({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
+			end
 		end
 	end
 end
@@ -648,7 +704,11 @@ local function RemovePipes(event, ForceBuild)
 				log({"", "Removing the following entity:"})
 				log(serpent.block(pipeEntity))
 			end
-			pipeEntity.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			local res = pipeEntity.order_deconstruction(thisPlayer.force_index, thisPlayer)
+			if not res then
+				game.print({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
+				log({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
+			end
 		end
 	end
 end
