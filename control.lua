@@ -92,6 +92,32 @@ table.insert(BigTableOfBelts["fast-transport-belt"]["transport-belt"], "floating
 table.insert(BigTableOfBelts["express-transport-belt"]["transport-belt"], "floating-express-transport-belt") -- pale blue
 table.insert(BigTableOfBelts["turbo-transport-belt"]["transport-belt"], "floating-turbo-transport-belt") -- pale green
 
+-- 5Dim - New Transport
+table.insert(BigTableOfBelts["transport-belt"]["underground-belt"], "5d-underground-belt-30-01")
+table.insert(BigTableOfBelts["fast-transport-belt"]["underground-belt"], "5d-fast-underground-belt-30-02")
+table.insert(BigTableOfBelts["express-transport-belt"]["underground-belt"], "5d-express-underground-belt-30-03")
+table.insert(BigTableOfBelts["5d-transport-belt-mk4"]["underground-belt"], "5d-underground-belt-30-04")
+table.insert(BigTableOfBelts["5d-transport-belt-mk5"]["underground-belt"], "5d-underground-belt-30-05")
+table.insert(BigTableOfBelts["5d-transport-belt-mk6"]["underground-belt"], "5d-underground-belt-30-06")
+table.insert(BigTableOfBelts["5d-transport-belt-mk7"]["underground-belt"], "5d-underground-belt-30-07")
+table.insert(BigTableOfBelts["5d-transport-belt-mk8"]["underground-belt"], "5d-underground-belt-30-08")
+table.insert(BigTableOfBelts["5d-transport-belt-mk9"]["underground-belt"], "5d-underground-belt-30-09")
+table.insert(BigTableOfBelts["5d-transport-belt-mk10"]["underground-belt"], "5d-underground-belt-30-10")
+table.insert(BigTableOfBelts["transport-belt"]["underground-belt"], "5d-underground-belt-50-01")
+table.insert(BigTableOfBelts["fast-transport-belt"]["underground-belt"], "5d-fast-underground-belt-50-02")
+table.insert(BigTableOfBelts["express-transport-belt"]["underground-belt"], "5d-express-underground-belt-50-03")
+table.insert(BigTableOfBelts["5d-transport-belt-mk4"]["underground-belt"], "5d-underground-belt-50-04")
+table.insert(BigTableOfBelts["5d-transport-belt-mk5"]["underground-belt"], "5d-underground-belt-50-05")
+table.insert(BigTableOfBelts["5d-transport-belt-mk6"]["underground-belt"], "5d-underground-belt-50-06")
+table.insert(BigTableOfBelts["5d-transport-belt-mk7"]["underground-belt"], "5d-underground-belt-50-07")
+table.insert(BigTableOfBelts["5d-transport-belt-mk8"]["underground-belt"], "5d-underground-belt-50-08")
+table.insert(BigTableOfBelts["5d-transport-belt-mk9"]["underground-belt"], "5d-underground-belt-50-09")
+table.insert(BigTableOfBelts["5d-transport-belt-mk10"]["underground-belt"], "5d-underground-belt-50-10")
+if (script.active_mods['space-age']) then
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["underground-belt"], "5d-turbo-underground-belt-30-04")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["underground-belt"], "5d-turbo-underground-belt-50-04")
+end
+
 -- AAI Loaders (https://mods.factorio.com/mod/aai-loaders)
 if (script.active_mods['aai-loaders']) then
 	table.insert(BigTableOfBelts["transport-belt"]["loader1x1"], "aai-loader")

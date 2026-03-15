@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.0
+Date: 2026-03-15
+  Minor Features:
+    - The related belt tier table can now have multiple options per type for each tier, e.g., a normal and a longer more expensive underground belt for the same tier.
+  Mod Compatibility:
+    - Dredgeworks' floating belts, 5Dim's longer undergrounds, and Loader Utilities' many loaders are now all supported at the correct tier.
+---------------------------------------------------------------------------------------------------
 Version: 1.4.6
 Date: 2026-01-26
   Mod Compatibility:
