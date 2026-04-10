@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.1
+Date: 2026-04-10
+  Bugfixes:
+    - Fix spurious error message when deconstructing entity already deconstructed. (https://github.com/Pietersielie/BeltUpgrader/issues/76)
+  Mod Compatibility:
+    - Ultracube's loaders and new belt tier is now supported. (https://github.com/Pietersielie/BeltUpgrader/issues/76)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.0
 Date: 2026-03-15
   Minor Features:
