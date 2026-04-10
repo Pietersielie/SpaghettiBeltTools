@@ -86,6 +86,9 @@ BigTableOfBelts["bob-ultimate-transport-belt"] = {["transport-belt"] = {"bob-ult
 BigTableOfBelts["periodic-madness-advanced-transport-belt"] = {["transport-belt"] = {"pm-advanced-transport-belt"}, ["underground-belt"] = {"pm-advanced-underground-belt"}, ["splitter"] = {"pm-advanced-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- red
 BigTableOfBelts["periodic-madness-high-density-transport-belt"] = {["transport-belt"] = {"pm-high-density-transport-belt"}, ["underground-belt"] = {"pm-high-density-underground-belt"}, ["splitter"] = {"pm-high-density-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- red
 
+-- Ultracube ()
+BigTableOfBelts["cube-v4-transport-belt"] = {["transport-belt"] = {"cube-v4-transport-belt"}, ["underground-belt"] = {"cube-v4-underground-belt"}, ["splitter"] = {"cube-v4-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {"aai-v4-loader"}, ["loader1x2"] = {}} -- red
+
 -- Dredgeworks (https://mods.factorio.com/mod/dredgeworks)
 table.insert(BigTableOfBelts["transport-belt"]["transport-belt"], "floating-transport-belt") -- pale yellow
 table.insert(BigTableOfBelts["fast-transport-belt"]["transport-belt"], "floating-fast-transport-belt") -- pale red
@@ -143,6 +146,11 @@ if (script.active_mods['aai-loaders']) then
 		table.insert(BigTableOfBelts["bob-basic-transport-belt"]["loader1x1"], "aai-basic-loader")
 		table.insert(BigTableOfBelts["bob-turbo-transport-belt"]["loader1x1"], "aai-turbo-loader")
 		table.insert(BigTableOfBelts["bob-ultimate-transport-belt"]["loader1x1"], "aai-ultimate-loader")
+	end
+
+	if (script.active_mods['Ultracube']) then
+		table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "aai-v2-loader")
+		table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "aai-v3-loader")
 	end
 end
 
@@ -640,10 +648,12 @@ local function RemoveBeltNetwork(event, ForceBuild)
 				log({"", "Removing the following entity:"})
 				log(serpent.block(belt))
 			end
-			local res = belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
-			if not res then
-				game.print({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
-				log({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
+			if not belt.to_be_deconstructed() then	
+				local res = belt.order_deconstruction(thisPlayer.force_index, thisPlayer)
+				if not res then
+					game.print({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
+					log({"", "Failed to order deconstruction of ", belt.name, "! Please check on the mod page if this is a known issue."})
+				end
 			end
 		end
 	end
@@ -704,10 +714,12 @@ local function RemovePipes(event, ForceBuild)
 				log({"", "Removing the following entity:"})
 				log(serpent.block(pipeEntity))
 			end
-			local res = pipeEntity.order_deconstruction(thisPlayer.force_index, thisPlayer)
-			if not res then
-				game.print({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
-				log({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
+			if not pipeEntity.to_be_deconstructed() then
+				local res = pipeEntity.order_deconstruction(thisPlayer.force_index, thisPlayer)
+				if not res then
+					game.print({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
+					log({"", "Failed to order deconstruction of ", pipeEntity.name, "! Please check on the mod page if this is a known issue."})
+				end
 			end
 		end
 	end
