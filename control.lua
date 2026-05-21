@@ -142,15 +142,23 @@ if (script.active_mods['aai-loaders']) then
 	-- Lignumis
 	table.insert(BigTableOfBelts["wood-transport-belt"]["loader1x1"], "aai-wood-loader")
 	
+	-- Bob's Logistics
 	if (script.active_mods['boblogistics']) then
 		table.insert(BigTableOfBelts["bob-basic-transport-belt"]["loader1x1"], "aai-basic-loader")
 		table.insert(BigTableOfBelts["bob-turbo-transport-belt"]["loader1x1"], "aai-turbo-loader")
 		table.insert(BigTableOfBelts["bob-ultimate-transport-belt"]["loader1x1"], "aai-ultimate-loader")
 	end
 
+	-- Ultracube
 	if (script.active_mods['Ultracube']) then
 		table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x1"], "aai-v2-loader")
 		table.insert(BigTableOfBelts["express-transport-belt"]["loader1x1"], "aai-v3-loader")
+	end
+
+	-- Krastorio2
+	if (script.active_mods['Krastorio2'] or script.active_mods['Krastorio2-spaced-out']) then
+		table.insert(BigTableOfBelts["kr-advanced-transport-belt"]["loader1x1"], "aai-kr-advanced-loader")
+		table.insert(BigTableOfBelts["kr-superior-transport-belt"]["loader1x1"], "aai-kr-superior-loader")
 	end
 end
 
