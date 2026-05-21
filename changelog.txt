@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.2
+Date: 2026-05-21
+  Mod Compatibility:
+    - Fix clash between K2 and AAI Loaders for loaders. (https://github.com/Pietersielie/BeltUpgrader/issues/78)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.1
 Date: 2026-04-10
   Bugfixes:
