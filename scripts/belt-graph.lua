@@ -75,7 +75,7 @@ findUpstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truthTa
 
 	-- If underground-belt, add other end if it exists
 	if (beltType == "underground-belt") then
-		local UGBeltEnd = belt.neighbours
+		local UGBeltEnd = belt.underground_belt_neighbour
 		if (UGBeltEnd ~= nil) then
             if (VERBOSE > 2) then
                 game.print({"", "Underground belt has a neighbour."})
@@ -221,7 +221,7 @@ findDownstreamNetwork = function(belt, beltEntitiesToReturn, relBeltTable, truth
 	end
     -- If underground-belt, add other end if it exists
     if (beltType == "underground-belt") then
-        local UGBeltEnd = belt.neighbours
+        local UGBeltEnd = belt.underground_belt_neighbour
         if (UGBeltEnd ~= nil) then
             if (VERBOSE > 2) then
                 game.print({"", "Underground belt has a neighbour:", serpent.block(UGBeltEnd)})
@@ -444,7 +444,7 @@ findRedundantNetwork = function (belt, beltEntitiesToReturn, relBeltTable, UpDow
 			-- 	case: 1 input
 			elseif table_size(inputs) == 1 then
 				-- 		case: input and belt direction are the same, or neighbours == nil, or output == {}
-				if (inputs[1].direction == belt.direction) or (belt.neighbours == nil) or (belt.belt_neighbours["outputs"] == {}) then
+				if (inputs[1].direction == belt.direction) or (belt.underground_belt_neighbour == nil) or (belt.belt_neighbours["outputs"] == {}) then
 					-- add
 					-- continue recursion
 					beltEntitiesToReturn[belt.unit_number] = belt
@@ -537,7 +537,7 @@ findRedundantNetwork = function (belt, beltEntitiesToReturn, relBeltTable, UpDow
 
     -- If underground-belt, add other end if it exists
     if (beltType == "underground-belt") then
-        local UGBeltEnd = belt.neighbours
+        local UGBeltEnd = belt.underground_belt_neighbour
         if (UGBeltEnd ~= nil) then
             connectedBelts[UGBeltEnd.unit_number] = UGBeltEnd
         end

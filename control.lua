@@ -349,8 +349,8 @@ local function findAllConnectedBelts(belt, beltEntitiesToReturn, truthTable)
 	
 	-- Build downstream network
 	beltEntitiesToReturn = beltGraph.findDownstreamNetwork(belt, beltEntitiesToReturn, relBeltTier, truthTable)
-	if beltGraph.getType(belt) == "underground-belt" and belt.neighbours ~= nil then
-		beltEntitiesToReturn = beltGraph.findDownstreamNetwork(belt.neighbours, beltEntitiesToReturn, relBeltTier, truthTable)
+	if beltGraph.getType(belt) == "underground-belt" and belt.underground_belt_neighbour ~= nil then
+		beltEntitiesToReturn = beltGraph.findDownstreamNetwork(belt.underground_belt_neighbour, beltEntitiesToReturn, relBeltTier, truthTable)
 	end
 	if (VERBOSE > 2) then
 		local down = table_size(beltEntitiesToReturn) - up
@@ -622,19 +622,19 @@ local function RemoveBeltNetwork(event, ForceBuild)
 
 				if beltType == "underground-belt" then
 					-- Determine direction of neighbour:
-					if entity.neighbours ~= nil then
+					if entity.underground_belt_neighbour ~= nil then
 						local outLocal = table_size(entity.belt_neighbours["outputs"])
-						local outNeighbour = table_size(entity.neighbours.belt_neighbours["outputs"])
+						local outNeighbour = table_size(entity.underground_belt_neighbour.belt_neighbours["outputs"])
 
 						-- Case: Flow is from local to neighbour
 						if (outNeighbour > 0 and not (outLocal > 0)) then
 							-- Search downstream from neighbour
-							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbours, transportBeltEntitiesToRemove, relBeltTier, true)
+							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.underground_belt_neighbour, transportBeltEntitiesToRemove, relBeltTier, true)
 
 						-- Case: Flow is from neighbour to local
 						elseif (outLocal > 0 and not (outNeighbour > 0)) then
 							-- Search upstream from neighbour
-							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.neighbours, transportBeltEntitiesToRemove, relBeltTier, false)
+							transportBeltEntitiesToRemove = beltGraph.findRedundantNetwork(entity.underground_belt_neighbour, transportBeltEntitiesToRemove, relBeltTier, false)
 						-- Case: No flow between neighbours.
 						-- else
 							-- do nothing
@@ -677,20 +677,26 @@ local function findAllConnectedPipes(pipeEntity, pipeEntitiesToReturn, ForceRemo
 		return pipeEntitiesToReturn
 	end
 
-	local connectedPipelikes = pipeEntity.fluidbox.get_connections(1)
-	if (table_size(connectedPipelikes) > 2 and not ForceRemove) then
+	local connectedPipelikes = pipeEntity.get_fluid_box_pipe_connections(1)
+	local validConnections = {}
+	for _, con in pairs(connectedPipelikes) do
+		if con.target ~= nil then
+			validConnections[con.target.unit_number] = con.target
+		end
+	end
+	if ((table_size(validConnections) > 2) and not (ForceRemove) and not (table_size(pipeEntitiesToReturn) < 1)) then
 		return pipeEntitiesToReturn
 	end
 
 	pipeEntitiesToReturn[pipeEntity.unit_number] = pipeEntity
-	for _, fluidBox in pairs(connectedPipelikes) do
-		local boxOwnerType = fluidBox.owner.type
-		if beltGraph.isGhost(fluidBox.owner) then
-			boxOwnerType = fluidBox.owner.ghost_type
+	for _, connectedPipeLike in pairs(validConnections) do
+		local boxOwnerType = connectedPipeLike.type
+		if beltGraph.isGhost(connectedPipeLike) then
+			boxOwnerType = connectedPipeLike.ghost_type
 		end
 		if pipeSelectionTypeFilter[boxOwnerType] then
-			if pipeEntitiesToReturn[fluidBox.owner.unit_number] == nil then
-				pipeEntitiesToReturn = findAllConnectedPipes(fluidBox.owner, pipeEntitiesToReturn, ForceRemove)
+			if pipeEntitiesToReturn[connectedPipeLike.unit_number] == nil then
+				pipeEntitiesToReturn = findAllConnectedPipes(connectedPipeLike, pipeEntitiesToReturn, ForceRemove)
 			end
 		end
 	end

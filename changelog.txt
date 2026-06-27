@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.0
+Date: 2026-06-27
+  Changes:
+    - Upgrade to Factorio version 2.1. (https://github.com/Pietersielie/BeltUpgrader/issues/80)
+    - Update belt access calls to account for new underground neighbour mechanic.
+    - Update pipe access calls to account for new fluidbox access.
+    - Update selection item filters to account for changes to default behaviours.
+---------------------------------------------------------------------------------------------------
 Version: 1.5.2
 Date: 2026-05-21
   Mod Compatibility:
