@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.1
+Date: 2026-07-19
+  Mod Compatibility:
+    - Add support for Beyond Belts' three belt tiers. (https://github.com/Pietersielie/BeltUpgrader/issues/82)
+---------------------------------------------------------------------------------------------------
 Version: 1.6.0
 Date: 2026-06-27
   Changes:
