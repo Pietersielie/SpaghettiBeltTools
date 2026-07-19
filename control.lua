@@ -89,6 +89,11 @@ BigTableOfBelts["periodic-madness-high-density-transport-belt"] = {["transport-b
 -- Ultracube ()
 BigTableOfBelts["cube-v4-transport-belt"] = {["transport-belt"] = {"cube-v4-transport-belt"}, ["underground-belt"] = {"cube-v4-underground-belt"}, ["splitter"] = {"cube-v4-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {"aai-v4-loader"}, ["loader1x2"] = {}} -- red
 
+-- Beyond Belts
+BigTableOfBelts["beyond-belts-hyper"] = {["transport-belt"] = {"bb-hyper-belt"}, ["underground-belt"] = {"bb-hyper-underground"}, ["splitter"] = {"bb-hyper-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- blue
+BigTableOfBelts["beyond-belts-extreme"] = {["transport-belt"] = {"bb-extreme-belt"}, ["underground-belt"] = {"bb-extreme-underground"}, ["splitter"] = {"bb-extreme-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- orange
+BigTableOfBelts["beyond-belts-ultimate"] = {["transport-belt"] = {"bb-ultimate-belt"}, ["underground-belt"] = {"bb-ultimate-underground"}, ["splitter"] = {"bb-ultimate-splitter"}, ["laneSplit"] = {}, ["loader1x1"] = {}, ["loader1x2"] = {}} -- purple
+
 -- Dredgeworks (https://mods.factorio.com/mod/dredgeworks)
 table.insert(BigTableOfBelts["transport-belt"]["transport-belt"], "floating-transport-belt") -- pale yellow
 table.insert(BigTableOfBelts["fast-transport-belt"]["transport-belt"], "floating-fast-transport-belt") -- pale red
