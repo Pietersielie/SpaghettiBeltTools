@@ -146,6 +146,9 @@ if (script.active_mods['aai-loaders']) then
 	
 	-- Lignumis
 	table.insert(BigTableOfBelts["wood-transport-belt"]["loader1x1"], "aai-wood-loader")
+
+	-- Planetaris Unbounded
+	table.insert(BigTableOfBelts["planetaris-hyper-belt"]["loader1x1"], "aai-hyper-loader")
 	
 	-- Bob's Logistics
 	if (script.active_mods['boblogistics']) then
