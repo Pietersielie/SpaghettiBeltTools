@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.3
+Date: 2026-11-08
+  Mod Compatibility:
+    - Add support for Vanilla Loaders. (https://github.com/Pietersielie/SpaghettiBeltTools/issues/86)
+---------------------------------------------------------------------------------------------------
 Version: 1.6.2
 Date: 2026-09-27
   Mod Compatibility:
