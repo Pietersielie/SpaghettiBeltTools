@@ -244,6 +244,21 @@ if (script.active_mods['more-belts-loaders']) then
 	table.insert(BigTableOfBelts["more-belts-mk8"]["loader1x1"], "ddi-loader-mk8")
 end
 
+-- Vanilla Loaders HD
+if (script.active_mods['vanilla-loaders-hd']) then
+	table.insert(BigTableOfBelts["transport-belt"]["loader1x2"], "loader")
+	table.insert(BigTableOfBelts["fast-transport-belt"]["loader1x2"], "fast-loader")
+	table.insert(BigTableOfBelts["express-transport-belt"]["loader1x2"], "express-loader")
+	table.insert(BigTableOfBelts["turbo-transport-belt"]["loader1x2"], "turbo-loader")
+
+	-- Bob's Logistics
+	if (script.active_mods['boblogistics']) then
+		table.insert(BigTableOfBelts["bob-basic-transport-belt"]["loader1x2"], "bob-basic-loader")
+		table.insert(BigTableOfBelts["bob-turbo-transport-belt"]["loader1x2"], "turbo-loader")
+		table.insert(BigTableOfBelts["bob-ultimate-transport-belt"]["loader1x2"], "bob-ultimate-loader")
+	end
+end
+
 if (script.active_mods['loader-utils']) then
 	local baseLoaders = prototypes.mod_data['loader-utils'].data.base_loaders
 	if (VERBOSE > 1) then
